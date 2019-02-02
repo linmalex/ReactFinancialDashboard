@@ -38,17 +38,14 @@ namespace ReactFinancialDashboard.Data
 
         public DbSet<Transaction> Transactions { get; set; }
 
-        public DbSet<Status> Statuses { get; set; }
-
-        public DbSet<GoalStatus> Goals { get; set; }
-
         public DbSet<DataYnab> DataObjects { get; set; }
 
         public DbSet<CategoryGroup> CategoryGroups { get; set; }
 
         public DbSet<Category> Categories { get; set; }
 
-        public DbSet<Statement> Statements { get; set; }
+        public DbSet<PersonalData> PersonalDatas { get; set; }
+
         #endregion
     }
 }
