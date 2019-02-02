@@ -33,6 +33,11 @@ export class NavMenu extends Component {
                 <Glyphicon glyph="inbox" /> List of Bills
               </NavItem>
             </LinkContainer>
+            <LinkContainer to={"/ynabtransactions"} exact>
+              <NavItem>
+                <Glyphicon glyph="inbox" /> YNAB Transactions
+              </NavItem>
+            </LinkContainer>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

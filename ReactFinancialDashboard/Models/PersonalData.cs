@@ -13,7 +13,5 @@ namespace ReactFinancialDashboard.Models
         public string AuthToken { get; set; }
         public double MonthlyIncomeSource1 { get; set; }
         public double MonthlyIncomeSource2 { get; set; }
-
-
     }
 }
