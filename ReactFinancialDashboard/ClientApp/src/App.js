@@ -4,7 +4,7 @@ import { Layout } from "./components/Layout";
 import { Home } from "./components/Home";
 import { FetchData } from "./components/FetchData";
 import ListOfBills from "./components/ListOfBills";
-import { YnabTransactions } from "./components/YnabTransactions";
+import YnabTransactions from "./components/YnabTransactions";
 
 export default class App extends Component {
   displayName = App.name;
