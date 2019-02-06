@@ -38,15 +38,7 @@ namespace ReactFinancialDashboard.Controllers
         {
             ApplicationDbContext context = _context;
             List<CreditCardStatement> statements = context.CreditCardStatements.ToList();
-            DateTime x = statements.FirstOrDefault().DueDate.Date;
             return JsonConvert.SerializeObject(statements);
-        }
-
-        [HttpGet("[action]")]
-        public string FullCreditCardData()
-        {
-            var creditCard = new CreditCard();
-
         }
 
         public static string SetURI_Accounts(PersonalData personalData)
