@@ -1,66 +1,66 @@
 import React, { Component } from "react";
+import { FilterButton } from "./FilterButton";
 
 export class YnabAccountBalances extends Component {
-    static renderAccountsTable(accounts) {
-        return (
-            <table className='table'>
-                <thead>
-                    <tr>
-                        <th>Account Name</th>
-                        <th>Account Balance</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {accounts.map(account =>
-                        (<tr key={account.id}>
-                            <td>{account.name}</td>
-                            <td>${account.balance}</td>
-                        </tr>)
-                    )}
-                </tbody>
-            </table>
-        );
-    }
+  getYnabAccountsData = () => {
+    fetch("api/YNABCreditCard/YNABAccountsJson")
+      .then(response => response.json())
+      .then(data => {
+        var accounts = data["data"]["accounts"];
+        for (var i = 0; i < accounts.length; i++) {
+          accounts[i]["balance"] /= 1000;
+        }
+        this.setState({ accounts, loading: false });
+      });
+  };
 
-    constructor(props) {
-        super(props);
-        this.state = { accounts: [], loading: true };
+  static renderAccountsTable(accounts) {
+    return (
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Account Name</th>
+            <th>Account Balance</th>
+            <th>Account Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          {accounts.map(account => (
+            <tr key={account.id}>
+              <td>{account.name}</td>
+              <td>${account.balance}</td>
+              <td>{account.type}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  }
 
-        this.getYnabAccountsData();
-    }
+  constructor(props) {
+    super(props);
+    this.state = { accounts: [], loading: true };
 
-    getYnabAccountsData = () => {
-        fetch('api/YNABCreditCard/YNABAccountsJson')
-            .then(response => response.json())
-            .then(data => {
-                var x = data["data"]["accounts"];
-                for (var i = 0; i < x.length; i++) {
-                    x[i]['balance'] /= 1000;
-                }
-                this.setState({ accounts: x, loading: false });
-            });
-    }
-    //todo
-    getStatementData = () => {
-        fetch('api/YNABCreditCard/CurrentStatements')
-            .then(response => response.json())
-            .then(data => {
-                var x = data["data"]["accounts"];
-                console.log(x);
-                this.setState({ accounts: x, loading: false });
-            });
-    }
+    this.getYnabAccountsData();
+  }
 
-    render() {
-        let contents = this.state.loading
-            ? <p><em>Loading...</em></p>
-            : YnabAccountBalances.renderAccountsTable(this.state.accounts);
+  render() {
+    let contents = this.state.loading ? (
+      <p>
+        <em>Loading...</em>
+      </p>
+    ) : (
+      YnabAccountBalances.renderAccountsTable(this.state.accounts)
+    );
 
-        return (
-            <div>
-                <h1>YNAB Account Balances</h1>
-                {contents}
-            </div>
-        );
-    }
+    return (
+      <div>
+        <div className="row">
+          <h1 className="col-9">YNAB Account Balances</h1>
+          <FilterButton onFilterClick={this.handleFilterclick} />
+        </div>
+        {contents}
+      </div>
+    );
+  }
 }
