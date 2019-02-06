@@ -12,7 +12,8 @@ export default class App extends Component {
       <Layout>
             <Route exact path="/" component={YnabAccountBalances} />
             <Route exact path="/PaymentsDue" component={PaymentsDue} />
-      </Layout>
+        </Layout>
+
     );
   }
 }

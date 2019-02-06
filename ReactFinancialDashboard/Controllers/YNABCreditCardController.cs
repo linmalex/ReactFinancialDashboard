@@ -34,13 +34,11 @@ namespace ReactFinancialDashboard.Controllers
         }
 
         [HttpGet("[action]")]
-        public JObject ServerStatements()
+        public string ServerStatements()
         {
             ApplicationDbContext context = _context;
             List<CreditCardStatement> statements = context.CreditCardStatements.ToList();
-            string jsonoutput = JsonConvert.SerializeObject(statements);
-            JObject jObject2 = new JObject(statements);
-            return jObject2;
+            return JsonConvert.SerializeObject(statements);
         }
 
         public static string SetURI_Accounts(PersonalData personalData)
