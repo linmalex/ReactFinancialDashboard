@@ -11,13 +11,9 @@ namespace ReactFinancialDashboard.Models
 {
     public class YnabDataObject
     {
-        #region Properties
         public int ID { get; set; }
         public string Server_knowledge { get; set; }
         public DateTime DateRetrieved { get; set; }
-        [NotMapped]
-        public List<YnabAccount> YnabAccounts { get; set; }
-        #endregion
 
         #region Constructors
         public YnabDataObject() { }
