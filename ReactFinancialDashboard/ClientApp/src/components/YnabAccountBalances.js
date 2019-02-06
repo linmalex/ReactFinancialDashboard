@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-export class Home extends Component {
+export class YnabAccountBalances extends Component {
     static renderAccountsTable(accounts) {
         return (
             <table className='table'>
@@ -12,10 +12,10 @@ export class Home extends Component {
                 </thead>
                 <tbody>
                     {accounts.map(account =>
-                        <tr key={account.id}>
+                        (<tr key={account.id}>
                             <td>{account.name}</td>
                             <td>{account.balance}</td>
-                        </tr>
+                        </tr>)
                     )}
                 </tbody>
             </table>
@@ -38,9 +38,9 @@ export class Home extends Component {
                 this.setState({ accounts: x, loading: false });
             });
     }
-
+    //todo
     getStatementData = () => {
-        fetch('api/YnabAccount/YNABAccountsJson')
+        fetch('api/YnabAccount/CurrentStatements')
             .then(response => response.json())
             .then(data => {
                 var x = data["data"]["accounts"];
@@ -52,12 +52,11 @@ export class Home extends Component {
     render() {
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
-            : Home.renderAccountsTable(this.state.accounts);
+            : YnabAccountBalances.renderAccountsTable(this.state.accounts);
 
         return (
             <div>
                 <h1>Credit Cards</h1>
-                <p>This component demonstrates fetching data from the server.</p>
                 {contents}
             </div>
         );

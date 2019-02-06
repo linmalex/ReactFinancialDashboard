@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ReactFinancialDashboard.Models
 {
-    public class DataYnab
+    public class YnabDataObject
     {
         #region Properties
         public int ID { get; set; }
@@ -24,9 +24,9 @@ namespace ReactFinancialDashboard.Models
         #endregion
 
         #region Constructors
-        public DataYnab() { }
+        public YnabDataObject() { }
         ///data object to hold all new YNAB data for purposes of obtaining data at startup
-        public DataYnab(ApplicationDbContext context, bool requestAllData)
+        public YnabDataObject(ApplicationDbContext context, bool requestAllData)
         {
             string uri = requestAllData ? SetURI_AllTransactions() : SetURI_RecentTransactions(GetLastKnowledge(context.DataObjects.ToList()));
             JObject transactionsJSON = JsonObject(uri).Result;
@@ -53,7 +53,7 @@ namespace ReactFinancialDashboard.Models
             List<YnabAccount> ynabAccountsList = JsonToAccounts(jsonBudgetData);
             return ynabAccountsList;
         }
-        public static string GetLastKnowledge(List<DataYnab> dataObjects)
+        public static string GetLastKnowledge(List<YnabDataObject> dataObjects)
         {
             string lastKnowledge = dataObjects.Max(x => x.Server_knowledge);
             return lastKnowledge;

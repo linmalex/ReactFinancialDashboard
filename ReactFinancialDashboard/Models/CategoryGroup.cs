@@ -22,7 +22,7 @@ namespace ReactFinancialDashboard.Models
         [JsonProperty("categories")]
         public List<Category> Categories { get; set; }
 
-        public DataYnab Data { get; set; }
+        public YnabDataObject Data { get; set; }
         #endregion
     }
 }

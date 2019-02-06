@@ -38,7 +38,7 @@ namespace ReactFinancialDashboard.Data
 
         public DbSet<Transaction> Transactions { get; set; }
 
-        public DbSet<DataYnab> DataObjects { get; set; }
+        public DbSet<YnabDataObject> DataObjects { get; set; }
 
         public DbSet<CategoryGroup> CategoryGroups { get; set; }
 

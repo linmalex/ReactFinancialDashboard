@@ -1,6 +1,30 @@
 import React, { Component } from "react";
 
-class Bill extends Component {
+class PaymentsDue extends Component {
+    static renderStatementsTable(statements) {
+        return (
+            <table className='table'>
+                <thead>
+                    <tr>
+                        <th>Statement Data</th>
+                        <th>Payment Due Data</th>
+                        <th>Statement Balance</th>
+                        <th>Minimum Payment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {statements.map(statement =>
+                        (<tr key={statement.id}>
+                            <td>{statement.name}</td>
+                            <td>{statement.balance}</td>
+                        </tr>)
+                    )}
+                </tbody>
+            </table>
+        );
+    }
+
+
     render() {
         return (
             <div>
@@ -35,4 +59,4 @@ class Bill extends Component {
     }
 }
 
-export default Bill;
+export default PaymentsDue;

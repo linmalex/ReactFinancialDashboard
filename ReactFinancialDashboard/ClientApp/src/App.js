@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route } from "react-router";
 import { Layout } from "./components/Layout";
-import { Home } from "./components/Home";
+import { YnabAccountBalances } from "./components/YnabAccountBalances";
 import { FetchData } from "./components/FetchData";
 import ListOfBills from "./components/ListOfBills";
 
@@ -11,7 +11,7 @@ export default class App extends Component {
   render() {
     return (
       <Layout>
-        <Route exact path="/" component={Home} />
+        <Route exact path="/" component={YnabAccountBalances} />
         <Route path="/fetchdata" component={FetchData} />
         <Route path="/listofbills" component={ListOfBills} />
       </Layout>

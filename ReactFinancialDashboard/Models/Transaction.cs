@@ -31,7 +31,7 @@ namespace ReactFinancialDashboard.Models
         public string Import_id { get; set; }
         public bool Deleted { get; set; }
 
-        public DataYnab Data { get; set; }
+        public YnabDataObject Data { get; set; }
 
     }
     public class TransactionSet
