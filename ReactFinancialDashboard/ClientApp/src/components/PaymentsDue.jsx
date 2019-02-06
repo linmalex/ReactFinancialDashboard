@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Statement } from "./Statement";
 
 export class PaymentsDue extends Component {
     static renderStatementsTable(statements) {
@@ -14,13 +15,8 @@ export class PaymentsDue extends Component {
                 </thead>
                 <tbody>
                     {statements.map(statement => (
-                        <tr key={statement.ID}>
-                            <td>{statement.IssueDate}</td>
-                            <td>{statement.DueDate}</td>
-                            <td>{statement.Balance}</td>
-                            <td>{statement.MinPayment}</td>
-                        </tr>
-                    ))}
+                        <Statement key={statement.id} statement={statement} />
+                        ))}
                 </tbody>
             </table>
         );
@@ -37,8 +33,6 @@ export class PaymentsDue extends Component {
         fetch('api/YNABCreditCard/ServerStatements')
             .then(response => response.json())
             .then(data => {
-                var zero = data[0];
-                console.log(zero);
                 this.setState({ accounts: data, loading: false });
             });
     };

@@ -23,6 +23,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190206012651_AddPersonalData.cs" />
+    <Compile Remove="Migrations\20190206012651_AddPersonalData.Designer.cs" />
+    <Compile Remove="Migrations\20190206033651_updatedIDs.cs" />
+    <Compile Remove="Migrations\20190206033651_updatedIDs.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ClientApp\src\Pages\Error.cshtml" />
+    <Content Include="ClientApp\src\Pages\_ViewImports.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Data\" />
   </ItemGroup>
 
