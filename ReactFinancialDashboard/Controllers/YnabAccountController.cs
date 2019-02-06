@@ -6,47 +6,43 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using ReactFinancialDashboard.Models;
+using ReactFinancialDashboard.Data;
 
-namespace ReactFinancialDashboard.Controllers {
-    [Route ("api/[controller]")]
-    public class YnabAccountController : Controller {
-        [HttpGet ("[action]")]
-        public JObject YNABAccountsJson () {
-            var budgetID = "";
-            string uri = "https://api.youneedabudget.com/v1/budgets/" + budgetID + "/accounts";
-            JObject jsonBudgetData = JsonObject (uri).Result;
+namespace ReactFinancialDashboard.Controllers
+{
+    [Route("api/[controller]")]
+    public class YnabAccountController : Controller
+    {
+        private readonly ApplicationDbContext _context;
+
+        public YnabAccountController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        [HttpGet("[action]")]
+        public JObject YNABAccountsJson()
+        {
+            ApplicationDbContext context = _context;
+            int personalBudgetID = 1;
+            PersonalData personalData = context.PersonalDatas.Where(x => x.ID == personalBudgetID).FirstOrDefault();
+            string uri = SetURI_Accounts(personalData);
+
+            JObject jsonBudgetData = JsonObject(uri, personalData).Result;
             return jsonBudgetData;
         }
 
-        public List<YnabAccount> YnabAccounts () {
-            var budgetID = "ee4a0a66-fa5a-4838-9ab4-3f8f3f2103ed";
-            string uri = "https://api.youneedabudget.com/v1/budgets/" + budgetID + "/accounts";
-            JObject jsonBudgetData = JsonObject (uri).Result;
-            List<YnabAccount> ynabAccountsList = JsonToAccounts (jsonBudgetData);
-            return ynabAccountsList;
+        public static string SetURI_Accounts(PersonalData personalData)
+        {
+            string uri = "https://api.youneedabudget.com/v1/budgets/" + personalData.BudgetID + "/accounts";
+            return uri;
         }
-        public static async Task<JObject> JsonObject (string uri) {
-            var authToken = "";
-            HttpClient client = new HttpClient ();
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue ("Bearer", authToken);
-            JObject transactionData = JObject.Parse (await client.GetStringAsync (uri));
+        public async Task<JObject> JsonObject(string uri, PersonalData personalData)
+        {
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", personalData.AuthToken);
+            JObject transactionData = JObject.Parse(await client.GetStringAsync(uri));
             return transactionData;
-        }
-        public static List<YnabAccount> JsonToAccounts (JObject budgetResponseData) {
-            List<JToken> jAccountTokens = budgetResponseData["data"]["accounts"].Children ().ToList ();
-            List<YnabAccount> ynabAccountsList = new List<YnabAccount> ();
-            foreach (JToken jToken in jAccountTokens) {
-                YnabAccount ynabAccount = jToken.ToObject<YnabAccount> ();
-                ynabAccount.UpdateSelf ();
-                if (ynabAccount.Type == "Credit Card") {
-                    YnabLiabilityAccount newYnabAccount = new YnabLiabilityAccount (ynabAccount);
-                    ynabAccountsList.Add (newYnabAccount);
-                } else {
-                    var newYnabAccount = new YnabAssetAccount (ynabAccount);
-                    ynabAccountsList.Add (newYnabAccount);
-                }
-            }
-            return ynabAccountsList;
         }
     }
 }
