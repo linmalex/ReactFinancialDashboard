@@ -44,7 +44,7 @@ namespace ReactFinancialDashboard.Data
 
         public DbSet<Category> Categories { get; set; }
 
-        //public DbSet<PersonalData> PersonalDatas { get; set; }
+        public DbSet<PersonalData> PersonalDatas { get; set; }
 
         #endregion
     }
