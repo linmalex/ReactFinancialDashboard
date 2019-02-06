@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactFinancialDashboard", "ReactFinancialDashboard\ReactFinancialDashboard.csproj", "{31663976-AB42-44B2-8D94-DC38CA77C5C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NunitTest", "NunitTest\NunitTest.csproj", "{3E8BE52D-BF10-4882-A62A-8ABF54453FBE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{31663976-AB42-44B2-8D94-DC38CA77C5C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31663976-AB42-44B2-8D94-DC38CA77C5C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31663976-AB42-44B2-8D94-DC38CA77C5C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E8BE52D-BF10-4882-A62A-8ABF54453FBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E8BE52D-BF10-4882-A62A-8ABF54453FBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E8BE52D-BF10-4882-A62A-8ABF54453FBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E8BE52D-BF10-4882-A62A-8ABF54453FBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
