@@ -30,19 +30,9 @@ namespace ReactFinancialDashboard.Data
         #endregion
 
         #region Ynab Data definitions
-        public DbSet<YnabAssetAccount> AssetAccount { get; set; }
-
-        public DbSet<YnabLiabilityAccount> LiabilityAccount { get; set; }
-
         public DbSet<YnabAccount> YnabAccounts { get; set; }
 
-        public DbSet<Transaction> Transactions { get; set; }
-
         public DbSet<YnabDataObject> DataObjects { get; set; }
-
-        public DbSet<CategoryGroup> CategoryGroups { get; set; }
-
-        public DbSet<Category> Categories { get; set; }
 
         public DbSet<PersonalData> PersonalDatas { get; set; }
 
