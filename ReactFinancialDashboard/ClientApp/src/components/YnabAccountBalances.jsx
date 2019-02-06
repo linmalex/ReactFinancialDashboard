@@ -14,6 +14,11 @@ export class YnabAccountBalances extends Component {
       });
   };
 
+  handleFilter = () => {
+    const accounts = this.state.accounts.filter(a => a.type == "creditCard");
+    this.setState({ accounts });
+  };
+
   static renderAccountsTable(accounts) {
     return (
       <table className="table">
@@ -57,7 +62,7 @@ export class YnabAccountBalances extends Component {
       <div>
         <div className="row">
           <h1 className="col-9">YNAB Account Balances</h1>
-          <FilterButton onFilterClick={this.handleFilterclick} />
+          <FilterButton onFilter={this.handleFilter} />
         </div>
         {contents}
       </div>

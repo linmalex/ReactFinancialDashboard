@@ -7,7 +7,11 @@ export class FilterButton extends Component {
 
   render() {
     return (
-      <button type="button" className={this.state.classNames}>
+      <button
+        type="button"
+        onClick={this.props.onFilter}
+        className={this.state.classNames}
+      >
         Filter
       </button>
     );
