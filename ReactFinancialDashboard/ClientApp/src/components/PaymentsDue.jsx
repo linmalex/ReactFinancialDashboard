@@ -1,62 +1,62 @@
 import React, { Component } from "react";
 
 class PaymentsDue extends Component {
-    static renderStatementsTable(statements) {
-        return (
-            <table className='table'>
-                <thead>
-                    <tr>
-                        <th>Statement Data</th>
-                        <th>Payment Due Data</th>
-                        <th>Statement Balance</th>
-                        <th>Minimum Payment</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {statements.map(statement =>
-                        (<tr key={statement.id}>
-                            <td>{statement.name}</td>
-                            <td>{statement.balance}</td>
-                        </tr>)
-                    )}
-                </tbody>
-            </table>
-        );
-    }
+  static renderStatementsTable(statements) {
+    return (
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Statement Date</th>
+            <th>Payment Due Date</th>
+            <th>Statement Balance</th>
+            <th>Minimum Payment</th>
+          </tr>
+        </thead>
+        <tbody>
+          {statements.map(statement => (
+            <tr key={statement.id}>
+              <td>{statement.name}</td>
+              <td>{statement.balance}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = { accounts: [], loading: true };
+
+    this.getServerStatements();
+  }
+
+  getServerStatements = () => {
+      fetch('api/YNABCreditCard/ServerStatements')
+          .then(response => response.json())
+          .then(data => {
+              console.log(data);
+              this.setState({ loading: false });
+          });
+  };
 
 
-    render() {
-        return (
-            <div>
-                <table className="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Pay To</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">Due</th>
-                            <th scope="col">Paid Status</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Memo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.props.bills.map(bill => (
-                            <tr>
-                                <td>{bill.PayTo}</td>
-                                <td>{bill.Category}</td>
-                                <td>{bill.Amount}</td>
-                                <td>{bill.Due}</td>
-                                <td>{bill.PaidStatus}</td>
-                                <td>{bill.Type}</td>
-                                <td>{bill.Memo}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        );
-    }
+  render() {
+    let contents = this.state.loading ? (
+      <p>
+        <em>Loading...</em>
+      </p>
+    ) : (
+            PaymentsDue.renderStatementsTable(this.state.accounts)
+    );
+
+    return (
+      <div>
+        <h1>Credit Cards</h1>
+        {contents}
+      </div>
+    );
+  }
 }
 
 export default PaymentsDue;

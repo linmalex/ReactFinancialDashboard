@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using ReactFinancialDashboard.Models;
 using ReactFinancialDashboard.Data;
+using Newtonsoft.Json;
 
 namespace ReactFinancialDashboard.Controllers
 {
@@ -30,6 +31,16 @@ namespace ReactFinancialDashboard.Controllers
 
             JObject jsonBudgetData = JsonObject(uri, personalData).Result;
             return jsonBudgetData;
+        }
+
+        [HttpGet("[action]")]
+        public JObject ServerStatements()
+        {
+            ApplicationDbContext context = _context;
+            List<CreditCardStatement> statements = context.CreditCardStatements.ToList();
+            string jsonoutput = JsonConvert.SerializeObject(statements);
+            JObject jObject2 = new JObject(statements);
+            return jObject2;
         }
 
         public static string SetURI_Accounts(PersonalData personalData)
