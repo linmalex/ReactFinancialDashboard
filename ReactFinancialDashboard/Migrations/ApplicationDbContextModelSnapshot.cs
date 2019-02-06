@@ -205,13 +205,15 @@ namespace ReactFinancialDashboard.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Balance");
+                    b.Property<double>("Balance");
 
-                    b.Property<DateTime>("DueDate");
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("date");
 
-                    b.Property<DateTime>("IssueDate");
+                    b.Property<DateTime>("IssueDate")
+                        .HasColumnType("date");
 
-                    b.Property<int>("MinPayment");
+                    b.Property<double>("MinPayment");
 
                     b.HasKey("ID");
 

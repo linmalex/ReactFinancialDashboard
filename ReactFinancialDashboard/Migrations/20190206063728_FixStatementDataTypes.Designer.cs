@@ -10,8 +10,8 @@ using ReactFinancialDashboard.Data;
 namespace ReactFinancialDashboard.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190206033651_updatedIDs")]
-    partial class updatedIDs
+    [Migration("20190206063728_FixStatementDataTypes")]
+    partial class FixStatementDataTypes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -207,13 +207,15 @@ namespace ReactFinancialDashboard.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Balance");
+                    b.Property<double>("Balance");
 
-                    b.Property<DateTime>("DueDate");
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("date");
 
-                    b.Property<DateTime>("IssueDate");
+                    b.Property<DateTime>("IssueDate")
+                        .HasColumnType("date");
 
-                    b.Property<int>("MinPayment");
+                    b.Property<double>("MinPayment");
 
                     b.HasKey("ID");
 

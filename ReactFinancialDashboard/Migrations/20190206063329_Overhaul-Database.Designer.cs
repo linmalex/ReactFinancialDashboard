@@ -10,8 +10,8 @@ using ReactFinancialDashboard.Data;
 namespace ReactFinancialDashboard.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190206012651_AddPersonalData")]
-    partial class AddPersonalData
+    [Migration("20190206063329_Overhaul-Database")]
+    partial class OverhaulDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -182,81 +182,43 @@ namespace ReactFinancialDashboard.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("ReactFinancialDashboard.Models.Category", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<long>("Activity");
-
-                    b.Property<long>("Balance");
-
-                    b.Property<long>("Budgeted");
-
-                    b.Property<string>("CategoryGroupId");
-
-                    b.Property<Guid?>("CategoryGroupId1");
-
-                    b.Property<bool>("Deleted");
-
-                    b.Property<DateTimeOffset?>("GoalCreationMonth");
-
-                    b.Property<long>("GoalPercentageComplete");
-
-                    b.Property<long>("GoalTarget");
-
-                    b.Property<DateTimeOffset?>("GoalTargetMonth");
-
-                    b.Property<string>("GoalType");
-
-                    b.Property<bool>("Hidden");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("Note");
-
-                    b.Property<string>("OriginalCategoryGroupId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryGroupId1");
-
-                    b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("ReactFinancialDashboard.Models.CategoryGroup", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("DataID");
-
-                    b.Property<bool>("Deleted");
-
-                    b.Property<bool>("Hidden");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DataID");
-
-                    b.ToTable("CategoryGroups");
-                });
-
-            modelBuilder.Entity("ReactFinancialDashboard.Models.DataYnab", b =>
+            modelBuilder.Entity("ReactFinancialDashboard.Models.CreditCard", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DateRetrieved");
+                    b.Property<int?>("StatementID");
 
-                    b.Property<string>("Server_knowledge");
+                    b.Property<string>("YnabAccountID");
 
                     b.HasKey("ID");
 
-                    b.ToTable("DataObjects");
+                    b.HasIndex("StatementID");
+
+                    b.HasIndex("YnabAccountID");
+
+                    b.ToTable("CreditCards");
+                });
+
+            modelBuilder.Entity("ReactFinancialDashboard.Models.CreditCardStatement", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Balance");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("IssueDate");
+
+                    b.Property<int>("MinPayment");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("CreditCardStatements");
                 });
 
             modelBuilder.Entity("ReactFinancialDashboard.Models.PersonalData", b =>
@@ -274,52 +236,6 @@ namespace ReactFinancialDashboard.Migrations
                     b.ToTable("PersonalDatas");
                 });
 
-            modelBuilder.Entity("ReactFinancialDashboard.Models.Transaction", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Account_id");
-
-                    b.Property<string>("Account_name");
-
-                    b.Property<double>("Amount");
-
-                    b.Property<bool>("Approved");
-
-                    b.Property<string>("Category_id");
-
-                    b.Property<string>("Category_name");
-
-                    b.Property<string>("Cleared");
-
-                    b.Property<int?>("DataID");
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<bool>("Deleted");
-
-                    b.Property<string>("Flag_color");
-
-                    b.Property<string>("Import_id");
-
-                    b.Property<string>("Memo");
-
-                    b.Property<string>("Payee_id");
-
-                    b.Property<string>("Payee_name");
-
-                    b.Property<string>("Transfer_account_id");
-
-                    b.Property<string>("Transfer_transaction_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DataID");
-
-                    b.ToTable("Transactions");
-                });
-
             modelBuilder.Entity("ReactFinancialDashboard.Models.YnabAccount", b =>
                 {
                     b.Property<string>("ID")
@@ -334,9 +250,6 @@ namespace ReactFinancialDashboard.Migrations
                     b.Property<bool>("Closed");
 
                     b.Property<bool>("Deleted");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
 
                     b.Property<string>("Name");
 
@@ -356,33 +269,21 @@ namespace ReactFinancialDashboard.Migrations
                     b.HasAlternateKey("Transfer_payee_id");
 
                     b.ToTable("YnabAccounts");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("YnabAccount");
                 });
 
-            modelBuilder.Entity("ReactFinancialDashboard.Models.YnabAssetAccount", b =>
+            modelBuilder.Entity("ReactFinancialDashboard.Models.YnabDataObject", b =>
                 {
-                    b.HasBaseType("ReactFinancialDashboard.Models.YnabAccount");
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("DateRetrieved");
 
-                    b.ToTable("YnabAssetAccount");
+                    b.Property<string>("Server_knowledge");
 
-                    b.HasDiscriminator().HasValue("YnabAssetAccount");
-                });
+                    b.HasKey("ID");
 
-            modelBuilder.Entity("ReactFinancialDashboard.Models.YnabLiabilityAccount", b =>
-                {
-                    b.HasBaseType("ReactFinancialDashboard.Models.YnabAccount");
-
-                    b.Property<double>("GoalDateMonthlyAmount");
-
-                    b.Property<DateTime>("PayOffDate");
-
-                    b.Property<int>("PayoffPriority");
-
-                    b.ToTable("YnabLiabilityAccount");
-
-                    b.HasDiscriminator().HasValue("YnabLiabilityAccount");
+                    b.ToTable("DataObjects");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -430,25 +331,15 @@ namespace ReactFinancialDashboard.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("ReactFinancialDashboard.Models.Category", b =>
+            modelBuilder.Entity("ReactFinancialDashboard.Models.CreditCard", b =>
                 {
-                    b.HasOne("ReactFinancialDashboard.Models.CategoryGroup", "CategoryGroup")
+                    b.HasOne("ReactFinancialDashboard.Models.CreditCardStatement", "Statement")
                         .WithMany()
-                        .HasForeignKey("CategoryGroupId1");
-                });
+                        .HasForeignKey("StatementID");
 
-            modelBuilder.Entity("ReactFinancialDashboard.Models.CategoryGroup", b =>
-                {
-                    b.HasOne("ReactFinancialDashboard.Models.DataYnab", "Data")
+                    b.HasOne("ReactFinancialDashboard.Models.YnabAccount", "YnabAccount")
                         .WithMany()
-                        .HasForeignKey("DataID");
-                });
-
-            modelBuilder.Entity("ReactFinancialDashboard.Models.Transaction", b =>
-                {
-                    b.HasOne("ReactFinancialDashboard.Models.DataYnab", "Data")
-                        .WithMany()
-                        .HasForeignKey("DataID");
+                        .HasForeignKey("YnabAccountID");
                 });
 #pragma warning restore 612, 618
         }
