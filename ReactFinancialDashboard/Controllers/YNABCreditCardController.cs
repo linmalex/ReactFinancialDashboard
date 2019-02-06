@@ -11,11 +11,11 @@ using ReactFinancialDashboard.Data;
 namespace ReactFinancialDashboard.Controllers
 {
     [Route("api/[controller]")]
-    public class YnabAccountController : Controller
+    public class YNABCreditCardController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public YnabAccountController(ApplicationDbContext context)
+        public YNABCreditCardController(ApplicationDbContext context)
         {
             _context = context;
         }

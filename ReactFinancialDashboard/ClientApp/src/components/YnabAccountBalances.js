@@ -30,7 +30,7 @@ export class YnabAccountBalances extends Component {
     }
 
     getYnabAccountsData = () => {
-        fetch('api/YnabAccount/YNABAccountsJson')
+        fetch('api/YNABCreditCard/YNABAccountsJson')
             .then(response => response.json())
             .then(data => {
                 var x = data["data"]["accounts"];
@@ -40,7 +40,7 @@ export class YnabAccountBalances extends Component {
     }
     //todo
     getStatementData = () => {
-        fetch('api/YnabAccount/CurrentStatements')
+        fetch('api/YNABCreditCard/CurrentStatements')
             .then(response => response.json())
             .then(data => {
                 var x = data["data"]["accounts"];
