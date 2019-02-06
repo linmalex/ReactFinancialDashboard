@@ -14,7 +14,7 @@ export class YnabAccountBalances extends Component {
                     {accounts.map(account =>
                         (<tr key={account.id}>
                             <td>{account.name}</td>
-                            <td>{account.balance}</td>
+                            <td>${account.balance}</td>
                         </tr>)
                     )}
                 </tbody>
@@ -34,7 +34,9 @@ export class YnabAccountBalances extends Component {
             .then(response => response.json())
             .then(data => {
                 var x = data["data"]["accounts"];
-                console.log(x);
+                for (var i = 0; i < x.length; i++) {
+                    x[i]['balance'] /= 1000;
+                }
                 this.setState({ accounts: x, loading: false });
             });
     }
@@ -56,7 +58,7 @@ export class YnabAccountBalances extends Component {
 
         return (
             <div>
-                <h1>Credit Cards</h1>
+                <h1>YNAB Account Balances</h1>
                 {contents}
             </div>
         );

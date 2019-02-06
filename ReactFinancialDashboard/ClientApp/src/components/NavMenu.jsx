@@ -20,13 +20,24 @@ export class NavMenu extends Component {
           <Nav>
             <LinkContainer to={"/"} exact>
               <NavItem>
-                <Glyphicon glyph="home" /> Ynab Credit Card
+                <Glyphicon glyph="home" /> Home
               </NavItem>
             </LinkContainer>
                     <LinkContainer to={"/paymentsdue"}>
                         <NavItem>
                             <Glyphicon glyph="th-list" /> Payments Due
               </NavItem>
+                    </LinkContainer>
+                    <LinkContainer to={"/ynabaccountbalances"} exact>
+                        <NavItem>
+                            <Glyphicon glyph="home" />
+                            Ynab Accounts
+                            </NavItem>
+                    </LinkContainer>
+                    <LinkContainer to={"/creditcard"} exact>
+                        <NavItem>
+                            <Glyphicon glyph="home" /> Credit Card
+                            </NavItem>
                     </LinkContainer>
           </Nav>
         </Navbar.Collapse>
