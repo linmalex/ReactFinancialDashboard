@@ -23,21 +23,6 @@ export class NavMenu extends Component {
                 <Glyphicon glyph="home" /> Home
               </NavItem>
             </LinkContainer>
-            <LinkContainer to={"/fetchdata"}>
-              <NavItem>
-                <Glyphicon glyph="th-list" /> Fetch data
-              </NavItem>
-            </LinkContainer>
-            <LinkContainer to={"/listofbills"} exact>
-              <NavItem>
-                <Glyphicon glyph="inbox" /> List of Bills
-              </NavItem>
-            </LinkContainer>
-            <LinkContainer to={"/ynabtransactions"} exact>
-              <NavItem>
-                <Glyphicon glyph="inbox" /> YNAB Transactions
-              </NavItem>
-            </LinkContainer>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

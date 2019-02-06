@@ -10,11 +10,11 @@ namespace ReactFinancialDashboard.Data
 {
     public class ApplicationDbContext: IdentityDbContext
     {
+        #region Context Setup
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
     : base(options)
         {
         }
-        #region Context Setup
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -29,7 +29,11 @@ namespace ReactFinancialDashboard.Data
         }
         #endregion
 
-        #region Ynab Data definitions
+        #region tables
+        public DbSet<CreditCardStatement> CreditCardStatements { get; set; }
+
+        public DbSet<CreditCard> CreditCards { get; set; }
+
         public DbSet<YnabAccount> YnabAccounts { get; set; }
 
         public DbSet<YnabDataObject> DataObjects { get; set; }
