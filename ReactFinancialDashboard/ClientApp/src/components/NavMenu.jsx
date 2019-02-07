@@ -23,22 +23,28 @@ export class NavMenu extends Component {
                 <Glyphicon glyph="home" /> Project Plan
               </NavItem>
             </LinkContainer>
-                    <LinkContainer to={"/paymentsdue"}>
-                        <NavItem>
-                            <Glyphicon glyph="th-list" /> Payments Due
+            <LinkContainer to={"/paymentsdue"}>
+              <NavItem>
+                <Glyphicon glyph="th-list" /> Payments Due
               </NavItem>
-                    </LinkContainer>
-                    <LinkContainer to={"/ynabaccountbalances"} exact>
-                        <NavItem>
-                            <Glyphicon glyph="home" />
-                            Ynab Accounts
-                            </NavItem>
-                    </LinkContainer>
-                    <LinkContainer to={"/creditcard"} exact>
-                        <NavItem>
-                            <Glyphicon glyph="home" /> Credit Card
-                            </NavItem>
-                    </LinkContainer>
+            </LinkContainer>
+            <LinkContainer to={"/ynabaccountbalances"} exact>
+              <NavItem>
+                <Glyphicon glyph="home" />
+                Ynab Accounts
+              </NavItem>
+            </LinkContainer>
+            <LinkContainer to={"/creditcard"} exact>
+              <NavItem>
+                <Glyphicon glyph="home" /> Credit Card
+              </NavItem>
+            </LinkContainer>
+            <LinkContainer to={"/createform"} exact>
+              <NavItem>
+                <Glyphicon glyph="home" />
+                Create Statement
+              </NavItem>
+            </LinkContainer>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
