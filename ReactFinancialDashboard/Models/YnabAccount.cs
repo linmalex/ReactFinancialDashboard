@@ -33,12 +33,12 @@ namespace ReactFinancialDashboard.Models
         public IList<CreditCardStatement> creditCardStatements { get; set; }
         #endregion
 
-        public List<YnabAccount> YnabAccountsList(ApplicationDbContext context, int personalBudgetID = 1)
+        public List<YnabAccount> GetYnabAccountsLIST(ApplicationDbContext context, int personalBudgetID = 1)
         {
             List<YnabAccount> accounts = new List<YnabAccount>();
 
             PersonalData personalData = context.PersonalDatas.Where(x => x.ID == personalBudgetID).FirstOrDefault();
-            JToken jsonAccountsData = ObtainAccountsJsonFromYnabAPI(personalData).Result["data"]["accounts"];
+            JToken jsonAccountsData = GetYnabAccountsJSON(personalData).Result["data"]["accounts"];
 
             foreach (JToken jAccount in jsonAccountsData) //item is the account
             {
@@ -50,7 +50,7 @@ namespace ReactFinancialDashboard.Models
             return accounts;
         }
 
-        public static async Task<JObject> ObtainAccountsJsonFromYnabAPI(PersonalData personalData)
+        public static async Task<JObject> GetYnabAccountsJSON(PersonalData personalData)
         {
             HttpClient client = new HttpClient();
             string uri = "https://api.youneedabudget.com/v1/budgets/" + personalData.BudgetID + "/accounts";
@@ -74,22 +74,24 @@ namespace ReactFinancialDashboard.Models
             {
                 using (context)
                 {
-                    List<YnabAccount> accountsList = YnabAccountsList(context);
+                    List<YnabAccount> accountsList = GetYnabAccountsLIST(context);
                     foreach (YnabAccount item in accountsList)
                     {
-                        context.Add(item);
+                        if (context.YnabAccounts.Contains(item))
+                        {
+                            context.Update(item);
+                        }
+                        else
+                        {
+                            context.Add(item);
+                        }
                     }
                     context.SaveChanges();
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
                 throw;
-            }
-            finally
-            {
-               
             }
         }
     }
