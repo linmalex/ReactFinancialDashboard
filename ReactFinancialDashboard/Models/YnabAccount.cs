@@ -30,10 +30,12 @@ namespace ReactFinancialDashboard.Models
         public bool On_budget { get; set; }
         public bool Closed { get; set; }
 
-        public IList<CreditCardStatement> creditCardStatements { get; set; }
+        public IList<CreditCardStatement> CreditCardStatements { get; set; }
+
+        public PersonalData PersonalData { get; set; }
         #endregion
 
-        public List<YnabAccount> GetYnabAccountsLIST(ApplicationDbContext context, int personalBudgetID = 1)
+        public List<YnabAccount> GetYnabAccountsLIST(ApplicationDbContext context, int personalBudgetID)
         {
             List<YnabAccount> accounts = new List<YnabAccount>();
 
@@ -44,6 +46,7 @@ namespace ReactFinancialDashboard.Models
             {
                 UpdateJAccountValues(jAccount);
                 YnabAccount account = jAccount.ToObject<YnabAccount>();
+                account.PersonalData = personalData;
                 accounts.Add(account);
             }
 
@@ -68,13 +71,13 @@ namespace ReactFinancialDashboard.Models
             return jAccount;
         }
 
-        public void UpdateAccountsDatabase(ApplicationDbContext context)
+        public void UpdateAccountsDatabase(ApplicationDbContext context, PersonalData personalData)
         {
             try
             {
                 using (context)
                 {
-                    List<YnabAccount> accountsList = GetYnabAccountsLIST(context);
+                    List<YnabAccount> accountsList = GetYnabAccountsLIST(context, personalData.ID);
                     foreach (YnabAccount item in accountsList)
                     {
                         if (context.YnabAccounts.Contains(item))

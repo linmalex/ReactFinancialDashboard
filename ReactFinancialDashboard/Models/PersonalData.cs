@@ -10,5 +10,7 @@ namespace ReactFinancialDashboard.Models
         public string BudgetID { get; set; }
 
         public string AuthToken { get; set; }
+
+        public List<YnabAccount> Accounts { get; set; }
     }
 }
