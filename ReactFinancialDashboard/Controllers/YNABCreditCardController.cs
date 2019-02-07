@@ -37,19 +37,5 @@ namespace ReactFinancialDashboard.Controllers
             List<CreditCardStatement> statements = context.CreditCardStatements.ToList();
             return JsonConvert.SerializeObject(statements);
         }
-
-
-        public static string SetURI_Accounts(PersonalData personalData)
-        {
-            string uri = "https://api.youneedabudget.com/v1/budgets/" + personalData.BudgetID + "/accounts";
-            return uri;
-        }
-        public async Task<JObject> JsonObject(string uri, PersonalData personalData)
-        {
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", personalData.AuthToken);
-            JObject transactionData = JObject.Parse(await client.GetStringAsync(uri));
-            return transactionData;
-        }
     }
 }
