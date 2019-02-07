@@ -10,7 +10,7 @@ export class FilterButton extends Component {
       <button
         type="button"
         onClick={this.props.onFilter}
-        className={this.state.classNames}
+        className={this.props.filterButtonClass}
       >
         Filter
       </button>
