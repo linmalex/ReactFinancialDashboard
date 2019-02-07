@@ -3,13 +3,10 @@ import { FilterButton } from "./FilterButton";
 
 export class YnabAccountBalances extends Component {
   getYnabAccountsData = () => {
-    fetch("api/YNABCreditCard/YNABAccountsJson")
+    fetch("api/YNABCreditCard/YNABAccountsJson2")
       .then(response => response.json())
       .then(data => {
-        var accounts = data["data"]["accounts"];
-        for (var i = 0; i < accounts.length; i++) {
-          accounts[i]["balance"] /= 1000;
-        }
+        var accounts = data;
         this.setState({ accounts, loading: false });
       });
   };
@@ -32,10 +29,10 @@ export class YnabAccountBalances extends Component {
         </thead>
         <tbody>
           {accounts.map(account => (
-            <tr key={account.id}>
-              <td>{account.name}</td>
-              <td>${account.balance}</td>
-              <td>{account.type}</td>
+            <tr key={account.ID}>
+              <td>{account.Name}</td>
+              <td>${account.Balance}</td>
+              <td>{account.Type}</td>
             </tr>
           ))}
         </tbody>

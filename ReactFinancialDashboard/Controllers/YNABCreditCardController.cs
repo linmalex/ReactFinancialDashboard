@@ -22,15 +22,12 @@ namespace ReactFinancialDashboard.Controllers
         }
 
         [HttpGet("[action]")]
-        public JObject YNABAccountsJson()
+        public string YNABAccountsJson()
         {
             ApplicationDbContext context = _context;
-            int personalBudgetID = 1;
-            PersonalData personalData = context.PersonalDatas.Where(x => x.ID == personalBudgetID).FirstOrDefault();
-            string uri = SetURI_Accounts(personalData);
-
-            JObject jsonBudgetData = JsonObject(uri, personalData).Result;
-            return jsonBudgetData;
+            List<YnabAccount> serverAccounts = context.YnabAccounts.ToList();
+            string json = JsonConvert.SerializeObject(serverAccounts);
+            return json;
         }
 
         [HttpGet("[action]")]
