@@ -23,7 +23,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190207001350_UpdateYNABAccountsModel.cs" />
+    <Compile Remove="Migrations\20190207001350_UpdateYNABAccountsModel.Designer.cs" />
+    <Compile Remove="Migrations\20190207001736_UpdateYNABAccountsModel2.cs" />
+    <Compile Remove="Migrations\20190207001736_UpdateYNABAccountsModel2.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Data\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
