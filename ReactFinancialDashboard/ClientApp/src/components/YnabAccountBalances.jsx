@@ -2,15 +2,6 @@ import React, { Component } from "react";
 import { FilterButton } from "./FilterButton";
 
 export class YnabAccountBalances extends Component {
-  getYnabAccountsData = () => {
-    fetch("api/YNABCreditCard/YNABAccountsJson2")
-      .then(response => response.json())
-      .then(data => {
-        var accounts = data;
-        this.setState({ accounts, loading: false });
-      });
-  };
-
   handleFilter = () => {
     const accounts = this.state.accounts.filter(a => a.type === "creditCard");
     const filterButtonClass = "btn btn-danger";
@@ -40,24 +31,13 @@ export class YnabAccountBalances extends Component {
     );
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      accounts: [],
-      loading: true,
-      filterButtonDetails: { className: "btn btn-primary" }
-    };
-
-    this.getYnabAccountsData();
-  }
-
   render() {
-    let contents = this.state.loading ? (
+    let contents = this.props.stateValues.loading ? (
       <p>
         <em>Loading...</em>
       </p>
     ) : (
-      YnabAccountBalances.renderAccountsTable(this.state.accounts)
+      YnabAccountBalances.renderAccountsTable(this.props.stateValues.accounts)
     );
 
     return (
@@ -66,7 +46,9 @@ export class YnabAccountBalances extends Component {
           <h1 className="col-9">YNAB Account Balances</h1>
           <FilterButton
             onFilter={this.handleFilter}
-            filterButtonClass={this.state.filterButtonDetails.className}
+            filterButtonClass={
+              this.props.stateValues.filterButtonDetails.className
+            }
           />
         </div>
         {contents}

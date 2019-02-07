@@ -1,54 +1,81 @@
 ﻿import React, { Component } from "react";
 
 export class CreateForm extends Component {
-  render() {
-    return (
-      <form>
-        <div className="form-group">
-          <label>Account</label>
-          <select className="form-control" id="exampleFormControlSelect1">
-            <option>Select Account</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label>Statement Date</label>
-          <input
-            type="date"
-            className="form-control"
-            id="exampleFormControlInput1"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="exampleFormControlInput1">Statement Balance</label>
-          <input
-            type="text"
-            className="form-control"
-            id="exampleFormControlInput1"
-            placeholder="Amount"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="exampleFormControlInput1">Minimum Payment</label>
-          <input
-            type="text"
-            className="form-control"
-            id="exampleFormControlInput1"
-            placeholder="Min. Payment"
-          />
-        </div>
-        <div className="form-group">
-          <label>Payment Due Date</label>
-          <input
-            type="date"
-            className="form-control"
-            id="exampleFormControlInput1"
-          />
-        </div>
-      </form>
-    );
-  }
+    constructor() {
+        super();
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit = (event) => {
+        event.preventDefault();
+        const data = new FormData(event.target);
+        console.log(event.target.children);
+
+        fetch("api/YNABCreditCard/CreateStatement", { method: 'post', body: JSON.stringify(data) })
+            .then(response => console.log(response))
+            .then(data => {
+                console.log(data);
+            });
+    }
+
+    render() {
+        return (
+            <form onSubmit={this.handleSubmit}>
+                <div className="form-group">
+                    <label>Account</label>
+                    <select
+                        className="form-control"
+                        id="accountSelect"
+                        name="accountName"
+                    >
+                        <option>Select Account</option>
+                        {this.props.stateValues.accounts.map(account => (
+                            <option key={account.ID} value={account.ID}>
+                                {account.Name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="statementDate">Statement Date</label>
+                    <input
+                        type="date"
+                        className="form-control"
+                        id="statementDate"
+                        name="statementDate"
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="statementBalance">Statement Balance</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="statementBalance"
+                        name="statementBalance"
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="minPayment">Minimum Payment</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="minPayment"
+                        name="minPayment"
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="paymentDue">Payment Due Date</label>
+                    <input
+                        type="date"
+                        className="form-control"
+                        id="paymentDue"
+                        name="paymentDue"
+                    />
+                </div>
+                <button className="btn btn-primary" type="submit">
+                    Submit form
+        </button>
+            </form>
+        );
+    }
 }
