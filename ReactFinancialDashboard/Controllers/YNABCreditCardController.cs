@@ -1,13 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
-using ReactFinancialDashboard.Models;
-using ReactFinancialDashboard.Data;
 using Newtonsoft.Json;
+using ReactFinancialDashboard.Data;
+using ReactFinancialDashboard.Models;
 
 namespace ReactFinancialDashboard.Controllers
 {
@@ -22,7 +18,7 @@ namespace ReactFinancialDashboard.Controllers
         }
 
         [HttpGet("[action]")]
-        public string YNABAccountsJson()
+        public string DbYNABAccountsJson()
         {
             ApplicationDbContext context = _context;
             List<YnabAccount> serverAccounts = context.YnabAccounts.ToList();
@@ -36,6 +32,16 @@ namespace ReactFinancialDashboard.Controllers
             ApplicationDbContext context = _context;
             List<CreditCardStatement> statements = context.CreditCardStatements.ToList();
             return JsonConvert.SerializeObject(statements);
+        }
+
+        [HttpPost]
+        public IActionResult CreateStatement([FromBody]string accountName)
+        {
+            ApplicationDbContext context = _context;
+            List<YnabAccount> serverAccounts = context.YnabAccounts.ToList();
+            string json = JsonConvert.SerializeObject(serverAccounts);
+            var jsonresult = new JsonResult(json);
+            return jsonresult;
         }
     }
 }
