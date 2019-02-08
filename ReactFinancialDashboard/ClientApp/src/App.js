@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Route } from "react-router";
-import { Layout } from "./components/Layout";
-import { YnabAccountBalances } from "./components/YnabAccountBalances";
-import { PaymentsDue } from "./components/PaymentsDue";
+import { Layout } from "./components/LayoutComponents/Layout";
+import { YnabAccountBalances } from "./components/FinancialComponents/YnabAccountBalances";
+import { PaymentsDue } from "./components/FinancialComponents/PaymentsDue";
 import { ProjectPlan } from "./components/ProjectPlan";
-import { CreditCard } from "./components/CreditCard";
-import { CreateForm } from "./components/CreateForm";
+import { CreditCard } from "./components/FinancialComponents/CreditCard";
+import { CreateStatementForm } from "./components/CreateStatementForm";
 
 export default class App extends Component {
   displayName = App.name;
@@ -14,36 +14,45 @@ export default class App extends Component {
     super(props);
     this.state = {
       accounts: [],
-      loading: true,
+      accountsLoading: true,
+      statements: [],
+      statementsLoading: true,
       filterButtonDetails: { className: "btn btn-primary" },
       currentBudgetID: "ee4a0a66-fa5a-4838-9ab4-3f8f3f2103ed"
     };
 
     this.getYnabAccountsData();
+    this.getServerStatements();
   }
 
   getYnabAccountsData = () => {
-    fetch("api/YNABCreditCard/DbYNABAccountsJson", {
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        currentBudgetID: this.state.currentBudgetID
-      })
-    })
+    fetch("api/YNABCreditCard/DbYNABAccountsJson")
       .then(response => response.json())
       .then(data => {
         var accounts = data;
-        this.setState({ accounts, loading: false });
+        this.setState({ accounts, accountsLoading: false });
       });
   };
+
+  getServerStatements = () => {
+    fetch("api/YNABCreditCard/ServerStatements")
+      .then(response => response.json())
+      .then(data => {
+        var zero = data[0];
+        console.log(zero);
+        this.setState({ statements: data, statementsLoading: false });
+      });
+  };
+
   render() {
     return (
       <Layout>
         <Route exact path="/" component={ProjectPlan} />
-        <Route exact path="/PaymentsDue" component={PaymentsDue} />
+        <Route
+          exact
+          path="/PaymentsDue"
+          render={props => <PaymentsDue {...props} stateValues={this.state} />}
+        />
         <Route
           exact
           path="/ynabaccountbalances"
@@ -54,8 +63,10 @@ export default class App extends Component {
         <Route exact path="/creditcard" component={CreditCard} />
         <Route
           exact
-          path="/createform"
-          render={props => <CreateForm {...props} stateValues={this.state} />}
+          path="/CreateStatementForm"
+          render={props => (
+            <CreateStatementForm {...props} stateValues={this.state} />
+          )}
         />
       </Layout>
     );

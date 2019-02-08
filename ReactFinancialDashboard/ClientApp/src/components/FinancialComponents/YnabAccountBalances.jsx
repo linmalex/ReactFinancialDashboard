@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FilterButton } from "./FilterButton";
+import { FilterButton } from "../UtilityComponents/FilterButton";
 
 export class YnabAccountBalances extends Component {
   handleFilter = () => {

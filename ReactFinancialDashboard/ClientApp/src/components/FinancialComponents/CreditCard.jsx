@@ -1,4 +1,5 @@
 ﻿import React, { Component } from "react";
+// Component to hold credit card plan => snowball method plan, last payment date, budgeted amounts, etc.
 
 export class CreditCard extends Component {
   static renderfulltable(creditCards) {

@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { Glyphicon, Nav, Navbar, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import "../css/NavMenu.css";
+import "../../css/NavMenu.css";
 
 export class NavMenu extends Component {
   displayName = NavMenu.name;
@@ -39,7 +39,7 @@ export class NavMenu extends Component {
                 <Glyphicon glyph="home" /> Credit Card
               </NavItem>
             </LinkContainer>
-            <LinkContainer to={"/createform"} exact>
+            <LinkContainer to={"/CreateStatementForm"} exact>
               <NavItem>
                 <Glyphicon glyph="home" />
                 Create Statement
