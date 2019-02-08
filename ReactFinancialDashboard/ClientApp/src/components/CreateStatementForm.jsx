@@ -1,9 +1,12 @@
 ﻿import React, { Component } from "react";
 
-export class CreateForm extends Component {
+export class CreateStatementForm extends Component {
   constructor() {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = {
+      submitResponse: ""
+    };
   }
 
   handleSubmit = event => {
@@ -12,18 +15,21 @@ export class CreateForm extends Component {
     fetch("api/YNABCreditCard/CreateStatement", {
       method: "post",
       body: data
-    }).then(response => response.json);
+    })
+      .then(response => response.json())
+      .then(data => (this.state.submitResponse = data));
   };
 
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
+        {/* Account select dropdown */}
         <div className="form-group">
           <label>Account</label>
           <select
             className="form-control"
             id="accountSelect"
-            name="accountName"
+            name="YnabAccountID"
           >
             <option>Select Account</option>
             {this.props.stateValues.accounts.map(account => (
@@ -33,42 +39,47 @@ export class CreateForm extends Component {
             ))}
           </select>
         </div>
+        {/* Statement date input */}
         <div className="form-group">
           <label htmlFor="statementDate">Statement Date</label>
           <input
             type="date"
             className="form-control"
-            id="statementDate"
-            name="statementDate"
+            id="IssueDate"
+            name="IssueDate"
           />
         </div>
+        {/* Statement balance input */}
         <div className="form-group">
           <label htmlFor="statementBalance">Statement Balance</label>
           <input
             type="text"
             className="form-control"
             id="statementBalance"
-            name="statementBalance"
+            name="Balance"
           />
         </div>
+        {/* Min payment input */}
         <div className="form-group">
           <label htmlFor="minPayment">Minimum Payment</label>
           <input
             type="text"
             className="form-control"
             id="minPayment"
-            name="minPayment"
+            name="MinPayment"
           />
         </div>
+        {/* Due date input */}
         <div className="form-group">
           <label htmlFor="paymentDue">Payment Due Date</label>
           <input
             type="date"
             className="form-control"
             id="paymentDue"
-            name="paymentDue"
+            name="DueDate"
           />
         </div>
+        {/* Submit Button */}
         <button className="btn btn-primary" type="submit">
           Submit form
         </button>

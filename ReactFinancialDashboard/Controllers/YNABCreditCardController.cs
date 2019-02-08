@@ -35,13 +35,13 @@ namespace ReactFinancialDashboard.Controllers
         }
 
         [HttpPost("[action]")]
-        public IActionResult CreateStatement()
+        public IActionResult CreateStatement([FromForm] CreditCardStatement statement)
         {
             ApplicationDbContext context = _context;
-            List<YnabAccount> serverAccounts = context.YnabAccounts.ToList();
-            string json = JsonConvert.SerializeObject(serverAccounts);
-            var jsonresult = new JsonResult(json);
-            return jsonresult;
+            context.Add(statement);
+            context.SaveChanges();
+            JsonResult result = new JsonResult("Statement Added");
+            return result;
         }
     }
 }
