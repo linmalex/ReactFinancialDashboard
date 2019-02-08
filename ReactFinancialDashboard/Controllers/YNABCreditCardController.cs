@@ -34,8 +34,8 @@ namespace ReactFinancialDashboard.Controllers
             return JsonConvert.SerializeObject(statements);
         }
 
-        [HttpPost]
-        public IActionResult CreateStatement([FromBody]string accountName)
+        [HttpPost("[action]")]
+        public IActionResult CreateStatement()
         {
             ApplicationDbContext context = _context;
             List<YnabAccount> serverAccounts = context.YnabAccounts.ToList();

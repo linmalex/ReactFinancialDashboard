@@ -23,6 +23,7 @@ export class ProjectPlan extends Component {
               <td>
                 <ul>
                   <li>Add paid vs unpaid filtering ability</li>
+                  <li>Add other bills section</li>
                 </ul>
               </td>
             </tr>
