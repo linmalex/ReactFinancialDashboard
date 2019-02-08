@@ -8,12 +8,11 @@ export class CreateForm extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-
-    fetch("api/YNABCreditCard/CreateStatement", { method: post })
-      .then(response => console.log(response))
-      .then(data => {
-        console.log(data);
-      });
+    const data = new FormData(event.target);
+    fetch("api/YNABCreditCard/CreateStatement", {
+      method: "post",
+      body: data
+    }).then(response => response.json);
   };
 
   render() {
