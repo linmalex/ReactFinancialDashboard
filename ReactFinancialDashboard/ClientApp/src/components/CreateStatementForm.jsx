@@ -39,7 +39,7 @@ export class CreateStatementForm extends Component {
             name="YnabAccountID"
           >
             <option>Select Account</option>
-            {this.props.stateValues.accounts.map(account => (
+            {this.props.state.accounts.map(account => (
               <option key={account.ID} value={account.ID}>
                 {account.Name}
               </option>

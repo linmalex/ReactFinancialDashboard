@@ -29,12 +29,12 @@ export class PaymentsDue extends Component {
   }
 
   render() {
-    let contents = this.props.stateValues.statementsLoading ? (
+    let contents = this.props.state.statementsLoading ? (
       <p>
         <em>Loading...</em>
       </p>
     ) : (
-      PaymentsDue.renderStatementsTable(this.props.stateValues.statements)
+      PaymentsDue.renderStatementsTable(this.props.state.statements)
     );
 
     return (
