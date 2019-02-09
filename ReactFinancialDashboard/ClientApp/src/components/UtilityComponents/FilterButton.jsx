@@ -2,19 +2,30 @@
 
 export class FilterButton extends Component {
   state = {
-    classNames: "btn btn-primary",
-    filter: "Credit Card"
+    className: "btn btn-primary",
+    filter: "Filter"
+  };
+
+  setBtnClasses = filter => {
+    var className;
+    if (filter === "Filter") {
+      className = "btn btn-primary";
+    } else {
+      className = "btn btn-danger";
+    }
+    return className;
   };
 
   handleChange = () => {
     var filter = this.state.filter;
-    this.props.filterAccounts(filter);
     if (filter == "Credit Card") {
-      filter = "";
+      filter = "Filter";
     } else {
       filter = "Credit Card";
     }
-    this.setState({ filter });
+    this.props.filterAccounts(filter);
+    var className = this.setBtnClasses(filter);
+    this.setState({ filter, className });
   };
 
   render() {
@@ -22,9 +33,9 @@ export class FilterButton extends Component {
       <button
         type="button"
         onClick={this.handleChange}
-        className={this.props.filterButtonClass}
+        className={this.state.className}
       >
-        Filter
+        {this.state.filter}
       </button>
     );
   }
