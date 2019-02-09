@@ -17,7 +17,6 @@ export default class App extends Component {
       accountsLoading: true,
       statements: [],
       statementsLoading: true,
-      filterButtonDetails: { className: "btn btn-primary" },
       currentBudgetID: "ee4a0a66-fa5a-4838-9ab4-3f8f3f2103ed"
     };
 
