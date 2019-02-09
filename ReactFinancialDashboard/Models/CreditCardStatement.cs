@@ -25,6 +25,8 @@ namespace ReactFinancialDashboard.Models
         [DataType(DataType.Currency)]
         public double MinPayment { get; set; }
 
+        public string PaidStatus { get; set; }
+
         public string YnabAccountID { get; set; }
 
         public virtual YnabAccount YnabAccount { get; set; }

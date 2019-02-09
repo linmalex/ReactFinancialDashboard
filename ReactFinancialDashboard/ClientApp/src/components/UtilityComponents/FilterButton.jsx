@@ -9,7 +9,7 @@ export class FilterButton extends Component {
     return (
       <button
         type="button"
-        onClick={this.props.onFilter}
+        onClick={() => this.props.handleFilter("Credit Card")}
         className={this.props.filterButtonClass}
       >
         Filter

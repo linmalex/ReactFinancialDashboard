@@ -1,11 +1,13 @@
 ﻿import React, { Component } from "react";
+import { Redirect } from "react-router";
 
 export class CreateStatementForm extends Component {
   constructor() {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
-      submitResponse: ""
+      submitResponse: "",
+      toStatements: false
     };
   }
 
@@ -17,10 +19,15 @@ export class CreateStatementForm extends Component {
       body: data
     })
       .then(response => response.json())
-      .then(data => (this.state.submitResponse = data));
+      .then(this.props.reRenderStatements)
+      .then(this.setState({ toStatements: true }));
   };
 
   render() {
+    if (this.state.toStatements === true) {
+      return <Redirect to="/PaymentsDue" />;
+    }
+
     return (
       <form onSubmit={this.handleSubmit}>
         {/* Account select dropdown */}

@@ -38,6 +38,7 @@ namespace ReactFinancialDashboard.Controllers
         public IActionResult CreateStatement([FromForm] CreditCardStatement statement)
         {
             ApplicationDbContext context = _context;
+            statement.PaidStatus = "Unpaid";
             context.Add(statement);
             context.SaveChanges();
             JsonResult result = new JsonResult("Statement Added");

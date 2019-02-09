@@ -12,14 +12,14 @@ export default class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      accounts: [],
-      accountsLoading: true,
-      statements: [],
-      statementsLoading: true,
-      filterButtonDetails: { className: "btn btn-primary" },
-      currentBudgetID: "ee4a0a66-fa5a-4838-9ab4-3f8f3f2103ed"
-    };
+      this.state = {
+          accounts: [],
+          accountsLoading: true,
+          statements: [],
+          statementsLoading: true,
+          filterButtonDetails: { className: "btn btn-primary" },
+          currentBudgetID: "ee4a0a66-fa5a-4838-9ab4-3f8f3f2103ed"
+      };
 
     this.getYnabAccountsData();
     this.getServerStatements();
@@ -29,8 +29,8 @@ export default class App extends Component {
     fetch("api/YNABCreditCard/DbYNABAccountsJson")
       .then(response => response.json())
       .then(data => {
-        var accounts = data;
-        this.setState({ accounts, accountsLoading: false });
+          var accounts = data;
+          this.setState({ accounts, accountsLoading: false });
       });
   };
 
@@ -38,10 +38,16 @@ export default class App extends Component {
     fetch("api/YNABCreditCard/ServerStatements")
       .then(response => response.json())
       .then(data => {
-        var zero = data[0];
-        console.log(zero);
         this.setState({ statements: data, statementsLoading: false });
       });
+  };
+
+  handleFilter = filter => {
+    var accounts = [...this.state.accounts];
+    if (filter === "Credit Card") {
+      accounts = this.state.accounts.filter(a => a.Type === "Credit Card");
+    }
+    this.setState({ accounts });
   };
 
   render() {
@@ -57,7 +63,11 @@ export default class App extends Component {
           exact
           path="/ynabaccountbalances"
           render={props => (
-            <YnabAccountBalances {...props} stateValues={this.state} />
+            <YnabAccountBalances
+              {...props}
+              stateValues={this.state}
+              handleFilter={this.handleFilter}
+            />
           )}
         />
         <Route exact path="/creditcard" component={CreditCard} />
@@ -65,7 +75,11 @@ export default class App extends Component {
           exact
           path="/CreateStatementForm"
           render={props => (
-            <CreateStatementForm {...props} stateValues={this.state} />
+            <CreateStatementForm
+              {...props}
+              stateValues={this.state}
+              reRenderStatements={this.getServerStatements}
+            />
           )}
         />
       </Layout>

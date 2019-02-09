@@ -2,12 +2,6 @@ import React, { Component } from "react";
 import { FilterButton } from "../UtilityComponents/FilterButton";
 
 export class YnabAccountBalances extends Component {
-  handleFilter = () => {
-    const accounts = this.state.accounts.filter(a => a.type === "creditCard");
-    const filterButtonClass = "btn btn-danger";
-    this.setState({ accounts, filterButtonClass });
-  };
-
   static renderAccountsTable(accounts) {
     return (
       <table className="table">
@@ -37,19 +31,14 @@ export class YnabAccountBalances extends Component {
         <em>Loading...</em>
       </p>
     ) : (
-      YnabAccountBalances.renderAccountsTable(this.props.stateValues.accounts)
+            YnabAccountBalances.renderAccountsTable(this.props.stateValues.accounts)
     );
 
     return (
       <div>
         <div className="row">
           <h1 className="col-9">YNAB Account Balances</h1>
-          <FilterButton
-            onFilter={this.handleFilter}
-            filterButtonClass={
-              this.props.stateValues.filterButtonDetails.className
-            }
-          />
+          <FilterButton handleFilter={this.props.handleFilter} />
         </div>
         {contents}
       </div>
