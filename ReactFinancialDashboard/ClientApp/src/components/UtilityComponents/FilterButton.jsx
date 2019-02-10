@@ -18,7 +18,7 @@ export class FilterButton extends Component {
 
   handleChange = () => {
     var filter = this.state.filter;
-    if (filter == "Credit Card") {
+    if (filter === "Credit Card") {
       filter = "Filter";
     } else {
       filter = "Credit Card";

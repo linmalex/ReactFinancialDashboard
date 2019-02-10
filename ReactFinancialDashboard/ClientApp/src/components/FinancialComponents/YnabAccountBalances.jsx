@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { FilterButton } from "../UtilityComponents/FilterButton";
+import { Table } from "../LayoutComponents/Table";
 
 export class YnabAccountBalances extends Component {
   constructor() {
@@ -28,6 +29,11 @@ export class YnabAccountBalances extends Component {
   };
 
   static renderAccountsTable(accounts) {
+    // const titles = ["Account Name", "Account Balance", "Account Type"];
+
+    // var data = { accounts: accounts, titles: titles };
+
+    // return <Table data={data} />;
     return (
       <table className="table">
         <thead>
@@ -49,7 +55,6 @@ export class YnabAccountBalances extends Component {
       </table>
     );
   }
-
   render() {
     let contents = this.props.state.loading ? (
       <p>

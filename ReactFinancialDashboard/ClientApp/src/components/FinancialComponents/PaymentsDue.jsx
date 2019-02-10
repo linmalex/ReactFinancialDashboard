@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Table from "../LayoutComponents/Table";
+import { Table } from "../LayoutComponents/Table";
 
 export class PaymentsDue extends Component {
   render() {
@@ -8,7 +8,7 @@ export class PaymentsDue extends Component {
         <em>Loading...</em>
       </p>
     ) : (
-      <Table statements={this.props.state.statements} />
+      <Table data={this.props.state.statements} />
     );
 
     return (
