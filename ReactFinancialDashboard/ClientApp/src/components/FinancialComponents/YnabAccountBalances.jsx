@@ -7,61 +7,36 @@ export class YnabAccountBalances extends Component {
     super();
     this.state = {
       accounts: [],
-      filteredAccounts: []
+      dataItemsToDisplay: [],
+      columnDisplayTitles: ["Account Name", "Account Balance", "Account Type"],
+      jsonTitleValues: ["Name", "Balance", "Type"]
     };
   }
 
   componentWillMount() {
     this.setState({
       accounts: this.props.state.accounts,
-      filteredAccounts: this.props.state.accounts
+      dataItemsToDisplay: this.props.state.accounts
     });
   }
 
   filterAccounts = accountfilter => {
-    let filteredAccounts = this.state.accounts;
+    let dataItemsToDisplay = this.state.accounts;
     if (accountfilter === "Credit Card") {
-      filteredAccounts = filteredAccounts.filter(
+      dataItemsToDisplay = dataItemsToDisplay.filter(
         acct => acct.Type === accountfilter
       );
     }
-    this.setState({ filteredAccounts });
+    this.setState({ dataItemsToDisplay });
   };
 
-  static renderAccountsTable(accounts) {
-    // const titles = ["Account Name", "Account Balance", "Account Type"];
-
-    // var data = { accounts: accounts, titles: titles };
-
-    // return <Table data={data} />;
-    return (
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Account Name</th>
-            <th>Account Balance</th>
-            <th>Account Type</th>
-          </tr>
-        </thead>
-        <tbody>
-          {accounts.map(account => (
-            <tr key={account.ID}>
-              <td>{account.Name}</td>
-              <td>${account.Balance}</td>
-              <td>{account.Type}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  }
   render() {
     let contents = this.props.state.loading ? (
       <p>
         <em>Loading...</em>
       </p>
     ) : (
-      YnabAccountBalances.renderAccountsTable(this.state.filteredAccounts)
+      <Table state={this.state} />
     );
 
     return (
