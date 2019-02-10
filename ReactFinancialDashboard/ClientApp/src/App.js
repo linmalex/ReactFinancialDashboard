@@ -3,7 +3,6 @@ import { Route } from "react-router";
 import { Layout } from "./components/LayoutComponents/Layout";
 import { YnabAccountBalances } from "./components/FinancialComponents/YnabAccountBalances";
 import { PaymentsDue } from "./components/FinancialComponents/PaymentsDue";
-import { ProjectPlan } from "./components/ProjectPlan";
 import { CreditCard } from "./components/FinancialComponents/CreditCard";
 import { CreateStatementForm } from "./components/CreateStatementForm";
 
@@ -34,17 +33,24 @@ export default class App extends Component {
   };
 
   getServerStatements = () => {
+    const thTitles = [
+      "Statement Date",
+      "Payment Due Date",
+      "Statement Balance",
+      "Minimum Payment",
+      "Paid Status"
+    ];
     fetch("api/YNABCreditCard/ServerStatements")
       .then(response => response.json())
       .then(data => {
-        this.setState({ statements: data, statementsLoading: false });
+        var statements = { titles: thTitles, data: data };
+        this.setState({ statements: statements, statementsLoading: false });
       });
   };
 
   render() {
     return (
       <Layout>
-        <Route exact path="/" component={ProjectPlan} />
         <Route
           exact
           path="/PaymentsDue"
