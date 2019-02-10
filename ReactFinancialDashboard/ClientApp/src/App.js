@@ -33,18 +33,10 @@ export default class App extends Component {
   };
 
   getServerStatements = () => {
-    const thTitles = [
-      "Statement Date",
-      "Payment Due Date",
-      "Statement Balance",
-      "Minimum Payment",
-      "Paid Status"
-    ];
     fetch("api/YNABCreditCard/ServerStatements")
       .then(response => response.json())
       .then(data => {
-        var statements = { titles: thTitles, data: data };
-        this.setState({ statements: statements, statementsLoading: false });
+        this.setState({ statements: data });
       });
   };
 
