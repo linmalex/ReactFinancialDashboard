@@ -12,33 +12,9 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      accounts: [],
-      accountsLoading: true,
-      statements: [],
-      statementsLoading: true,
       currentBudgetID: "ee4a0a66-fa5a-4838-9ab4-3f8f3f2103ed"
     };
-
-    this.getYnabAccountsData();
-    this.getServerStatements();
   }
-
-  getYnabAccountsData = () => {
-    fetch("api/YNABCreditCard/DbYNABAccountsJson")
-      .then(response => response.json())
-      .then(data => {
-        var accounts = data;
-        this.setState({ accounts, accountsLoading: false });
-      });
-  };
-
-  getServerStatements = () => {
-    fetch("api/YNABCreditCard/ServerStatements")
-      .then(response => response.json())
-      .then(data => {
-        this.setState({ statements: data });
-      });
-  };
 
   render() {
     return (
@@ -46,14 +22,12 @@ export default class App extends Component {
         <Route
           exact
           path="/PaymentsDue"
-          render={props => <PaymentsDue {...props} state={this.state} />}
+          render={props => <PaymentsDue {...props} />}
         />
         <Route
           exact
           path="/ynabaccountbalances"
-          render={props => (
-            <YnabAccountBalances {...props} state={this.state} />
-          )}
+          render={props => <YnabAccountBalances {...props} />}
         />
         <Route exact path="/creditcard" component={CreditCard} />
         <Route
