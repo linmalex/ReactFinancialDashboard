@@ -3,28 +3,20 @@
 export class FilterButton extends Component {
   state = {
     className: "btn btn-primary",
-    filter: "Filter"
-  };
-
-  setBtnClasses = filter => {
-    var className;
-    if (filter === "Filter") {
-      className = "btn btn-primary";
-    } else {
-      className = "btn btn-danger";
-    }
-    return className;
+    filter: false
   };
 
   handleChange = () => {
     var filter = this.state.filter;
-    if (filter === "Credit Card") {
-      filter = "Filter";
+    var className;
+
+    if (filter) {
+      className = "btn btn-primary";
+      filter = false;
     } else {
-      filter = "Credit Card";
+      className = "btn btn-danger";
+      filter = true;
     }
-    this.props.filterAccounts(filter);
-    var className = this.setBtnClasses(filter);
     this.setState({ filter, className });
   };
 
@@ -35,7 +27,7 @@ export class FilterButton extends Component {
         onClick={this.handleChange}
         className={this.state.className}
       >
-        {this.state.filter}
+        Filter
       </button>
     );
   }
