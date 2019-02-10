@@ -1,5 +1,5 @@
 ﻿import React, { Component } from "react";
-import { Table } from "../LayoutComponents/Table";
+import { FinancialComponent } from "../LayoutComponents/FinancialComponent";
 
 export class CreditCard extends Component {
   constructor() {
@@ -36,19 +36,6 @@ export class CreditCard extends Component {
   // }
 
   render() {
-    let contents = this.state.dataLoading ? (
-      <p>
-        <em>Loading...</em>
-      </p>
-    ) : (
-      <Table state={this.state} />
-    );
-
-    return (
-      <div>
-        <h1>{this.state.pageTitle}</h1>
-        {contents}
-      </div>
-    );
+    return <FinancialComponent state={this.state} />;
   }
 }

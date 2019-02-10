@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table } from "../LayoutComponents/Table";
+import { FinancialComponent } from "../LayoutComponents/FinancialComponent";
 
 export class YnabAccountBalances extends Component {
   constructor() {
@@ -22,21 +22,6 @@ export class YnabAccountBalances extends Component {
   }
 
   render() {
-    let contents = this.state.dataLoading ? (
-      <p>
-        <em>Loading...</em>
-      </p>
-    ) : (
-      <Table state={this.state} />
-    );
-
-    return (
-      <div>
-        <div className="row">
-          <h1>{this.state.pageTitle}</h1>
-        </div>
-        {contents}
-      </div>
-    );
+    return <FinancialComponent state={this.state} />;
   }
 }
