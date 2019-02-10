@@ -7,6 +7,7 @@ export class PaymentsDue extends Component {
     this.state = {
       pageTitle: "Credit Card Statements",
       dataItemsToDisplay: [],
+      statementsLoading: true,
       columnDisplayTitles: [
         "Statement Date",
         "Payment Due Date",
@@ -25,19 +26,19 @@ export class PaymentsDue extends Component {
   }
 
   componentWillMount() {
-    this.setState({
-      dataItemsToDisplay: this.props.state.statements
-    });
+    fetch("api/YNABCreditCard/ServerStatements")
+      .then(response => response.json())
+      .then(data => {
+        this.setState({ dataItemsToDisplay: data });
+      });
   }
 
   render() {
-    let contents = this.props.state.loading ? (
+    let contents = this.state.loading ? (
       <p>
         <em>Loading...</em>
       </p>
     ) : (
-      // <Table state={this.state} />
-      // PaymentsDue.renderStatementsTable(this.props.stateValues.statements)
       <Table state={this.state} />
     );
 

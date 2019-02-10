@@ -7,31 +7,39 @@ export class YnabAccountBalances extends Component {
     super();
     this.state = {
       accounts: [],
+      accountsLoading: true,
       dataItemsToDisplay: [],
       columnDisplayTitles: ["Account Name", "Account Balance", "Account Type"],
-      jsonTitleValues: ["Name", "Balance", "Type"]
+      jsonTitleValues: ["Name", "Balance", "Type"],
+      filtered: false
     };
+    // this.getYnabAccountsData();
   }
 
   componentWillMount() {
-    this.setState({
-      accounts: this.props.state.accounts,
-      dataItemsToDisplay: this.props.state.accounts
-    });
+    fetch("api/YNABCreditCard/DbYNABAccountsJson")
+      .then(response => response.json())
+      .then(data => {
+        this.setState({ dataItemsToDisplay: data, accounts: data });
+      });
+    console.log("mount");
   }
 
   filterAccounts = accountfilter => {
-    let dataItemsToDisplay = this.state.accounts;
-    if (accountfilter === "Credit Card") {
+    let { dataItemsToDisplay, accounts } = this.state;
+    if (!this.state.filtered) {
       dataItemsToDisplay = dataItemsToDisplay.filter(
         acct => acct.Type === accountfilter
       );
+      this.setState({ filtered: true, dataItemsToDisplay });
+    } else {
+      dataItemsToDisplay = accounts;
+      this.setState({ filtered: false, dataItemsToDisplay });
     }
-    this.setState({ dataItemsToDisplay });
   };
 
   render() {
-    let contents = this.props.state.loading ? (
+    let contents = this.state.loading ? (
       <p>
         <em>Loading...</em>
       </p>

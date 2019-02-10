@@ -27,7 +27,6 @@ export class Table extends Component {
       dataItemsToDisplay,
       jsonTitleValues
     } = this.props.state;
-    console.log(this.state.columnDisplayTitles);
     return (
       <table className="table">
         <thead>
