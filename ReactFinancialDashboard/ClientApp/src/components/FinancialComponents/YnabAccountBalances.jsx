@@ -6,9 +6,8 @@ export class YnabAccountBalances extends Component {
     super();
     this.state = {
       pageTitle: "Ynab Account Balances",
-      accounts: [],
-      accountsLoading: true,
-      dataItemsToDisplay: [],
+      data: [],
+      dataLoading: true,
       columnDisplayTitles: ["Account Name", "Account Balance", "Account Type"],
       jsonTitleValues: ["Name", "Balance", "Type"]
     };
@@ -18,12 +17,12 @@ export class YnabAccountBalances extends Component {
     fetch("api/YNABCreditCard/DbYNABAccountsJson")
       .then(response => response.json())
       .then(data => {
-        this.setState({ dataItemsToDisplay: data, accounts: data });
+        this.setState({ data, dataLoading: false });
       });
   }
 
   render() {
-    let contents = this.state.loading ? (
+    let contents = this.state.dataLoading ? (
       <p>
         <em>Loading...</em>
       </p>

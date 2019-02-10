@@ -7,11 +7,7 @@ export class Table extends Component {
   }
 
   render() {
-    const {
-      columnDisplayTitles,
-      dataItemsToDisplay,
-      jsonTitleValues
-    } = this.props.state;
+    const { columnDisplayTitles, data, jsonTitleValues } = this.props.state;
 
     return (
       <div>
@@ -25,8 +21,8 @@ export class Table extends Component {
             </tr>
           </thead>
           <tbody>
-            {dataItemsToDisplay.map(item => (
-              <tr key={dataItemsToDisplay.indexOf(item)}>
+            {data.map(item => (
+              <tr key={data.indexOf(item)}>
                 {jsonTitleValues.map(titleValue => (
                   <td key={jsonTitleValues.indexOf(titleValue)}>
                     {item[titleValue]}

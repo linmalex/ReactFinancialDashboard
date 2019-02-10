@@ -6,7 +6,8 @@ export class CreditCard extends Component {
     super();
     this.state = {
       pageTitle: "Full Credit Card Data",
-      dataItemsToDisplay: [],
+      data: [],
+      dataLoading: true,
       columnDisplayTitles: [
         "Account Name",
         "Statement Date",
@@ -26,8 +27,16 @@ export class CreditCard extends Component {
     };
   }
 
+  // componentWillMount() {
+  //   fetch("api/YNABCreditCard/ServerStatements")
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       this.setState({ data, dataLoading: false });
+  //     });
+  // }
+
   render() {
-    let contents = this.state.loading ? (
+    let contents = this.state.dataLoading ? (
       <p>
         <em>Loading...</em>
       </p>
