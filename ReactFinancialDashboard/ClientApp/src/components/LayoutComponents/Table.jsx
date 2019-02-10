@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import { FilterButton } from "../UtilityComponents/FilterButton";
 
 export class Table extends Component {
-  handleFilter() {
-    console.log("handlefilter clicked");
-  }
+  handleFilter() {}
 
   render() {
     const { columnDisplayTitles, data, jsonTitleValues } = this.props.state;

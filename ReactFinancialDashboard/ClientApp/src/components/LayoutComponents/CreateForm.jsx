@@ -25,7 +25,6 @@ export class CreateForm extends Component {
 
   renderTag = inputField => {
     var { ynabAccounts } = this.props.state;
-    console.log(ynabAccounts);
     var Type = inputField.type;
     if (Type === "select") {
       return (
@@ -138,7 +137,6 @@ export class CreateForm extends Component {
     return divList;
   }
   render() {
-    console.log();
     return (
       <form onSubmit={this.handleSubmit}>
         {this.renderFormDivs()}
