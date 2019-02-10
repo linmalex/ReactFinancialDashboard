@@ -5,7 +5,7 @@ export class PaymentsDue extends Component {
   constructor() {
     super();
     this.state = {
-      pageTitle: "Credit Cards",
+      pageTitle: "Credit Card Statements",
       dataItemsToDisplay: [],
       columnDisplayTitles: [
         "Statement Date",
@@ -29,6 +29,7 @@ export class PaymentsDue extends Component {
       dataItemsToDisplay: this.props.state.statements
     });
   }
+
   render() {
     let contents = this.props.state.loading ? (
       <p>

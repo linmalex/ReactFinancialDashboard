@@ -1,39 +1,29 @@
 ﻿import React, { Component } from "react";
-// Component to hold credit card plan => snowball method plan, last payment date, budgeted amounts, etc.
+import { Table } from "../LayoutComponents/Table";
 
 export class CreditCard extends Component {
-  static renderfulltable(creditCards) {
-    return (
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Account Name</th>
-            <th>Statement Date</th>
-            <th>Payment Due Date</th>
-            <th>Statement Balance</th>
-            <th>Minimum Payment</th>
-            <th>YNAB Account Balance</th>
-          </tr>
-        </thead>
-        <tbody>
-          {creditCards.map(creditCard => (
-            <tr key={creditCard.ID}>
-              <td>{creditCard.name}</td>
-              <td>{creditCard.IssueDate}</td>
-              <td>{creditCard.DueDate}</td>
-              <td>{creditCard.Balance}</td>
-              <td>{creditCard.MinPayment}</td>
-              <td>{creditCard.balance}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = { creditCards: [], loading: true };
+  constructor() {
+    super();
+    this.state = {
+      pageTitle: "Full Credit Card Data",
+      dataItemsToDisplay: [],
+      columnDisplayTitles: [
+        "Account Name",
+        "Statement Date",
+        "Payment Due Date",
+        "Statement Balance",
+        "Minimum Payment",
+        "YNAB Account Balance"
+      ],
+      jsonTitleValues: [
+        "name",
+        "IssueDate",
+        "DueDate",
+        "Balance",
+        "MinPayment",
+        "balance"
+      ]
+    };
   }
 
   render() {
@@ -42,12 +32,12 @@ export class CreditCard extends Component {
         <em>Loading...</em>
       </p>
     ) : (
-      CreditCard.renderfulltable(this.state.accounts)
+      <Table state={this.state} />
     );
 
     return (
       <div>
-        <h1>Credit Cards</h1>
+        <h1>{this.state.pageTitle}</h1>
         {contents}
       </div>
     );
