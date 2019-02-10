@@ -2,15 +2,20 @@ import React, { Component } from "react";
 import { FilterButton } from "../UtilityComponents/FilterButton";
 
 export class Table extends Component {
+  handleFilter() {
+    console.log("handlefilter clicked");
+  }
+
   render() {
     const {
       columnDisplayTitles,
       dataItemsToDisplay,
       jsonTitleValues
     } = this.props.state;
+
     return (
       <div>
-        <FilterButton />
+        <FilterButton handleFilter={this.handleFilter} />
         <table className="table">
           <thead>
             <tr>

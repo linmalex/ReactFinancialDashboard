@@ -7,6 +7,8 @@ export class FilterButton extends Component {
   };
 
   handleChange = () => {
+    this.props.handleFilter();
+
     var filter = this.state.filter;
     var className;
 
