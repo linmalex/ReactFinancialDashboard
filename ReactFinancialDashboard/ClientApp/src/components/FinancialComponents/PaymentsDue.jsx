@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { FinancialComponent } from "../LayoutComponents/FinancialComponent";
+import { CreateForm } from "../LayoutComponents/CreateForm";
 
 export class PaymentsDue extends Component {
   constructor() {
@@ -8,6 +9,7 @@ export class PaymentsDue extends Component {
       pageTitle: "Credit Card Statements",
       data: [],
       dataLoading: true,
+      ynabAccounts: [],
       columnDisplayTitles: [
         "Statement Date",
         "Payment Due Date",
@@ -25,15 +27,29 @@ export class PaymentsDue extends Component {
     };
   }
 
-  componentWillMount() {
+  renderStatements() {
     fetch("api/YNABCreditCard/ServerStatements")
       .then(response => response.json())
       .then(data => {
         this.setState({ data, dataLoading: false });
       });
   }
+  componentWillMount() {
+    this.renderStatements();
+
+    fetch("api/YNABCreditCard/DbYNABAccountsJson")
+      .then(response => response.json())
+      .then(data => {
+        this.setState({ ynabAccounts: data, dataLoading: false });
+      });
+  }
 
   render() {
-    return <FinancialComponent state={this.state} />;
+    return (
+      <div>
+        <FinancialComponent state={this.state} />
+        <CreateForm state={this.state} reRender={this.renderStatements} />
+      </div>
+    );
   }
 }

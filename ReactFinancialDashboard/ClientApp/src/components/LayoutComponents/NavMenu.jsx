@@ -34,12 +34,6 @@ export class NavMenu extends Component {
                 <Glyphicon glyph="home" /> Credit Card
               </NavItem>
             </LinkContainer>
-            <LinkContainer to={"/CreateStatementForm"} exact>
-              <NavItem>
-                <Glyphicon glyph="home" />
-                Create Statement
-              </NavItem>
-            </LinkContainer>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

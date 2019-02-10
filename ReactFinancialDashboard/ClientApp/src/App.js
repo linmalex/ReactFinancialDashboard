@@ -4,7 +4,7 @@ import { Layout } from "./components/LayoutComponents/Layout";
 import { YnabAccountBalances } from "./components/FinancialComponents/YnabAccountBalances";
 import { PaymentsDue } from "./components/FinancialComponents/PaymentsDue";
 import { CreditCard } from "./components/FinancialComponents/CreditCard";
-import { CreateStatementForm } from "./components/CreateStatementForm";
+import { CreateForm } from "./components/LayoutComponents/CreateForm";
 
 export default class App extends Component {
   displayName = App.name;
@@ -30,17 +30,6 @@ export default class App extends Component {
           render={props => <YnabAccountBalances {...props} />}
         />
         <Route exact path="/creditcard" component={CreditCard} />
-        <Route
-          exact
-          path="/CreateStatementForm"
-          render={props => (
-            <CreateStatementForm
-              {...props}
-              state={this.state}
-              reRenderStatements={this.getServerStatements}
-            />
-          )}
-        />
       </Layout>
     );
   }
