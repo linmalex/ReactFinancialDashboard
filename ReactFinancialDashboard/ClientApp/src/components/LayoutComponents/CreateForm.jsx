@@ -6,7 +6,75 @@ export class CreateForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       submitResponse: "",
-      toStatements: false
+      toStatements: false,
+      formfields: [
+        {
+          label: "Accounts",
+          id: "accountSelect",
+          name: "YnabAccountID",
+          type: "select"
+        },
+        {
+          label: "StatementDate",
+          id: "IssueDate",
+          name: "IssueDate",
+          type: "input",
+          inputType: "date"
+        },
+        {
+          label: "Statement Balance",
+          id: "statementBalance",
+          name: "Balance",
+          type: "input",
+          inputType: "text"
+        },
+        {
+          label: "Minimum Payment",
+          id: "minPayment",
+          name: "MinPayment",
+          type: "input",
+          inputType: "text"
+        },
+        {
+          label: "Payment Due Date",
+          id: "paymentDue",
+          name: "DueDate",
+          type: "input",
+          inputType: "date"
+        }
+      ],
+      data: [
+        {
+          Balance: 4473.82,
+          Cleared_balance: 4473.82,
+          Closed: false,
+          CreditCardStatements: null,
+          Deleted: false,
+          ID: "ea31249c-947b-4adf-873d-abd533dd4b13",
+          Name: "Joint Checking",
+          Note: null,
+          On_budget: true,
+          PersonalData: null,
+          Transfer_payee_id: "85c18465-a48e-4e6c-bb7f-57242014f393",
+          Type: "Checking",
+          Uncleared_balance: 0
+        },
+        {
+          Balance: -11097.29,
+          Cleared_balance: -10816.48,
+          Closed: false,
+          CreditCardStatements: null,
+          Deleted: false,
+          ID: "f81bad26-4fb3-419a-b49c-d71ee4afdcf8",
+          Name: "Chase Amazon Card",
+          Note: null,
+          On_budget: true,
+          PersonalData: null,
+          Transfer_payee_id: "7b22e04f-8e25-4160-95a6-6eb7fdc82efc",
+          Type: "Credit Card",
+          Uncleared_balance: -280.81
+        }
+      ]
     };
   }
 
@@ -51,79 +119,10 @@ export class CreateForm extends Component {
     }
   };
 
-  formfields = [
-    {
-      label: "Accounts",
-      id: "accountSelect",
-      name: "YnabAccountID",
-      type: "select"
-    },
-    {
-      label: "StatementDate",
-      id: "IssueDate",
-      name: "IssueDate",
-      type: "input",
-      inputType: "date"
-    },
-    {
-      label: "Statement Balance",
-      id: "statementBalance",
-      name: "Balance",
-      type: "input",
-      inputType: "text"
-    },
-    {
-      label: "Minimum Payment",
-      id: "minPayment",
-      name: "MinPayment",
-      type: "input",
-      inputType: "text"
-    },
-    {
-      label: "Payment Due Date",
-      id: "paymentDue",
-      name: "DueDate",
-      type: "input",
-      inputType: "date"
-    }
-  ];
-  data = [
-    {
-      Balance: 4473.82,
-      Cleared_balance: 4473.82,
-      Closed: false,
-      CreditCardStatements: null,
-      Deleted: false,
-      ID: "ea31249c-947b-4adf-873d-abd533dd4b13",
-      Name: "Joint Checking",
-      Note: null,
-      On_budget: true,
-      PersonalData: null,
-      Transfer_payee_id: "85c18465-a48e-4e6c-bb7f-57242014f393",
-      Type: "Checking",
-      Uncleared_balance: 0
-    },
-    {
-      Balance: -11097.29,
-      Cleared_balance: -10816.48,
-      Closed: false,
-      CreditCardStatements: null,
-      Deleted: false,
-      ID: "f81bad26-4fb3-419a-b49c-d71ee4afdcf8",
-      Name: "Chase Amazon Card",
-      Note: null,
-      On_budget: true,
-      PersonalData: null,
-      Transfer_payee_id: "7b22e04f-8e25-4160-95a6-6eb7fdc82efc",
-      Type: "Credit Card",
-      Uncleared_balance: -280.81
-    }
-  ];
-
   renderFormDivs() {
     var divList = [];
-    for (var i = 0; i < this.formfields.length; i++) {
-      var currentField = this.formfields[i];
+    for (var i = 0; i < this.state.formfields.length; i++) {
+      var currentField = this.state.formfields[i];
       var divreturn = (
         <div className="form-group">
           <label>{currentField.label}</label>
