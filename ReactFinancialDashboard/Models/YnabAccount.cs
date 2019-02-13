@@ -82,7 +82,8 @@ namespace ReactFinancialDashboard.Models {
                     }
                     context.SaveChanges ();
                 }
-            } catch (Exception ex) {
+                // eslint-disable-next-line
+            } catch (Exception) {
                 throw;
             }
         }
