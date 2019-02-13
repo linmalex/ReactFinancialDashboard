@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import { Route } from "react-router";
 import { Layout } from "./components/LayoutComponents/Layout";
-import { YnabAccountBalances } from "./components/ToBeRefactored/YnabAccountBalances";
-import { PaymentsDue } from "./components/ToBeRefactored/PaymentsDue";
-import { CreditCard } from "./components/ToBeRefactored/CreditCard";
 import { LoadingComponent } from "./components/LayoutComponents/LoadingComponent";
 //todo uncomment this
 // import { LoadingComponent } from "./components/LayoutComponents/LoadingComponent";
@@ -24,7 +21,6 @@ export default class App extends Component {
           paymentsDue: {
             navDisplayValues: "Payments Due",
             routePath: "/paymentsdue",
-            component: PaymentsDue,
             glyph: "home",
             loadingData: {
               pageTitle: "Credit Card Statements",
@@ -51,7 +47,6 @@ export default class App extends Component {
           ynabAccounts: {
             navDisplayValues: "Ynab Accounts",
             routePath: "/ynabaccountbalances",
-            component: YnabAccountBalances,
             glyph: "home",
             loadingData: {
               pageTitle: "Ynab Account Balances",
@@ -70,7 +65,6 @@ export default class App extends Component {
           creditCards: {
             navDisplayValues: "Credit Card",
             routePath: "/creditcard",
-            component: CreditCard,
             glyph: "home",
             loadingData: {
               pageTitle: "Full Credit Card Data",
