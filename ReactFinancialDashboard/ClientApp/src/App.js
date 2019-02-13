@@ -38,37 +38,30 @@ export default class App extends Component {
             glyph: "home"
           }
         ]
-      },
-      routeItems: [
-        <Route
-          exact
-          path="/PaymentsDue"
-          render={props => <PaymentsDue {...props} />}
-        />,
-        <Route
-          exact
-          path="/ynabaccountbalances"
-          render={props => <YnabAccountBalances {...props} />}
-        />,
-        <Route exact path="/creditcard" component={CreditCard} />
-      ]
+      }
     };
   }
 
-  renderRouteItems = () => {
-    let routeItems = this.linkcontainers.map(item => (
-      <Route
-        key={Math.random() * 10}
-        path={item.toValue}
-        render={props => <item.Component {...props} />}
-      />
-    ));
-    return routeItems;
-  };
+  renderRouteItems() {
+    const components = this.state.navMenu.navMenuItems;
+    let componentList = [];
+    for (let item in components) {
+      let Component = components[item].component;
+      let routeItem = (
+        <Route
+          key={item}
+          exact
+          path={components[item].toValue}
+          render={props => <Component {...props} />}
+        />
+      );
+      componentList.push(routeItem);
+    }
+    return componentList;
+  }
 
   render() {
-    return (
-      <Layout navMenu={this.state.navMenu}>{this.state.routeItems}</Layout>
-    );
+    let components = this.renderRouteItems();
+    return <Layout navMenu={this.state.navMenu}>{components}</Layout>;
   }
 }

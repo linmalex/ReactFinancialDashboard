@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router";
 
 export class CreateForm extends Component {
   constructor() {
@@ -14,7 +13,6 @@ export class CreateForm extends Component {
   handleSubmit = event => {
     event.preventDefault();
     const data = new FormData(event.target);
-    this.props.fetchFunction;
     fetch("api/YNABCreditCard/CreateStatement", {
       method: "post",
       body: data

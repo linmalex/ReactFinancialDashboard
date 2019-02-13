@@ -9,7 +9,7 @@ export class NavMenu extends Component {
 
   renderNavMenu = () => {
     var navMenu = this.props.navMenu.navMenuItems.map(item => (
-      <LinkContainer to={item.toValue}>
+      <LinkContainer key={Math.random() * 10} to={item.toValue}>
         <NavItem>
           <Glyphicon glyph={item.glyph} />
           {item.displayValues}
@@ -21,7 +21,6 @@ export class NavMenu extends Component {
 
   render() {
     let { navMenuHeader } = this.props.navMenu;
-    console.log(navMenuHeader);
     return (
       <Navbar inverse fixedTop fluid collapseOnSelect>
         <Navbar.Header>
