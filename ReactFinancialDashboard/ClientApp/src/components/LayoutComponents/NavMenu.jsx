@@ -8,14 +8,20 @@ export class NavMenu extends Component {
   displayName = NavMenu.name;
 
   renderNavMenu = () => {
-    var navMenu = this.props.navMenu.navMenuItems.map(item => (
-      <LinkContainer key={Math.random() * 10} to={item.toValue}>
-        <NavItem>
-          <Glyphicon glyph={item.glyph} />
-          {item.displayValues}
-        </NavItem>
-      </LinkContainer>
-    ));
+    let { navMenuItems } = this.props.navMenu;
+    let navMenu = [];
+    for (let item in navMenuItems) {
+      let component = navMenuItems[item];
+      let container = (
+        <LinkContainer key={Math.random() * 10} to={component.routePath}>
+          <NavItem>
+            <Glyphicon glyph={component.glyph} />
+            {component.navDisplayValues}
+          </NavItem>
+        </LinkContainer>
+      );
+      navMenu.push(container);
+    }
     return navMenu;
   };
 
@@ -25,8 +31,8 @@ export class NavMenu extends Component {
       <Navbar inverse fixedTop fluid collapseOnSelect>
         <Navbar.Header>
           <Navbar.Brand>
-            <Link to={navMenuHeader.toValue}>
-              {navMenuHeader.displayValues}
+            <Link to={navMenuHeader.routePath}>
+              {navMenuHeader.navDisplayValues}
             </Link>
           </Navbar.Brand>
           <Navbar.Toggle />

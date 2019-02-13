@@ -5,7 +5,7 @@ export class Table extends Component {
   handleFilter() {}
 
   render() {
-    const { columnDisplayTitles, data, jsonTitleValues } = this.props.state;
+    const { columnDisplayTitles, data, jsonTitleValues } = this.props.tableData;
 
     return (
       <div>

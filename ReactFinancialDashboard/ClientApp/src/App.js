@@ -5,6 +5,8 @@ import { YnabAccountBalances } from "./components/ToBeRefactored/YnabAccountBala
 import { PaymentsDue } from "./components/ToBeRefactored/PaymentsDue";
 import { CreditCard } from "./components/ToBeRefactored/CreditCard";
 import { LoadingComponent } from "./components/LayoutComponents/LoadingComponent";
+//todo uncomment this
+// import { LoadingComponent } from "./components/LayoutComponents/LoadingComponent";
 
 export default class App extends Component {
   displayName = App.name;
@@ -13,23 +15,23 @@ export default class App extends Component {
     super(props);
     this.state = {
       currentBudgetID: "ee4a0a66-fa5a-4838-9ab4-3f8f3f2103ed",
-      navMenu: {
+      componentsList: {
         navMenuHeader: {
-          displayValues: "Lindsay's Financial Dashboard",
-          toValue: "/",
-          glyph: "home"
+          navDisplayValues: "Lindsay's Financial Dashboard",
+          routePath: "/"
         },
-        navMenuItems: [
-          {
-            displayValues: "Payments Due",
-            toValue: "/paymentsdue",
+        navMenuItems: {
+          paymentsDue: {
+            navDisplayValues: "Payments Due",
+            routePath: "/paymentsdue",
             component: PaymentsDue,
             glyph: "home",
-            data: {
+            loadingData: {
               pageTitle: "Credit Card Statements",
+              dataLoading: true
+            },
+            tableData: {
               data: [],
-              dataLoading: true,
-              ynabAccounts: [],
               columnDisplayTitles: [
                 "Statement Date",
                 "Payment Due Date",
@@ -46,15 +48,17 @@ export default class App extends Component {
               ]
             }
           },
-          {
-            displayValues: "Ynab Accounts",
-            toValue: "/ynabaccountbalances",
+          ynabAccounts: {
+            navDisplayValues: "Ynab Accounts",
+            routePath: "/ynabaccountbalances",
             component: YnabAccountBalances,
             glyph: "home",
-            data: {
+            loadingData: {
               pageTitle: "Ynab Account Balances",
+              dataLoading: true
+            },
+            tableData: {
               data: [],
-              dataLoading: true,
               columnDisplayTitles: [
                 "Account Name",
                 "Account Balance",
@@ -63,16 +67,18 @@ export default class App extends Component {
               jsonTitleValues: ["Name", "Balance", "Type"]
             }
           },
-          {
-            displayValues: "Credit Card",
-            toValue: "/creditcard",
+          creditCards: {
+            navDisplayValues: "Credit Card",
+            routePath: "/creditcard",
             component: CreditCard,
             glyph: "home",
-            data: {
+            loadingData: {
               pageTitle: "Full Credit Card Data",
-              data: [],
               //todo change this back to true later
-              dataLoading: false,
+              dataLoading: false
+            },
+            tableData: {
+              data: [],
               columnDisplayTitles: [
                 "Account Name",
                 "Statement Date",
@@ -91,31 +97,62 @@ export default class App extends Component {
               ]
             }
           }
-        ]
+        }
       }
     };
   }
+  // todo renderStatements() {}
+
+  componentWillMount() {
+    fetch("api/YNABCreditCard/ServerStatements")
+      .then(response => response.json())
+      .then(data => {
+        let { componentsList: navMenu } = this.state;
+        let { paymentsDue } = navMenu.navMenuItems;
+        paymentsDue.tableData.data = data;
+        paymentsDue.loadingData.dataLoading = false;
+        this.setState({ navMenu });
+      });
+
+    fetch("api/YNABCreditCard/DbYNABAccountsJson")
+      .then(response => response.json())
+      .then(data => {
+        let { componentsList: navMenu } = this.state;
+        let { ynabAccounts } = navMenu.navMenuItems;
+        ynabAccounts.tableData.data = data;
+        ynabAccounts.loadingData.dataLoading = false;
+        this.setState({ navMenu });
+      });
+  }
 
   renderRouteItems() {
-    const components = this.state.navMenu.navMenuItems;
+    const components = this.state.componentsList.navMenuItems;
     let componentList = [];
+
     for (let item in components) {
-      let Component = components[item].component;
+      const currentItem = components[item];
       let routeItem = (
         <Route
-          key={item}
+          key={Math.random() * 10}
           exact
-          path={components[item].toValue}
-          render={props => <Component {...props} />}
+          path={currentItem.routePath}
+          render={props => (
+            <LoadingComponent
+              loadingData={currentItem.loadingData}
+              tableData={currentItem.tableData}
+              {...props}
+            />
+          )}
         />
       );
       componentList.push(routeItem);
     }
+
     return componentList;
   }
 
   render() {
     let components = this.renderRouteItems();
-    return <Layout navMenu={this.state.navMenu}>{components}</Layout>;
+    return <Layout navMenu={this.state.componentsList}>{components}</Layout>;
   }
 }
