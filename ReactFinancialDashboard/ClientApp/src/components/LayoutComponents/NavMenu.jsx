@@ -7,34 +7,33 @@ import "../../css/NavMenu.css";
 export class NavMenu extends Component {
   displayName = NavMenu.name;
 
+  renderNavMenu = () => {
+    var navMenu = this.props.navMenu.navMenuItems.map(item => (
+      <LinkContainer to={item.toValue}>
+        <NavItem>
+          <Glyphicon glyph={item.glyph} />
+          {item.displayValues}
+        </NavItem>
+      </LinkContainer>
+    ));
+    return navMenu;
+  };
+
   render() {
+    let { navMenuHeader } = this.props.navMenu;
+    console.log(navMenuHeader);
     return (
       <Navbar inverse fixedTop fluid collapseOnSelect>
         <Navbar.Header>
           <Navbar.Brand>
-            <Link to={"/"}>Lindsay's Financial Dashboard</Link>
+            <Link to={navMenuHeader.toValue}>
+              {navMenuHeader.displayValues}
+            </Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
-          <Nav>
-            <LinkContainer to={"/paymentsdue"}>
-              <NavItem>
-                <Glyphicon glyph="th-list" /> Payments Due
-              </NavItem>
-            </LinkContainer>
-            <LinkContainer to={"/ynabaccountbalances"} exact>
-              <NavItem>
-                <Glyphicon glyph="home" />
-                Ynab Accounts
-              </NavItem>
-            </LinkContainer>
-            <LinkContainer to={"/creditcard"} exact>
-              <NavItem>
-                <Glyphicon glyph="home" /> Credit Card
-              </NavItem>
-            </LinkContainer>
-          </Nav>
+          <Nav>{this.renderNavMenu()}</Nav>
         </Navbar.Collapse>
       </Navbar>
     );
