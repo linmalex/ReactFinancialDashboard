@@ -4,6 +4,7 @@ import { Layout } from "./components/LayoutComponents/Layout";
 import { YnabAccountBalances } from "./components/ToBeRefactored/YnabAccountBalances";
 import { PaymentsDue } from "./components/ToBeRefactored/PaymentsDue";
 import { CreditCard } from "./components/ToBeRefactored/CreditCard";
+import { LoadingComponent } from "./components/LayoutComponents/LoadingComponent";
 
 export default class App extends Component {
   displayName = App.name;
@@ -23,19 +24,72 @@ export default class App extends Component {
             displayValues: "Payments Due",
             toValue: "/paymentsdue",
             component: PaymentsDue,
-            glyph: "home"
+            glyph: "home",
+            data: {
+              pageTitle: "Credit Card Statements",
+              data: [],
+              dataLoading: true,
+              ynabAccounts: [],
+              columnDisplayTitles: [
+                "Statement Date",
+                "Payment Due Date",
+                "Statement Balance",
+                "Minimum Payment",
+                "Paid Status"
+              ],
+              jsonTitleValues: [
+                "IssueDate",
+                "DueDate",
+                "Balance",
+                "MinPayment",
+                "PaidStatus"
+              ]
+            }
           },
           {
             displayValues: "Ynab Accounts",
             toValue: "/ynabaccountbalances",
             component: YnabAccountBalances,
-            glyph: "home"
+            glyph: "home",
+            data: {
+              pageTitle: "Ynab Account Balances",
+              data: [],
+              dataLoading: true,
+              columnDisplayTitles: [
+                "Account Name",
+                "Account Balance",
+                "Account Type"
+              ],
+              jsonTitleValues: ["Name", "Balance", "Type"]
+            }
           },
           {
             displayValues: "Credit Card",
             toValue: "/creditcard",
             component: CreditCard,
-            glyph: "home"
+            glyph: "home",
+            data: {
+              pageTitle: "Full Credit Card Data",
+              data: [],
+              //todo change this back to true later
+              dataLoading: false,
+              columnDisplayTitles: [
+                "Account Name",
+                "Statement Date",
+                "Payment Due Date",
+                "Statement Balance",
+                "Minimum Payment",
+                "YNAB Account Balance"
+              ],
+              jsonTitleValues: [
+                "name",
+                "IssueDate",
+                "DueDate",
+                "Balance",
+                "MinPayment",
+                "balance"
+              ]
+            }
           }
         ]
       }
