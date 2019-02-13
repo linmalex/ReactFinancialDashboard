@@ -1,5 +1,5 @@
 ﻿import React, { Component } from "react";
-import { FinancialComponent } from "../LayoutComponents/FinancialComponent";
+import { LoadingComponent } from "../LayoutComponents/LoadingComponent";
 
 export class CreditCard extends Component {
   constructor() {
@@ -7,7 +7,8 @@ export class CreditCard extends Component {
     this.state = {
       pageTitle: "Full Credit Card Data",
       data: [],
-      dataLoading: true,
+      //todo change this back to true later
+      dataLoading: false,
       columnDisplayTitles: [
         "Account Name",
         "Statement Date",
@@ -36,6 +37,6 @@ export class CreditCard extends Component {
   // }
 
   render() {
-    return <FinancialComponent state={this.state} />;
+    return <LoadingComponent state={this.state} />;
   }
 }

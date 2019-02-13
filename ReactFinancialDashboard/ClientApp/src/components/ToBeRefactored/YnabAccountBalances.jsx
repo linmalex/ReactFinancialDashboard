@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FinancialComponent } from "../LayoutComponents/FinancialComponent";
+import { LoadingComponent } from "../LayoutComponents/LoadingComponent";
 
 export class YnabAccountBalances extends Component {
   constructor() {
@@ -22,6 +22,6 @@ export class YnabAccountBalances extends Component {
   }
 
   render() {
-    return <FinancialComponent state={this.state} />;
+    return <LoadingComponent state={this.state} />;
   }
 }

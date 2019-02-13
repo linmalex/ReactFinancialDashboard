@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FinancialComponent } from "../LayoutComponents/FinancialComponent";
+import { LoadingComponent } from "../LayoutComponents/LoadingComponent";
 import { CreateForm } from "../LayoutComponents/CreateForm";
 
 export class PaymentsDue extends Component {
@@ -47,7 +47,7 @@ export class PaymentsDue extends Component {
   render() {
     return (
       <div>
-        <FinancialComponent state={this.state} />
+        <LoadingComponent state={this.state} />
         <CreateForm state={this.state} reRender={this.renderStatements} />
       </div>
     );

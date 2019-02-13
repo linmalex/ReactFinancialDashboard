@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FilterButton } from "../UtilityComponents/FilterButton";
+import { FilterButton } from "./FilterButton";
 
 export class Table extends Component {
   handleFilter() {}

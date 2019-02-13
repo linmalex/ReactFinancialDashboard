@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Route } from "react-router";
 import { Layout } from "./components/LayoutComponents/Layout";
-import { YnabAccountBalances } from "./components/FinancialComponents/YnabAccountBalances";
-import { PaymentsDue } from "./components/FinancialComponents/PaymentsDue";
-import { CreditCard } from "./components/FinancialComponents/CreditCard";
+import { YnabAccountBalances } from "./components/ToBeRefactored/YnabAccountBalances";
+import { PaymentsDue } from "./components/ToBeRefactored/PaymentsDue";
+import { CreditCard } from "./components/ToBeRefactored/CreditCard";
 import { CreateForm } from "./components/LayoutComponents/CreateForm";
 
 export default class App extends Component {

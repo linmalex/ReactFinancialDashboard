@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Table } from "./Table";
 
-export class FinancialComponent extends Component {
+export class LoadingComponent extends Component {
   render() {
     let contents = this.props.state.dataLoading ? (
       <p>
