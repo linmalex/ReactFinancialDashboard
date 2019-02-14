@@ -38,7 +38,10 @@ export class NavMenu extends Component {
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
-          <Nav>{this.renderNavMenu()}</Nav>
+          <Nav>
+            <button onClick={this.props.getYnabData}>Get Ynab Data</button>
+            {this.renderNavMenu()}
+          </Nav>
         </Navbar.Collapse>
       </Navbar>
     );

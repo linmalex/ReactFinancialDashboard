@@ -145,8 +145,23 @@ export default class App extends Component {
     return componentList;
   }
 
+  getNewYnabData = () => {
+    fetch("api/YNABCreditCard/GetNewYnabData")
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+      });
+  };
+
   render() {
     let components = this.renderRouteItems();
-    return <Layout navMenu={this.state.componentsList}>{components}</Layout>;
+    return (
+      <Layout
+        navMenu={this.state.componentsList}
+        getYnabData={this.getNewYnabData}
+      >
+        {components}
+      </Layout>
+    );
   }
 }

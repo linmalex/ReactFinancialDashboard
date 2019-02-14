@@ -44,5 +44,13 @@ namespace ReactFinancialDashboard.Controllers
             JsonResult result = new JsonResult("Statement Added");
             return result;
         }
+
+        [HttpGet("[action]")]
+        public ActionResult GetNewYnabData()
+        {
+            YnabAccount.UpdateAccountsDatabase(_context, 1);
+            JsonResult result = new JsonResult("Success");
+            return result;
+        }
     }
 }

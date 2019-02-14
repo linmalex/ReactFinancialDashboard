@@ -36,11 +36,11 @@ namespace ReactFinancialDashboard.Models {
         public PersonalData PersonalData { get; set; }
         #endregion
 
-        public List<YnabAccount> GetYnabAccountsLIST (ApplicationDbContext context, int personalBudgetID) {
+        public static List<YnabAccount> GetAPIYnabAccountsList (ApplicationDbContext context, int personalBudgetID) {
             List<YnabAccount> accounts = new List<YnabAccount> ();
 
             PersonalData personalData = context.PersonalDatas.Where (x => x.ID == personalBudgetID).FirstOrDefault ();
-            JToken jsonAccountsData = GetYnabAccountsJSON (personalData).Result["data"]["accounts"];
+            JToken jsonAccountsData = GetAPIYnabAccountsJSON (personalData).Result["data"]["accounts"];
 
             foreach (JToken jAccount in jsonAccountsData) //item is the account
             {
@@ -53,7 +53,7 @@ namespace ReactFinancialDashboard.Models {
             return accounts;
         }
 
-        public static async Task<JObject> GetYnabAccountsJSON (PersonalData personalData) {
+        public static async Task<JObject> GetAPIYnabAccountsJSON (PersonalData personalData) {
             HttpClient client = new HttpClient ();
             string uri = "https://api.youneedabudget.com/v1/budgets/" + personalData.BudgetID + "/accounts";
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue ("Bearer", personalData.AuthToken);
@@ -61,7 +61,7 @@ namespace ReactFinancialDashboard.Models {
             return transactionData;
         }
 
-        public JToken UpdateJAccountValues (JToken jAccount) {
+        public static JToken UpdateJAccountValues (JToken jAccount) {
             jAccount["balance"] = ((double) jAccount["balance"]) / 1000;
             jAccount["cleared_balance"] = ((double) jAccount["cleared_balance"]) / 1000;
             jAccount["uncleared_balance"] = ((double) jAccount["uncleared_balance"]) / 1000;
@@ -69,10 +69,10 @@ namespace ReactFinancialDashboard.Models {
             return jAccount;
         }
 
-        public void UpdateAccountsDatabase (ApplicationDbContext context, PersonalData personalData) {
+        public static void UpdateAccountsDatabase (ApplicationDbContext context, int personalBudgetID) {
             try {
                 using (context) {
-                    List<YnabAccount> accountsList = GetYnabAccountsLIST (context, personalData.ID);
+                    List<YnabAccount> accountsList = GetAPIYnabAccountsList(context, personalBudgetID);
                     foreach (YnabAccount item in accountsList) {
                         if (context.YnabAccounts.Contains (item)) {
                             context.Update (item);
