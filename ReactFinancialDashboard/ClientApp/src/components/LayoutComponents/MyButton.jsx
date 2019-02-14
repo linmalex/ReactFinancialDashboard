@@ -23,14 +23,25 @@ export class MyButton extends Component {
   };
 
   render() {
-    return (
-      <button
-        type="button"
-        onClick={this.handleChange}
-        className={this.state.className}
-      >
-        Filter
-      </button>
-    );
+    let { buttonType } = this.props;
+    let button =
+      buttonType === "getYnabData" ? (
+        <button
+          className={this.state.className}
+          onClick={this.props.getYnabData}
+        >
+          Get Ynab Data
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={this.handleChange}
+          className={this.state.className}
+        >
+          Filter
+        </button>
+      );
+
+    return button;
   }
 }

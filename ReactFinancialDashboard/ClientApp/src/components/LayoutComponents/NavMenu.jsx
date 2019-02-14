@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom";
 import { Glyphicon, Nav, Navbar, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+import { MyButton } from "./MyButton";
 import "../../css/NavMenu.css";
 
 export class NavMenu extends Component {
@@ -39,7 +40,10 @@ export class NavMenu extends Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav>
-            <button onClick={this.props.getYnabData}>Get Ynab Data</button>
+            <MyButton
+              buttonType={"getYnabData"}
+              getYnabData={this.props.getYnabData}
+            />
             {this.renderNavMenu()}
           </Nav>
         </Navbar.Collapse>

@@ -9,7 +9,7 @@ export class Table extends Component {
 
     return (
       <div>
-        <MyButton handleFilter={this.handleFilter} />
+        <MyButton buttonType="filter" handleFilter={this.handleFilter} />
         <table className="table">
           <thead>
             <tr>
