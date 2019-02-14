@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FilterButton } from "./FilterButton";
+import { MyButton } from "./MyButton";
 
 export class Table extends Component {
   handleFilter() {}
@@ -9,7 +9,7 @@ export class Table extends Component {
 
     return (
       <div>
-        <FilterButton handleFilter={this.handleFilter} />
+        <MyButton handleFilter={this.handleFilter} />
         <table className="table">
           <thead>
             <tr>

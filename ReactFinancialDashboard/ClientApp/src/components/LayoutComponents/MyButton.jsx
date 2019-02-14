@@ -1,6 +1,6 @@
 ﻿import React, { Component } from "react";
 
-export class FilterButton extends Component {
+export class MyButton extends Component {
   state = {
     className: "btn btn-primary",
     filter: false
