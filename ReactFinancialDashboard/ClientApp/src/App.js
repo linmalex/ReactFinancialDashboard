@@ -21,7 +21,7 @@ export default class App extends Component {
           paymentsDue: {
             navDisplayValues: "Payments Due",
             routePath: "/paymentsdue",
-            glyph: "home",
+            glyph: "inbox",
             loadingData: {
               pageTitle: "Credit Card Statements",
               dataLoading: true
@@ -47,7 +47,7 @@ export default class App extends Component {
           ynabAccounts: {
             navDisplayValues: "Ynab Accounts",
             routePath: "/ynabaccountbalances",
-            glyph: "home",
+            glyph: "piggy-bank",
             loadingData: {
               pageTitle: "Ynab Account Balances",
               dataLoading: true
@@ -65,7 +65,7 @@ export default class App extends Component {
           creditCards: {
             navDisplayValues: "Credit Card",
             routePath: "/creditcard",
-            glyph: "home",
+            glyph: "credit-card",
             loadingData: {
               pageTitle: "Full Credit Card Data",
               //todo change this back to true later
@@ -82,7 +82,7 @@ export default class App extends Component {
                 "YNAB Account Balance"
               ],
               jsonTitleValues: [
-                "name",
+                { name: "name", format: string },
                 "IssueDate",
                 "DueDate",
                 "Balance",
@@ -103,6 +103,7 @@ export default class App extends Component {
       .then(data => {
         let { componentsList: navMenu } = this.state;
         let { paymentsDue } = navMenu.navMenuItems;
+        console.log(data);
         paymentsDue.tableData.data = data;
         paymentsDue.loadingData.dataLoading = false;
         this.setState({ navMenu });
