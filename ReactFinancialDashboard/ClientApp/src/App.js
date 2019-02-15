@@ -82,7 +82,7 @@ export default class App extends Component {
                 "YNAB Account Balance"
               ],
               jsonTitleValues: [
-                { name: "name", format: string },
+                "Name",
                 "IssueDate",
                 "DueDate",
                 "Balance",
