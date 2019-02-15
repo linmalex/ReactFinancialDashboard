@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using ReactFinancialDashboard.Utilities;
+using ReactFinancialDashboard.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ReactFinancialDashboard.Models
 {
-    public class CreditCardStatement
+    public class CreditCardStatement: ILoadingComponentVM
     {
         public int ID { get; set; }
 
