@@ -8,29 +8,22 @@ using Newtonsoft.Json.Linq;
 using ReactFinancialDashboard.Data;
 
 namespace ReactFinancialDashboard.Models {
-    public class Data {
+    public class YnabDataObject {
         public int ID { get; set; }
         public string Server_knowledge { get; set; }
         public DateTime DateRetrieved { get; set; }
 
-        #region Relationship mapping properties
-        public PersonalData PersonalData { get; set; }
-        public ICollection<Month> Months { get; set; }
-        public ICollection<Category_Group> Category_Groups { get; set; }
-        public ICollection<Account> Accounts { get; set; }
-        #endregion
-
         #region Constructors
-        public Data () { }
+        public YnabDataObject () { }
         ///data object to hold all new YNAB data for purposes of obtaining data at startup
-        public Data (ApplicationDbContext context, bool requestAllData) {
+        public YnabDataObject (ApplicationDbContext context, bool requestAllData) {
             string uri = requestAllData ? SetURI_AllTransactions () : SetURI_RecentTransactions (GetLastKnowledge (context.DataObjects.ToList ()));
             JObject transactionsJSON = JsonObject (uri).Result;
             Server_knowledge = JsonToServerKnowledge (transactionsJSON);
             DateRetrieved = DateTime.Now;
         }
 
-        public static string GetLastKnowledge (List<Data> dataObjects) {
+        public static string GetLastKnowledge (List<YnabDataObject> dataObjects) {
             string lastKnowledge = dataObjects.Max (x => x.Server_knowledge);
             return lastKnowledge;
         }

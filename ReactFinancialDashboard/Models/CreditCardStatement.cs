@@ -10,15 +10,15 @@ using System.Threading.Tasks;
 
 namespace ReactFinancialDashboard.Models
 {
-    public class Statement: ILoadingComponentVM
+    public class CreditCardStatement: ILoadingComponentVM
     {
         public int ID { get; set; }
 
         [Column(TypeName = "date"), JsonConverter(typeof(DateConverter))]
-        public DateTime IssueDate { get; set; }
+        public DateTime DueDate { get; set; }
 
         [Column(TypeName = "date"), JsonConverter(typeof(DateConverter))]
-        public DateTime DueDate { get; set; }
+        public DateTime IssueDate { get; set; }
 
         [DataType(DataType.Currency)]
         public double Balance { get; set; }
@@ -28,10 +28,8 @@ namespace ReactFinancialDashboard.Models
 
         public string PaidStatus { get; set; }
 
-        #region Relationship mapping
         public string YnabAccountID { get; set; }
 
-        public virtual CreditCard CreditCard { get; set; }
-        #endregion
+        public virtual YnabAccount YnabAccount { get; set; }
     }
 }
