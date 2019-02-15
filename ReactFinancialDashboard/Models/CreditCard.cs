@@ -10,8 +10,10 @@ namespace ReactFinancialDashboard.Models
     {
         public int ID { get; set; }
 
-        public YnabAccount YnabAccount { get; set; }
+        public string BankName { get; set; }
 
-        public CreditCardStatement Statement { get; set; }
+        public Account YnabAccount { get; set; }
+
+        public Statement Statement { get; set; }
     }
 }

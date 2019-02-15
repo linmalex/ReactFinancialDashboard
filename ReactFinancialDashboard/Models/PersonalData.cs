@@ -11,6 +11,6 @@ namespace ReactFinancialDashboard.Models
 
         public string AuthToken { get; set; }
 
-        public List<YnabAccount> Accounts { get; set; }
+        public List<Data> YnabDatas { get; set; }
     }
 }

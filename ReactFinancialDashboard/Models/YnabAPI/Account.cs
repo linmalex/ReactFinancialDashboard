@@ -12,34 +12,34 @@ using ReactFinancialDashboard.Data;
 using ReactFinancialDashboard.ViewModels;
 
 namespace ReactFinancialDashboard.Models {
-    public class YnabAccount: ILoadingComponentVM
+    public class Account: ILoadingComponentVM
     {
-        #region Properties
+        #region Ynab-defined properties
         public string ID { get; set; }
         public string Name { get; set; }
-        public string Type { get; set; }
-
         [DataType (DataType.Currency)]
         public double Balance { get; set; }
-
         [DataType (DataType.Currency)]
         public double Cleared_balance { get; set; }
-        public string Note { get; set; }
-
         [DataType (DataType.Currency)]
         public double Uncleared_balance { get; set; }
+
+        public string Type { get; set; }
+        public string Note { get; set; }
         public string Transfer_payee_id { get; set; }
         public bool Deleted { get; set; }
         public bool On_budget { get; set; }
         public bool Closed { get; set; }
-
-        public IList<CreditCardStatement> CreditCardStatements { get; set; }
-
-        public PersonalData PersonalData { get; set; }
         #endregion
 
-        public static List<YnabAccount> GetAPIYnabAccountsList (ApplicationDbContext context, int personalBudgetID) {
-            List<YnabAccount> accounts = new List<YnabAccount> ();
+        #region Relationship mapping properties
+        public Data Data { get; set; }
+        public Category Category { get; set; }
+        public CreditCard CreditCard { get; set; }
+        #endregion
+
+        public static List<Account> GetAPIYnabAccountsList (ApplicationDbContext context, int personalBudgetID) {
+            List<Account> accounts = new List<Account> ();
 
             PersonalData personalData = context.PersonalDatas.Where (x => x.ID == personalBudgetID).FirstOrDefault ();
             JToken jsonAccountsData = GetAPIYnabAccountsJSON (personalData).Result["data"]["accounts"];
@@ -47,7 +47,7 @@ namespace ReactFinancialDashboard.Models {
             foreach (JToken jAccount in jsonAccountsData) //item is the account
             {
                 UpdateJAccountValues (jAccount);
-                YnabAccount account = jAccount.ToObject<YnabAccount> ();
+                Account account = jAccount.ToObject<Account> ();
                 account.PersonalData = personalData;
                 accounts.Add (account);
             }
@@ -74,8 +74,8 @@ namespace ReactFinancialDashboard.Models {
         public static void UpdateAccountsDatabase (ApplicationDbContext context, int personalBudgetID) {
             try {
                 using (context) {
-                    List<YnabAccount> accountsList = GetAPIYnabAccountsList(context, personalBudgetID);
-                    foreach (YnabAccount item in accountsList) {
+                    List<Account> accountsList = GetAPIYnabAccountsList(context, personalBudgetID);
+                    foreach (Account item in accountsList) {
                         if (context.YnabAccounts.Contains (item)) {
                             context.Update (item);
                         } else {

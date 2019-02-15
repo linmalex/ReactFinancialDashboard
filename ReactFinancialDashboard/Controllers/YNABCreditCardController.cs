@@ -21,7 +21,7 @@ namespace ReactFinancialDashboard.Controllers
         public string DbYNABAccountsJson()
         {
             ApplicationDbContext context = _context;
-            List<YnabAccount> serverAccounts = context.YnabAccounts.ToList();
+            List<Account> serverAccounts = context.YnabAccounts.ToList();
             string json = JsonConvert.SerializeObject(serverAccounts);
             return json;
         }
@@ -30,12 +30,12 @@ namespace ReactFinancialDashboard.Controllers
         public string ServerStatements()
         {
             ApplicationDbContext context = _context;
-            List<CreditCardStatement> statements = context.CreditCardStatements.ToList();
+            List<Statement> statements = context.CreditCardStatements.ToList();
             return JsonConvert.SerializeObject(statements);
         }
 
         [HttpPost("[action]")]
-        public IActionResult CreateStatement([FromForm] CreditCardStatement statement)
+        public IActionResult CreateStatement([FromForm] Statement statement)
         {
             ApplicationDbContext context = _context;
             statement.PaidStatus = "Unpaid";
@@ -48,7 +48,7 @@ namespace ReactFinancialDashboard.Controllers
         [HttpGet("[action]")]
         public ActionResult GetNewYnabData()
         {
-            YnabAccount.UpdateAccountsDatabase(_context, 1);
+            Account.UpdateAccountsDatabase(_context, 1);
             JsonResult result = new JsonResult("Success");
             return result;
         }
