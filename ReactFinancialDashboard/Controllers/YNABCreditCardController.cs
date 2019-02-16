@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ReactFinancialDashboard.Data;
 using ReactFinancialDashboard.Models;
-using ReactFinancialDashboard.ViewModels;
 
 namespace ReactFinancialDashboard.Controllers
 {
@@ -52,15 +51,6 @@ namespace ReactFinancialDashboard.Controllers
             YnabAccount.UpdateAccountsDatabase(_context, 1);
             JsonResult result = new JsonResult("Success");
             return result;
-        }
-
-        [HttpGet("[action]")]
-        public string GetAppData()
-        {
-            string statementData = ServerStatements();
-            string accountData = DbYNABAccountsJson();
-            AppVM viemodel = new AppVM(statementData, accountData);
-            return JsonConvert.SerializeObject(viemodel);
         }
     }
 }
