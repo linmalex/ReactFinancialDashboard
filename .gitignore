@@ -260,4 +260,3 @@ paket-files/
 __pycache__/
 *.pyc
 insert-into-personaldata.sql
-/ReactFinancialDashboard/Data/sqlQueries
