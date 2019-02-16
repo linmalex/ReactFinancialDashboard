@@ -9,11 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ReactFinancialDashboard.Data;
-using ReactFinancialDashboard.ViewModels;
 
 namespace ReactFinancialDashboard.Models {
-    public class YnabAccount: ILoadingComponentVM
-    {
+    public class YnabAccount {
         #region Properties
         public string ID { get; set; }
         public string Name { get; set; }
