@@ -118,6 +118,13 @@ export default class App extends Component {
         ynabAccounts.loadingData.dataLoading = false;
         this.setState({ navMenu });
       });
+
+    fetch("api/YNABCreditCard/GetAppData")
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        console.log(this.state);
+      });
   }
 
   renderRouteItems() {

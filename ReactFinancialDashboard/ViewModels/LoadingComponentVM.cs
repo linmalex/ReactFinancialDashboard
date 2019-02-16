@@ -10,8 +10,15 @@ namespace ReactFinancialDashboard.ViewModels
         public string NavDisplayValue { get; set; }
         public string RoutePath { get; set; }
         public string Glyph { get; set; }
-        public string[] LoadingData { get; set; }
-        public string[] TableData { get; set; }
+        public string Data { get; set; }
+
+        public LoadingData LoadingData { get; set; }
+        public TableData TableData { get; set; }
+
+        public LoadingComponentVM()
+        {
+
+        }
 
         List<ILoadingComponentVM> LoadingComponents { get; set; }
     }
