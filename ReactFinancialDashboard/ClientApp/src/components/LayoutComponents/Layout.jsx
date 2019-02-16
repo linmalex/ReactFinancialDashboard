@@ -11,7 +11,7 @@ export class Layout extends Component {
         <Row>
           <Col sm={3}>
             <NavMenu
-              navMenu={this.props.navMenu}
+              componentsList={this.props.componentsList}
               getYnabData={this.props.getYnabData}
             />
           </Col>

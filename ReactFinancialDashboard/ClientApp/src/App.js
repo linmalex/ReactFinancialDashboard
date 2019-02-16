@@ -17,79 +17,77 @@ export default class App extends Component {
           navDisplayValues: "Lindsay's Financial Dashboard",
           routePath: "/"
         },
-        navMenuItems: {
-          paymentsDue: {
-            navDisplayValues: "Payments Due",
-            routePath: "/paymentsdue",
-            glyph: "inbox",
-            loadingData: {
-              pageTitle: "Credit Card Statements",
-              dataLoading: true
-            },
-            tableData: {
-              data: [],
-              columnDisplayTitles: [
-                "Statement Date",
-                "Payment Due Date",
-                "Statement Balance",
-                "Minimum Payment",
-                "Paid Status"
-              ],
-              jsonTitleValues: [
-                "IssueDate",
-                "DueDate",
-                "Balance",
-                "MinPayment",
-                "PaidStatus"
-              ]
-            }
+        paymentsDue: {
+          navDisplayValues: "Payments Due",
+          routePath: "/paymentsdue",
+          glyph: "inbox",
+          loadingData: {
+            pageTitle: "Credit Card Statements",
+            dataLoading: true
           },
-          ynabAccounts: {
-            navDisplayValues: "Ynab Accounts",
-            routePath: "/ynabaccountbalances",
-            glyph: "piggy-bank",
-            loadingData: {
-              pageTitle: "Ynab Account Balances",
-              dataLoading: true
-            },
-            tableData: {
-              data: [],
-              columnDisplayTitles: [
-                "Account Name",
-                "Account Balance",
-                "Account Type"
-              ],
-              jsonTitleValues: ["Name", "Balance", "Type"]
-            }
+          tableData: {
+            data: [],
+            columnDisplayTitles: [
+              "Statement Date",
+              "Payment Due Date",
+              "Statement Balance",
+              "Minimum Payment",
+              "Paid Status"
+            ],
+            jsonTitleValues: [
+              "IssueDate",
+              "DueDate",
+              "Balance",
+              "MinPayment",
+              "PaidStatus"
+            ]
+          }
+        },
+        ynabAccounts: {
+          navDisplayValues: "Ynab Accounts",
+          routePath: "/ynabaccountbalances",
+          glyph: "piggy-bank",
+          loadingData: {
+            pageTitle: "Ynab Account Balances",
+            dataLoading: true
           },
-          creditCards: {
-            navDisplayValues: "Credit Card",
-            routePath: "/creditcard",
-            glyph: "credit-card",
-            loadingData: {
-              pageTitle: "Full Credit Card Data",
-              //todo change this back to true later
-              dataLoading: false
-            },
-            tableData: {
-              data: [],
-              columnDisplayTitles: [
-                "Account Name",
-                "Statement Date",
-                "Payment Due Date",
-                "Statement Balance",
-                "Minimum Payment",
-                "YNAB Account Balance"
-              ],
-              jsonTitleValues: [
-                "Name",
-                "IssueDate",
-                "DueDate",
-                "Balance",
-                "MinPayment",
-                "balance"
-              ]
-            }
+          tableData: {
+            data: [],
+            columnDisplayTitles: [
+              "Account Name",
+              "Account Balance",
+              "Account Type"
+            ],
+            jsonTitleValues: ["Name", "Balance", "Type"]
+          }
+        },
+        creditCards: {
+          navDisplayValues: "Credit Card",
+          routePath: "/creditcard",
+          glyph: "credit-card",
+          loadingData: {
+            pageTitle: "Full Credit Card Data",
+            //todo change this back to true later
+            dataLoading: false
+          },
+          tableData: {
+            data: [],
+            columnDisplayTitles: [
+              "Account Name",
+              "Statement Date",
+              "Payment Due Date",
+              "Statement Balance",
+              "Minimum Payment",
+              "YNAB Account Balance"
+            ],
+            jsonTitleValues: [
+              "Name",
+              "IssueDate",
+              "DueDate",
+              "Balance",
+              "MinPayment",
+              "balance"
+            ]
           }
         }
       }
@@ -101,19 +99,18 @@ export default class App extends Component {
     fetch("api/YNABCreditCard/ServerStatements")
       .then(response => response.json())
       .then(data => {
-        let { componentsList: navMenu } = this.state;
-        let { paymentsDue } = navMenu.navMenuItems;
-        console.log(data);
+        let { paymentsDue } = this.state.componentsList;
         paymentsDue.tableData.data = data;
         paymentsDue.loadingData.dataLoading = false;
-        this.setState({ navMenu });
+        this.setState({ paymentsDue });
+        console.log(paymentsDue);
       });
 
     fetch("api/YNABCreditCard/DbYNABAccountsJson")
       .then(response => response.json())
       .then(data => {
         let { componentsList: navMenu } = this.state;
-        let { ynabAccounts } = navMenu.navMenuItems;
+        let { ynabAccounts } = navMenu;
         ynabAccounts.tableData.data = data;
         ynabAccounts.loadingData.dataLoading = false;
         this.setState({ navMenu });
@@ -121,7 +118,8 @@ export default class App extends Component {
   }
 
   renderRouteItems() {
-    const components = this.state.componentsList.navMenuItems;
+    let { paymentsDue, ynabAccounts, creditCards } = this.state.componentsList;
+    const components = { paymentsDue, ynabAccounts, creditCards };
     let componentList = [];
 
     for (let item in components) {
@@ -158,7 +156,7 @@ export default class App extends Component {
     let components = this.renderRouteItems();
     return (
       <Layout
-        navMenu={this.state.componentsList}
+        componentsList={this.state.componentsList}
         getYnabData={this.getNewYnabData}
       >
         {components}

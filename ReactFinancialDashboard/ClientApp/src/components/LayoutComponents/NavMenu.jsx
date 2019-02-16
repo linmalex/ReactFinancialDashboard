@@ -9,7 +9,12 @@ export class NavMenu extends Component {
   displayName = NavMenu.name;
 
   renderNavMenu = () => {
-    let { navMenuItems } = this.props.navMenu;
+    let { paymentsDue, ynabAccounts, creditCards } = this.props.componentsList;
+    let navMenuItems = {
+      paymentsDue,
+      ynabAccounts,
+      creditCards
+    };
     let navMenu = [];
     for (let item in navMenuItems) {
       let component = navMenuItems[item];
@@ -27,7 +32,7 @@ export class NavMenu extends Component {
   };
 
   render() {
-    let { navMenuHeader } = this.props.navMenu;
+    let { navMenuHeader } = this.props.componentsList;
     return (
       <Navbar inverse fixedTop fluid collapseOnSelect>
         <Navbar.Header>
