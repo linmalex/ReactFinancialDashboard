@@ -22,6 +22,7 @@ namespace ReactFinancialDashboard.Models {
             Server_knowledge = JsonToServerKnowledge (transactionsJSON);
             DateRetrieved = DateTime.Now;
         }
+        #endregion
 
         public static string GetLastKnowledge (List<YnabDataObject> dataObjects) {
             string lastKnowledge = dataObjects.Max (x => x.Server_knowledge);
@@ -63,6 +64,5 @@ namespace ReactFinancialDashboard.Models {
             return uri;
         }
 
-        #endregion
     }
 }
