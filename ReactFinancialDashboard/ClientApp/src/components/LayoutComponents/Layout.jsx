@@ -6,12 +6,15 @@ export class Layout extends Component {
   displayName = Layout.name;
 
   render() {
+    console.log;
     return (
       <Grid fluid>
         <Row>
           <Col sm={3}>
             <NavMenu
               componentsList={this.props.componentsList}
+              navDisplayValues={this.props.navDisplayValues}
+              routePath={this.props.routePath}
               getYnabData={this.props.getYnabData}
             />
           </Col>

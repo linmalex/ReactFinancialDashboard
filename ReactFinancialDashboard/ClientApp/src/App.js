@@ -12,11 +12,9 @@ export default class App extends Component {
     super(props);
     this.state = {
       currentBudgetID: "ee4a0a66-fa5a-4838-9ab4-3f8f3f2103ed",
+      navDisplayValues: "Lindsay's Financial Dashboard",
+      routePath: "/",
       componentsList: {
-        navMenuHeader: {
-          navDisplayValues: "Lindsay's Financial Dashboard",
-          routePath: "/"
-        },
         paymentsDue: {
           navDisplayValues: "Payments Due",
           routePath: "/paymentsdue",
@@ -103,7 +101,6 @@ export default class App extends Component {
         paymentsDue.tableData.data = data;
         paymentsDue.loadingData.dataLoading = false;
         this.setState({ paymentsDue });
-        console.log(paymentsDue);
       });
 
     fetch("api/YNABCreditCard/DbYNABAccountsJson")
@@ -115,11 +112,17 @@ export default class App extends Component {
         ynabAccounts.loadingData.dataLoading = false;
         this.setState({ navMenu });
       });
+
+    // fetch("api/YNABCreditCard/RenderState")
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     // console.log("hello", data);
+    //     // this.setState(data);
+    //   });
   }
 
   renderRouteItems() {
-    let { paymentsDue, ynabAccounts, creditCards } = this.state.componentsList;
-    const components = { paymentsDue, ynabAccounts, creditCards };
+    const components = this.state.componentsList;
     let componentList = [];
 
     for (let item in components) {
@@ -147,9 +150,7 @@ export default class App extends Component {
   getNewYnabData = () => {
     fetch("api/YNABCreditCard/GetNewYnabData")
       .then(response => response.json())
-      .then(data => {
-        console.log(data);
-      });
+      .then(data => {});
   };
 
   render() {
@@ -157,6 +158,8 @@ export default class App extends Component {
     return (
       <Layout
         componentsList={this.state.componentsList}
+        navDisplayValues={this.state.navDisplayValues}
+        routePath={this.state.routePath}
         getYnabData={this.getNewYnabData}
       >
         {components}

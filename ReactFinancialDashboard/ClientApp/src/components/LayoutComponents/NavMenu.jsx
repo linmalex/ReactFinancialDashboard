@@ -32,14 +32,12 @@ export class NavMenu extends Component {
   };
 
   render() {
-    let { navMenuHeader } = this.props.componentsList;
+    let { navDisplayValues, routePath } = this.props;
     return (
       <Navbar inverse fixedTop fluid collapseOnSelect>
         <Navbar.Header>
           <Navbar.Brand>
-            <Link to={navMenuHeader.routePath}>
-              {navMenuHeader.navDisplayValues}
-            </Link>
+            <Link to={routePath}>{navDisplayValues}</Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
