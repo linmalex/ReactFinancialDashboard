@@ -9,6 +9,7 @@ export class Table extends Component {
 
     return null;
   }
+  //! not recognizing x as a mapable object, will need to find another way to populate this
   // render() {
   //   var charlies = this.props.tableData.data;
   //   console.log(charlies);
