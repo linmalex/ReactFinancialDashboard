@@ -13,15 +13,16 @@ export default class App extends Component {
     this.state = {
       loading: true
     };
+
     this.getInitialState();
   }
 
   getInitialState = () => {
     fetch("api/YNABCreditCard/RenderState")
       .then(response => response.json())
-      .then(data => this.setState({ serverComponentsList: data, loading:false }));
+      .then(data => this.setState({ serverData: data, loading: false }));
   };
-
+  //todo refactor into C# side dataloading
   getServerStatements = () => {
     fetch("api/YNABCreditCard/ServerStatements")
       .then(response => response.json())
@@ -29,37 +30,40 @@ export default class App extends Component {
         // console.log(data);
       });
   };
-
+  //todo refactor into C# side dataloading
   getLocalYnabData = () => {
     fetch("api/YNABCreditCard/DbYNABAccountsJson")
       .then(response => response.json())
       .then(data => {
-        // console.log(data);
+        let ynabAccounts = this.state.serverData.componentsList[1].tableData
+          .data;
+        this.setState({ ynabAccounts: data });
       });
   };
 
   renderLayoutComponents() {
-    const components = this.state.serverComponentsList.componentsList; //manually created components list
-    let componentList = []; //empty array to hold rendered LoadingComponents
-    for (let item in components) {
-      const currentItem = components[item]; //current working item from state data
+    const componentData = this.state.serverData.componentsList;
+    let renderedComponents = []; //empty array to hold rendered LoadingComponents
+
+    for (let i in componentData) {
+      const currentDataItem = componentData[i];
       let routeItem = (
         <Route
           key={Math.random() * 10}
           exact
-          path={currentItem.routePath}
+          path={currentDataItem.routePath}
           render={props => (
             <LoadingComponent
-              loadingData={currentItem.loadingData}
-              tableData={currentItem.tableData}
+              loadingData={currentDataItem.loadingData}
+              tableData={currentDataItem.tableData}
               {...props}
             />
           )}
         />
       );
-      componentList.push(routeItem);
+      renderedComponents.push(routeItem);
     }
-    return componentList;
+    return renderedComponents;
   }
 
   getNewYnabData = () => {
@@ -70,7 +74,7 @@ export default class App extends Component {
 
   render() {
     return this.state.loading ? (
-      <p>"Loading</p>
+      <p>Loading</p>
     ) : (
       <Layout appstate={this.state} getYnabData={this.getNewYnabData}>
         {this.renderLayoutComponents()}

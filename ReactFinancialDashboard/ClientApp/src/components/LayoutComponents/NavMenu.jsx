@@ -9,12 +9,12 @@ export class NavMenu extends Component {
   displayName = NavMenu.name;
 
   renderNavMenu = () => {
-    let { componentsList } = this.props;
+    let { serverData } = this.props;
     let navMenu = [];
 
-    for (let item in componentsList) {
-      let component = componentsList[item];
-      let container = (
+    for (let i in serverData.componentsList) {
+      let component = serverData.componentsList[i];
+      let linkContainer = (
         <LinkContainer key={Math.random() * 10} to={component.routePath}>
           <NavItem>
             <Glyphicon glyph={component.glyph} />
@@ -22,13 +22,13 @@ export class NavMenu extends Component {
           </NavItem>
         </LinkContainer>
       );
-      navMenu.push(container);
+      navMenu.push(linkContainer);
     }
     return navMenu;
   };
 
   render() {
-    let { navDisplayValues, routePath } = this.props;
+    let { navDisplayValues, routePath } = this.props.serverData;
     return (
       <Navbar inverse fixedTop fluid collapseOnSelect>
         <Navbar.Header>
