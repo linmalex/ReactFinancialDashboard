@@ -9,11 +9,11 @@ export class NavMenu extends Component {
   displayName = NavMenu.name;
 
   renderNavMenu = () => {
-    let navMenuItems = this.props.componentsList;
-
+    let { componentsList } = this.props;
     let navMenu = [];
-    for (let item in navMenuItems) {
-      let component = navMenuItems[item];
+
+    for (let item in componentsList) {
+      let component = componentsList[item];
       let container = (
         <LinkContainer key={Math.random() * 10} to={component.routePath}>
           <NavItem>
@@ -43,7 +43,7 @@ export class NavMenu extends Component {
               buttonType={"getYnabData"}
               getYnabData={this.props.getYnabData}
             />
-            {/* {this.renderNavMenu()} */}
+            {this.renderNavMenu()}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

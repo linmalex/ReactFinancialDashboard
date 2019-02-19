@@ -8,9 +8,6 @@ namespace ReactFinancialDashboard.ViewModels
 {
     public partial class DataVM
     {
-        [JsonProperty("loading")]
-        public bool Loading { get; set; }
-
         [JsonProperty("currentBudgetID")]
         public string CurrentBudgetId { get; set; }
 
@@ -23,7 +20,7 @@ namespace ReactFinancialDashboard.ViewModels
         [JsonProperty("componentsList")]
         public List<LoadingComponent> ComponentsList { get; set; }
 
-        public DataVM()
+        public DataVM(string YnabData)
         {
             Loading = false;
             CurrentBudgetId = "ee4a0a66-fa5a-4838-9ab4-3f8f3f2103ed";
@@ -31,9 +28,9 @@ namespace ReactFinancialDashboard.ViewModels
             RoutePath = "/";
             ComponentsList = new List<LoadingComponent>()
             {
-                new LoadingComponent("paymentsDue"),
-                new LoadingComponent("ynabAccounts"),
-                new LoadingComponent("creditCards")
+                new LoadingComponent("paymentsDue", YnabData),
+                new LoadingComponent("ynabAccounts", YnabData),
+                new LoadingComponent("creditCards", YnabData)
 
             };
         }
@@ -57,7 +54,7 @@ namespace ReactFinancialDashboard.ViewModels
         [JsonProperty("tableData")]
         public TableData TableData { get; set; }
 
-        public LoadingComponent(string type)
+        public LoadingComponent(string type, string YnabData)
         {
             if (type == "paymentsDue")
             {
@@ -99,17 +96,17 @@ namespace ReactFinancialDashboard.ViewModels
             if (type == "paymentsDue")
             {
                 PageTitle = "Credit Card Statements";
-                DataLoading = true;
+                DataLoading = false;
             }
             else if (type == "ynabAccounts")
             {
                 PageTitle = "Ynab Account Balances";
-                DataLoading = true;
+                DataLoading = false;
             }
             else if (type == "creditCards")
             {
                 PageTitle = "Full Credit Card Data";
-                DataLoading = true;
+                DataLoading = false;
             }
         }
     }
@@ -121,6 +118,9 @@ namespace ReactFinancialDashboard.ViewModels
 
         [JsonProperty("jsonTitleValues")]
         public string[] JsonTitleValues { get; set; }
+
+        [JsonProperty("data")]
+        public string[] Data { get; set; }
 
         public TableData(string type)
         {
@@ -153,6 +153,7 @@ namespace ReactFinancialDashboard.ViewModels
                 {
                         "Name", "Balance", "Type"
                 };
+
             }
             else if (type == "creditCards")
             {

@@ -50,7 +50,7 @@ namespace ReactFinancialDashboard.Controllers
         [HttpGet("[action]")]
         public ActionResult GetNewYnabData()
         {
-            YnabAccount.UpdateAccountsDatabase(_context, 2);
+            YnabAccount.UpdateAccountsDatabase(_context, 1);
             JsonResult result = new JsonResult("Success");
             return result;
         }
@@ -58,7 +58,8 @@ namespace ReactFinancialDashboard.Controllers
         [HttpGet("[action]")]
         public string RenderState()
         {
-            DataVM data = new DataVM();
+            string ynabData = DbYNABAccountsJson();
+            DataVM data = new DataVM(ynabData);
             string data1 = JsonConvert.SerializeObject(data);
             return data1;
         }
