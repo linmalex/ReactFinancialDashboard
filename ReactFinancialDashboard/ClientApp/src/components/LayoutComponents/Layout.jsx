@@ -6,7 +6,6 @@ export class Layout extends Component {
   displayName = Layout.name;
 
   render() {
-    console.log;
     return (
       <Grid fluid>
         <Row>

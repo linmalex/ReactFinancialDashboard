@@ -8,6 +8,9 @@ namespace ReactFinancialDashboard.ViewModels
 {
     public partial class DataVM
     {
+        [JsonProperty("loading")]
+        public bool Loading { get; set; }
+
         [JsonProperty("currentBudgetID")]
         public string CurrentBudgetId { get; set; }
 
@@ -22,6 +25,7 @@ namespace ReactFinancialDashboard.ViewModels
 
         public DataVM()
         {
+            Loading = false;
             CurrentBudgetId = "ee4a0a66-fa5a-4838-9ab4-3f8f3f2103ed";
             NavDisplayValues = "Lindsay's Financial Dashboard";
             RoutePath = "/";

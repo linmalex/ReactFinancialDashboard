@@ -50,7 +50,7 @@ namespace ReactFinancialDashboard.Controllers
         [HttpGet("[action]")]
         public ActionResult GetNewYnabData()
         {
-            YnabAccount.UpdateAccountsDatabase(_context, 1);
+            YnabAccount.UpdateAccountsDatabase(_context, 2);
             JsonResult result = new JsonResult("Success");
             return result;
         }

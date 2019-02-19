@@ -9,12 +9,8 @@ export class NavMenu extends Component {
   displayName = NavMenu.name;
 
   renderNavMenu = () => {
-    let { paymentsDue, ynabAccounts, creditCards } = this.props.componentsList;
-    let navMenuItems = {
-      paymentsDue,
-      ynabAccounts,
-      creditCards
-    };
+    let navMenuItems = this.props.componentsList;
+
     let navMenu = [];
     for (let item in navMenuItems) {
       let component = navMenuItems[item];
@@ -47,7 +43,7 @@ export class NavMenu extends Component {
               buttonType={"getYnabData"}
               getYnabData={this.props.getYnabData}
             />
-            {this.renderNavMenu()}
+            {/* {this.renderNavMenu()} */}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

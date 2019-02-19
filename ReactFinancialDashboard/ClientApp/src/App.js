@@ -11,6 +11,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
       currentBudgetID: "ee4a0a66-fa5a-4838-9ab4-3f8f3f2103ed",
       navDisplayValues: "Lindsay's Financial Dashboard",
       routePath: "/",
@@ -58,41 +59,13 @@ export default class App extends Component {
             ],
             jsonTitleValues: ["Name", "Balance", "Type"]
           }
-        },
-        creditCards: {
-          navDisplayValues: "Credit Card",
-          routePath: "/creditcard",
-          glyph: "credit-card",
-          loadingData: {
-            pageTitle: "Full Credit Card Data",
-            //todo change this back to true later
-            dataLoading: false
-          },
-          tableData: {
-            data: [],
-            columnDisplayTitles: [
-              "Account Name",
-              "Statement Date",
-              "Payment Due Date",
-              "Statement Balance",
-              "Minimum Payment",
-              "YNAB Account Balance"
-            ],
-            jsonTitleValues: [
-              "Name",
-              "IssueDate",
-              "DueDate",
-              "Balance",
-              "MinPayment",
-              "balance"
-            ]
-          }
         }
       }
     };
+    this.getInitialState();
   }
   // todo renderStatements() {}
-
+  //* uses componentWillMount to call .NET controller method to get local server statements and local Ynab accounts
   componentWillMount() {
     fetch("api/YNABCreditCard/ServerStatements")
       .then(response => response.json())
@@ -112,21 +85,13 @@ export default class App extends Component {
         ynabAccounts.loadingData.dataLoading = false;
         this.setState({ navMenu });
       });
-
-    // fetch("api/YNABCreditCard/RenderState")
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     // console.log("hello", data);
-    //     // this.setState(data);
-    //   });
   }
-
-  renderRouteItems() {
-    const components = this.state.componentsList;
-    let componentList = [];
-
+  //* uses this.state.componentsList to render Route and LoadingComponents
+  renderLayoutComponents() {
+    const components = this.state.componentsList; //manually created components list
+    let componentList = []; //empty array to hold rendered LoadingComponents
     for (let item in components) {
-      const currentItem = components[item];
+      const currentItem = components[item]; //current working item from state data
       let routeItem = (
         <Route
           key={Math.random() * 10}
@@ -143,27 +108,47 @@ export default class App extends Component {
       );
       componentList.push(routeItem);
     }
-
     return componentList;
   }
-
+  //*called on button click to call .NET controller method
   getNewYnabData = () => {
     fetch("api/YNABCreditCard/GetNewYnabData")
       .then(response => response.json())
       .then(data => {});
   };
+  //*get initial state from .NET controller
+  getInitialState = () => {
+    fetch("api/YNABCreditCard/RenderState")
+      .then(response => response.json())
+      .then(data =>
+        this.setState({ serverComponentsList: data, loading: false })
+      );
+  };
 
   render() {
-    let components = this.renderRouteItems();
-    return (
+    var renderData = this.state.loading ? (
       <Layout
         componentsList={this.state.componentsList}
         navDisplayValues={this.state.navDisplayValues}
         routePath={this.state.routePath}
         getYnabData={this.getNewYnabData}
+        newStateData={this.serverComponentsList}
       >
-        {components}
+        {this.renderLayoutComponents()}
+      </Layout>
+    ) : (
+      <Layout
+        componentsList={this.state.serverComponentsList} //* change this one
+        navDisplayValues={this.state.navDisplayValues}
+        routePath={this.state.routePath}
+        getYnabData={this.getNewYnabData}
+      >
+        {this.renderLayoutComponents()}
       </Layout>
     );
+
+    console.log(this.state.serverComponentsList);
+
+    return renderData;
   }
 }
