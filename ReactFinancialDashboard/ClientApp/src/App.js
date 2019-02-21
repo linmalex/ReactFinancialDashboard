@@ -15,6 +15,8 @@ export default class App extends Component {
     };
 
     this.getInitialState();
+    this.getLocalYnabData();
+    this.getServerStatements();
   }
 
   //#region //* Server Calls -----------------------------------------------------------------------
@@ -66,7 +68,7 @@ export default class App extends Component {
       <p>Loading</p>
     ) : (
       <Layout appstate={this.state} getYnabData={this.getNewYnabData}>
-        {this.generateLoadingComponents()}
+        {/* {this.generateLoadingComponents()} */}
       </Layout>
     );
   }
@@ -77,16 +79,18 @@ export default class App extends Component {
     fetch("api/YNABCreditCard/ServerStatements")
       .then(response => response.json())
       .then(data => {
-        // console.log(data);
+        let { serverData } = this.state;
+        serverData.componentsList[0].data = data;
+        this.setState({ serverData });
       });
   };
   getLocalYnabData = () => {
     fetch("api/YNABCreditCard/DbYNABAccountsJson")
       .then(response => response.json())
       .then(data => {
-        let ynabAccounts = this.state.serverData.componentsList[1].tableData
-          .data;
-        this.setState({ ynabAccounts: data });
+        let { serverData } = this.state;
+        serverData.componentsList[1].data = data;
+        this.setState({ serverData });
       });
   };
   //#endregion
