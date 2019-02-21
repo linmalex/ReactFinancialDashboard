@@ -15,8 +15,8 @@ export default class App extends Component {
     };
 
     this.getInitialState();
-    this.getLocalYnabData();
-    this.getServerStatements();
+    // this.getLocalYnabData();
+    // this.getServerStatements();
   }
 
   //#region //* Server Calls -----------------------------------------------------------------------
@@ -24,7 +24,31 @@ export default class App extends Component {
   getInitialState = () => {
     fetch("api/YNABCreditCard/RenderState")
       .then(response => response.json())
-      .then(data => this.setState({ serverData: data, loading: false }));
+      .then(data => this.setState({ serverData: data, loading: false }))
+      .then(this.getServerStatements(), this.getLocalYnabData());
+  };
+
+  //* Calls to server to set data for 0th item in serverData.componentList
+  //! should be refactored to be less dependent on hard coded array position
+  getServerStatements = () => {
+    fetch("api/YNABCreditCard/ServerStatements")
+      .then(response => response.json())
+      .then(data => {
+        let { serverData } = this.state;
+        serverData.componentsList[0].data = data;
+        this.setState({ serverData });
+      });
+  };
+  //* Calls to server to set data for 1st item in serverData.componentList
+  //! should be refactored to be less dependent on hard coded array position
+  getLocalYnabData = () => {
+    fetch("api/YNABCreditCard/DbYNABAccountsJson")
+      .then(response => response.json())
+      .then(data => {
+        let { serverData } = this.state;
+        serverData.componentsList[1].data = data;
+        this.setState({ serverData });
+      });
   };
 
   //* button called when button is clicked. Makes call to YNAB API, updates local server with new data.
@@ -44,6 +68,15 @@ export default class App extends Component {
 
     for (let i in componentData) {
       const currentDataItem = componentData[i];
+      let {
+        dataLoading,
+        pageTitle,
+        columnDisplayTitles,
+        data,
+        jsonTitleValues
+      } = currentDataItem;
+      let loadingData = { dataLoading, pageTitle };
+      let tableData = { columnDisplayTitles, data, jsonTitleValues };
       let routeItem = (
         <Route
           key={Math.random() * 10}
@@ -51,8 +84,8 @@ export default class App extends Component {
           path={currentDataItem.routePath}
           render={props => (
             <LoadingComponent
-              loadingData={currentDataItem.loadingData}
-              tableData={currentDataItem.tableData}
+              loadingData={loadingData}
+              tableData={tableData}
               {...props}
             />
           )}
@@ -64,34 +97,16 @@ export default class App extends Component {
   }
 
   render() {
-    return this.state.loading ? (
-      <p>Loading</p>
-    ) : (
-      <Layout appstate={this.state} getYnabData={this.getNewYnabData}>
-        {/* {this.generateLoadingComponents()} */}
-      </Layout>
-    );
-  }
-  //#endregion
+    var layout;
+    this.state.loading
+      ? (layout = <p>Loading</p>)
+      : (layout = (
+          <Layout appstate={this.state} getYnabData={this.getNewYnabData}>
+            {this.generateLoadingComponents()}
+          </Layout>
+        ));
 
-  //#region //! to be refactored -----------------------------------------------------------------------
-  getServerStatements = () => {
-    fetch("api/YNABCreditCard/ServerStatements")
-      .then(response => response.json())
-      .then(data => {
-        let { serverData } = this.state;
-        serverData.componentsList[0].data = data;
-        this.setState({ serverData });
-      });
-  };
-  getLocalYnabData = () => {
-    fetch("api/YNABCreditCard/DbYNABAccountsJson")
-      .then(response => response.json())
-      .then(data => {
-        let { serverData } = this.state;
-        serverData.componentsList[1].data = data;
-        this.setState({ serverData });
-      });
-  };
+    return layout;
+  }
   //#endregion
 }

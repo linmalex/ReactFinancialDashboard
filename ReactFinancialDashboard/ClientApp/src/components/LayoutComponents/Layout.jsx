@@ -10,7 +10,10 @@ export class Layout extends Component {
       <Grid fluid>
         <Row>
           <Col sm={3}>
-            <NavMenu />
+            <NavMenu
+              serverData={this.props.appstate.serverData}
+              getYnabData={this.props.getYnabData}
+            />
           </Col>
           <Col sm={9}>{this.props.children}</Col>
         </Row>

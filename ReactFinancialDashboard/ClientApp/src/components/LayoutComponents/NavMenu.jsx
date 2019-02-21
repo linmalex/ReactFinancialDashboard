@@ -18,7 +18,7 @@ export class NavMenu extends Component {
         <LinkContainer key={Math.random() * 10} to={component.routePath}>
           <NavItem>
             <Glyphicon glyph={component.glyph} />
-            {component.navDisplayValues}
+            {component.navDisplayValue}
           </NavItem>
         </LinkContainer>
       );
@@ -46,7 +46,9 @@ export class NavMenu extends Component {
       <Navbar inverse fixedTop fluid collapseOnSelect>
         <Navbar.Header>
           <Navbar.Brand>
-            <Link to={"/"}>Header Value</Link>
+            <Link to={this.props.serverData.homeRoutePath}>
+              {this.props.serverData.navbarTitle}
+            </Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
@@ -56,8 +58,7 @@ export class NavMenu extends Component {
               buttonType={"getYnabData"}
               getYnabData={this.props.getYnabData}
             />
-            //! temporary
-            {this.renderTempNav()}
+            {this.renderNavMenu()}
           </Nav>
         </Navbar.Collapse>
       </Navbar>
