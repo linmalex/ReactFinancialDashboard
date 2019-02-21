@@ -27,13 +27,26 @@ export class NavMenu extends Component {
     return navMenu;
   };
 
+  renderTempNav() {
+    let routePath = "/";
+    let navDisplayValue = "Component Nav Display Value";
+    let glyph = "inbox";
+    return (
+      <LinkContainer key={Math.random() * 10} to={routePath}>
+        <NavItem>
+          <Glyphicon glyph={glyph} />
+          {navDisplayValue}
+        </NavItem>
+      </LinkContainer>
+    );
+  }
+
   render() {
-    let { navDisplayValues, routePath } = this.props.serverData;
     return (
       <Navbar inverse fixedTop fluid collapseOnSelect>
         <Navbar.Header>
           <Navbar.Brand>
-            <Link to={routePath}>{navDisplayValues}</Link>
+            <Link to={"/"}>Header Value</Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
@@ -43,7 +56,8 @@ export class NavMenu extends Component {
               buttonType={"getYnabData"}
               getYnabData={this.props.getYnabData}
             />
-            {this.renderNavMenu()}
+            //! temporary
+            {this.renderTempNav()}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

@@ -1,171 +1,126 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using ReactFinancialDashboard.Controllers;
+using ReactFinancialDashboard.Data;
+using ReactFinancialDashboard.Models;
 
-namespace ReactFinancialDashboard.ViewModels
-{
-    public partial class DataVM
-    {
-        [JsonProperty("currentBudgetID")]
+namespace ReactFinancialDashboard.ViewModels {
+    public partial class DataVM {
+        [JsonProperty ("currentBudgetID")]
         public string CurrentBudgetId { get; set; }
 
-        [JsonProperty("navDisplayValues")]
-        public string NavDisplayValues { get; set; }
+        [JsonProperty ("navbarTitle")]
+        public string NavbarTitle { get; set; }
 
-        [JsonProperty("routePath")]
-        public string RoutePath { get; set; }
+        [JsonProperty ("homeRoutePath")]
+        public string HomeRoutePath { get; set; }
 
-        [JsonProperty("componentsList")]
+        [JsonProperty ("componentsList")]
         public List<LoadingComponent> ComponentsList { get; set; }
 
-        public DataVM(string YnabData)
-        {
+        public DataVM (string[] ynabAccountsJson) {
             CurrentBudgetId = "ee4a0a66-fa5a-4838-9ab4-3f8f3f2103ed";
-            NavDisplayValues = "Lindsay's Financial Dashboard";
-            RoutePath = "/";
-            ComponentsList = new List<LoadingComponent>()
-            {
-                new LoadingComponent("paymentsDue", YnabData),
-                new LoadingComponent("ynabAccounts", YnabData),
-                new LoadingComponent("creditCards", YnabData)
-
+            NavbarTitle = "Lindsay's Financial Dashboard";
+            HomeRoutePath = "/";
+            ComponentsList = new List<LoadingComponent> () {
+                new LoadingComponent ("paymentsDue", ynabAccountsJson),
+                new LoadingComponent ("ynabAccounts", ynabAccountsJson),
+                new LoadingComponent ("creditCards", ynabAccountsJson)
             };
         }
-
     }
 
-    public partial class LoadingComponent
-    {
-        [JsonProperty("navDisplayValues")]
-        public string NavDisplayValues { get; set; }
+    public partial class LoadingComponent {
+        [JsonProperty ("navDisplayValue")]
+        public string NavDisplayValue { get; set; }
 
-        [JsonProperty("routePath")]
+        [JsonProperty ("routePath")]
         public string RoutePath { get; set; }
 
-        [JsonProperty("glyph")]
+        [JsonProperty ("glyph")]
         public string Glyph { get; set; }
 
-        [JsonProperty("loadingData")]
-        public LoadingData LoadingData { get; set; }
-
-        [JsonProperty("tableData")]
-        public TableData TableData { get; set; }
-
-        public LoadingComponent(string type, string YnabData)
-        {
-            if (type == "paymentsDue")
-            {
-                NavDisplayValues = "Payments Due";
-                RoutePath = "/paymentsdue";
-                Glyph = "inbox";
-                LoadingData = new LoadingData(type);
-                TableData = new TableData(type);
-            }
-            else if (type == "ynabAccounts")
-            {
-                NavDisplayValues = "Ynab Accounts";
-                RoutePath = "/ynabaccountbalances";
-                Glyph = "piggy-bank";
-                LoadingData = new LoadingData(type);
-                TableData = new TableData(type);
-            }
-            else if (type == "creditCards")
-            {
-                NavDisplayValues = "Credit Card";
-                RoutePath = "/creditcard";
-                Glyph = "credit-card";
-                LoadingData = new LoadingData(type);
-                TableData = new TableData(type);
-            }
-        }
-    }
-
-    public partial class LoadingData
-    {
-        [JsonProperty("pageTitle")]
-        public string PageTitle { get; set; }
-
-        [JsonProperty("dataLoading")]
-        public bool DataLoading { get; set; }
-
-        public LoadingData(string type)
-        {
-            if (type == "paymentsDue")
-            {
-                PageTitle = "Credit Card Statements";
-                DataLoading = false;
-            }
-            else if (type == "ynabAccounts")
-            {
-                PageTitle = "Ynab Account Balances";
-                DataLoading = false;
-            }
-            else if (type == "creditCards")
-            {
-                PageTitle = "Full Credit Card Data";
-                DataLoading = false;
-            }
-        }
-    }
-
-    public partial class TableData
-    {
-        [JsonProperty("columnDisplayTitles")]
+        [JsonProperty ("columnDisplayTitles")]
         public string[] ColumnDisplayTitles { get; set; }
 
-        [JsonProperty("jsonTitleValues")]
+        [JsonProperty ("jsonTitleValues")]
         public string[] JsonTitleValues { get; set; }
 
-        [JsonProperty("data")]
+        [JsonProperty ("data")]
         public string[] Data { get; set; }
 
-        public TableData(string type)
-        {
-            if (type == "paymentsDue")
-            {
-                ColumnDisplayTitles = new string[]
-                {
-                        "Statement Date",
-                        "Payment Due Date",
-                        "Statement Balance",
-                        "Minimum Payment",
-                        "Paid Status"
-                };
-                JsonTitleValues = new string[]
-                {
-                        "IssueDate",
-                        "DueDate",
-                        "Balance",
-                        "MinPayment",
-                        "PaidStatus"
-                };
-            }
-            else if (type == "ynabAccounts")
-            {
-                ColumnDisplayTitles = new string[]
-                {
-                        "Account Name","Account Balance","Account Type"
-                };
-                JsonTitleValues = new string[]
-                {
-                        "Name", "Balance", "Type"
-                };
+        [JsonProperty ("pageTitle")]
+        public string PageTitle { get; set; }
 
-            }
-            else if (type == "creditCards")
-            {
-                ColumnDisplayTitles = new string[]
-                {
-                    "Account Name","Statement Date","Payment Due Date","Statement Balance","Minimum Payment","YNAB Account Balance"
+        [JsonProperty ("dataLoading")]
+        public bool DataLoading { get; set; }
+
+        //constructor
+        public LoadingComponent (string type, string[] tableData) {
+            if (type == "paymentsDue") {
+                NavDisplayValue = "Payments Due";
+                RoutePath = "/paymentsdue";
+                Glyph = "inbox";
+                PageTitle = "Credit Card Statements";
+                DataLoading = false;
+                ColumnDisplayTitles = new string[] {
+                    "Statement Date",
+                    "Payment Due Date",
+                    "Statement Balance",
+                    "Minimum Payment",
+                    "Paid Status"
                 };
-                JsonTitleValues = new string[]
-                {
-                    "Name","IssueDate","DueDate","Balance","MinPayment","balance"
+                JsonTitleValues = new string[] {
+                    "IssueDate",
+                    "DueDate",
+                    "Balance",
+                    "MinPayment",
+                    "PaidStatus"
+                };
+                //Data = tableData;
+            } else if (type == "ynabAccounts") {
+                NavDisplayValue = "Ynab Accounts";
+                RoutePath = "/ynabaccountbalances";
+                Glyph = "piggy-bank";
+                PageTitle = "Ynab Account Balances";
+                DataLoading = false;
+                ColumnDisplayTitles = new string[] {
+                    "Account Name",
+                    "Account Balance",
+                    "Account Type"
+                };
+                JsonTitleValues = new string[] {
+                    "Name",
+                    "Balance",
+                    "Type"
+                };
+                Data = tableData;
+            } else if (type == "creditCards") {
+                NavDisplayValue = "Credit Card";
+                RoutePath = "/creditcard";
+                Glyph = "credit-card";
+                PageTitle = "Full Credit Card Data";
+                DataLoading = false;
+                ColumnDisplayTitles = new string[] {
+                    "Account Name",
+                    "Statement Date",
+                    "Payment Due Date",
+                    "Statement Balance",
+                    "Minimum Payment",
+                    "YNAB Account Balance"
+                };
+                JsonTitleValues = new string[] {
+                    "Name",
+                    "IssueDate",
+                    "DueDate",
+                    "Balance",
+                    "MinPayment",
+                    "balance"
                 };
             }
         }
     }
 }
-

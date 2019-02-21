@@ -31,7 +31,7 @@ namespace ReactFinancialDashboard.Models {
         public bool On_budget { get; set; }
         public bool Closed { get; set; }
 
-        public IList<CreditCardStatement> CreditCardStatements { get; set; }
+        //public IList<CreditCardStatement> CreditCardStatements { get; set; }
 
         public PersonalData PersonalData { get; set; }
         #endregion

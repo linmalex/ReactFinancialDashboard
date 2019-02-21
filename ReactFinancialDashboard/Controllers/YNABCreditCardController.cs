@@ -58,7 +58,8 @@ namespace ReactFinancialDashboard.Controllers
         [HttpGet("[action]")]
         public string RenderState()
         {
-            string ynabData = DbYNABAccountsJson();
+            //string ynabData = DbYNABAccountsJson();
+            string[] ynabData = new string[1];
             DataVM data = new DataVM(ynabData);
             string data1 = JsonConvert.SerializeObject(data);
             return data1;
