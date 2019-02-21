@@ -21,14 +21,14 @@ namespace ReactFinancialDashboard.ViewModels {
         [JsonProperty ("componentsList")]
         public List<LoadingComponent> ComponentsList { get; set; }
 
-        public DataVM (string[] ynabAccountsJson) {
+        public DataVM () {
             CurrentBudgetId = "ee4a0a66-fa5a-4838-9ab4-3f8f3f2103ed";
             NavbarTitle = "Lindsay's Financial Dashboard";
             HomeRoutePath = "/";
             ComponentsList = new List<LoadingComponent> () {
-                new LoadingComponent ("paymentsDue", ynabAccountsJson),
-                new LoadingComponent ("ynabAccounts", ynabAccountsJson),
-                new LoadingComponent ("creditCards", ynabAccountsJson)
+                new LoadingComponent ("paymentsDue"),
+                new LoadingComponent ("ynabAccounts"),
+                new LoadingComponent ("creditCards")
             };
         }
     }
@@ -59,7 +59,7 @@ namespace ReactFinancialDashboard.ViewModels {
         public bool DataLoading { get; set; }
 
         //constructor
-        public LoadingComponent (string type, string[] tableData) {
+        public LoadingComponent (string type) {
             if (type == "paymentsDue") {
                 NavDisplayValue = "Payments Due";
                 RoutePath = "/paymentsdue";
@@ -97,7 +97,6 @@ namespace ReactFinancialDashboard.ViewModels {
                     "Balance",
                     "Type"
                 };
-                Data = tableData;
             } else if (type == "creditCards") {
                 NavDisplayValue = "Credit Card";
                 RoutePath = "/creditcard";

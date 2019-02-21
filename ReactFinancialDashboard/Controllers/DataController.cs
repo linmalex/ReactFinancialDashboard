@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +26,7 @@ namespace ReactFinancialDashboard.Controllers
         {
             //string ynabData = DbYNABAccountsJson();
             string[] ynabData = new string[1];
-            DataVM data = new DataVM(ynabData);
+            DataVM data = new DataVM();
             string data1 = JsonConvert.SerializeObject(data);
             return data1;
         }
@@ -34,7 +35,9 @@ namespace ReactFinancialDashboard.Controllers
         public string SetServerStatements()
         {
             ApplicationDbContext context = _context;
-            List<CreditCardStatement> statements = context.CreditCardStatements.ToList();
+            PersonalData personalData = context.PersonalDatas.Where(x => x.ID == 2).FirstOrDefault();
+            List<YnabAccount> serverAccounts = context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
+            List<CreditCardStatement> statements = context.CreditCardStatements.Where(y => y.PersonalData == personalData).ToList();
             return JsonConvert.SerializeObject(statements);
         }
 
@@ -50,7 +53,8 @@ namespace ReactFinancialDashboard.Controllers
         public string SetYnabAccountsJson()
         {
             ApplicationDbContext context = _context;
-            List<YnabAccount> serverAccounts = context.YnabAccounts.ToList();
+            PersonalData personalData = context.PersonalDatas.Where(x => x.ID == 2).FirstOrDefault();
+            List<YnabAccount> serverAccounts = context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
             string json = JsonConvert.SerializeObject(serverAccounts);
             return json;
         }
@@ -67,6 +71,26 @@ namespace ReactFinancialDashboard.Controllers
             context.SaveChanges();
             JsonResult result = new JsonResult("Statement Added");
             return result;
+        }
+
+        [HttpPost("[action]")]
+        public string SetServerStatements(int personalDataID = 1)
+        {
+            ApplicationDbContext context = _context;
+            PersonalData personalData = context.PersonalDatas.Where(x => x.ID == personalDataID).FirstOrDefault();
+            List<YnabAccount> serverAccounts = context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
+            List<CreditCardStatement> statements = context.CreditCardStatements.Where(y => y.PersonalData == personalData).ToList();
+            return JsonConvert.SerializeObject(statements);
+        }
+
+        [HttpPost("[action]")]
+        public string SetYnabAccountsJson(int ID)
+        {
+            ApplicationDbContext context = _context;
+            PersonalData personalData = context.PersonalDatas.Where(x => x.ID == 1).FirstOrDefault();
+            List<YnabAccount> serverAccounts = context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
+            string json = JsonConvert.SerializeObject(serverAccounts);
+            return json;
         }
         #endregion
 
