@@ -19,7 +19,7 @@ namespace ReactFinancialDashboard.Controllers
             _context = context;
         }
 
-        #region //* POST actions -----------------------------------------------------------------------
+        #region //* GET actions -----------------------------------------------------------------------
         [HttpGet("[action]")]
         public string SetInitialState()
         {
@@ -41,7 +41,7 @@ namespace ReactFinancialDashboard.Controllers
         [HttpGet("[action]")]
         public ActionResult UpdateLocalYnabData()
         {
-            YnabAccount.UpdateAccountsDatabase(_context, 2);
+            YnabAccount.UpdateAccountsDatabase(_context, 1);
             JsonResult result = new JsonResult("Success");
             return result;
         }
@@ -54,8 +54,6 @@ namespace ReactFinancialDashboard.Controllers
             string json = JsonConvert.SerializeObject(serverAccounts);
             return json;
         }
-
-
         #endregion
 
         #region //* POST actions -----------------------------------------------------------------------
