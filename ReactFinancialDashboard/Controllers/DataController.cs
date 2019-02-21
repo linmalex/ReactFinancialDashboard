@@ -72,26 +72,6 @@ namespace ReactFinancialDashboard.Controllers
             JsonResult result = new JsonResult("Statement Added");
             return result;
         }
-
-        [HttpPost("[action]")]
-        public string SetServerStatements(int personalDataID = 1)
-        {
-            ApplicationDbContext context = _context;
-            PersonalData personalData = context.PersonalDatas.Where(x => x.ID == personalDataID).FirstOrDefault();
-            List<YnabAccount> serverAccounts = context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
-            List<CreditCardStatement> statements = context.CreditCardStatements.Where(y => y.PersonalData == personalData).ToList();
-            return JsonConvert.SerializeObject(statements);
-        }
-
-        [HttpPost("[action]")]
-        public string SetYnabAccountsJson(int ID)
-        {
-            ApplicationDbContext context = _context;
-            PersonalData personalData = context.PersonalDatas.Where(x => x.ID == 1).FirstOrDefault();
-            List<YnabAccount> serverAccounts = context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
-            string json = JsonConvert.SerializeObject(serverAccounts);
-            return json;
-        }
         #endregion
 
     }
