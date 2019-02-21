@@ -22,7 +22,7 @@ export default class App extends Component {
   //#region //* Server Calls -----------------------------------------------------------------------
   //* Calls to server to get initial state values RenderState
   getInitialState = () => {
-    fetch("api/YNABCreditCard/RenderState")
+      fetch("api/Data/SetInitialState")
       .then(response => response.json())
       .then(data => this.setState({ serverData: data, loading: false }))
       .then(this.getServerStatements(), this.getLocalYnabData());
@@ -31,7 +31,7 @@ export default class App extends Component {
   //* Calls to server to set data for 0th item in serverData.componentList
   //! should be refactored to be less dependent on hard coded array position
   getServerStatements = () => {
-    fetch("api/YNABCreditCard/ServerStatements")
+      fetch("api/Data/SetServerStatements")
       .then(response => response.json())
       .then(data => {
         let { serverData } = this.state;
@@ -42,7 +42,7 @@ export default class App extends Component {
   //* Calls to server to set data for 1st item in serverData.componentList
   //! should be refactored to be less dependent on hard coded array position
   getLocalYnabData = () => {
-    fetch("api/YNABCreditCard/DbYNABAccountsJson")
+      fetch("api/Data/SetYnabAccountsJson")
       .then(response => response.json())
       .then(data => {
         let { serverData } = this.state;
@@ -54,7 +54,7 @@ export default class App extends Component {
   //* button called when button is clicked. Makes call to YNAB API, updates local server with new data.
   //! does not currently do anything with the data. This needs to be fixed
   getNewYnabData = () => {
-    fetch("api/YNABCreditCard/GetNewYnabData")
+      fetch("api/Data/UpdateLocalYnabData")
       .then(response => response.json())
       .then(data => {});
   };
