@@ -22,9 +22,9 @@ namespace ReactFinancialDashboard.Controllers
 
         #region //* GET actions -----------------------------------------------------------------------
         [HttpGet("[action]")]
-        public string SetInitialState()
+        public string SetInitialState(int ID)
         {
-            DataVM data = new DataVM();
+            DataVM data = new DataVM(id: ID);
             string data1 = JsonConvert.SerializeObject(data);
             return data1;
         }
@@ -32,7 +32,7 @@ namespace ReactFinancialDashboard.Controllers
         [HttpGet("[action]")]
         public string TestSynchronousFunction()
         {
-            DataVM data = new DataVM();
+            DataVM data = new DataVM(id: 1);
             string data1 = JsonConvert.SerializeObject(data);
             return data1;
         }
