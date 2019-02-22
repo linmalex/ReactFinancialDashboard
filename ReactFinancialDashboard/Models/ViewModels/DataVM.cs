@@ -21,8 +21,8 @@ namespace ReactFinancialDashboard.ViewModels {
         [JsonProperty ("componentsList")]
         public List<LoadingComponent> ComponentsList { get; set; }
 
-        public DataVM () {
-            PersonalDataID = 1;
+        public DataVM (int id) {
+            PersonalDataID = id;
             NavbarTitle = "Lindsay's Financial Dashboard";
             HomeRoutePath = "/";
             ComponentsList = new List<LoadingComponent> () {

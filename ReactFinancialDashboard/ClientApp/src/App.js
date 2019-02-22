@@ -16,31 +16,33 @@ export default class App extends Component {
         personalDataID: 2
       }
     };
-
-    this.getInitialState();
+    this.callController("SetInitialState");
+    this.getLocalYnabData("SetYnabAccountsJson");
+    this.getServerStatements("SetServerStatements");
   }
 
   //#region //* Controller Calls -----------------------------------------------------------------------
   //* Calls to server to get initial state values RenderState
-  getInitialState = () => {
-    return fetch("api/Data/SetInitialState")
-      .then(response => response.json())
-      .then(data => this.setState({ serverData: data, loading: false }));
+
+  callController = async controllerAction => {
+    var initialStateURL = this.createURL(controllerAction);
+    const response = await fetch(initialStateURL);
+    const data = await response.json();
+    return this.setState({ serverData: data, loading: false });
   };
 
-  testsynchronousfunction = () => {
-    return fetch("api/Data/TestSynchronousFunction")
-      .then(response => response.json())
-      .then(data => );
+  createURL = controllerAction => {
+    const id = this.state.serverData.personalDataID;
+    const params = `?ID=${id}`;
+    const url = `api/Data/${controllerAction}${params}`;
+    return url;
   };
 
   //* Calls to server to set data for 0th item in serverData.componentList
   //! should be refactored to be less dependent on hard coded array position
-  getServerStatements = () => {
-    const id = this.state.serverData.personalDataID;
-    const params = `?ID=${id}`;
-    const url = `api/Data/SetServerStatements${params}`;
-    fetch(url)
+  getServerStatements = controllerAction => {
+    const setServerStatementsURL = this.createURL(controllerAction);
+    fetch(setServerStatementsURL)
       .then(response => response.json())
       .then(data => {
         let { serverData } = this.state;
@@ -50,11 +52,9 @@ export default class App extends Component {
   };
   //* Calls to server to set data for 1st item in serverData.componentList
   //! should be refactored to be less dependent on hard coded array position
-  getLocalYnabData = () => {
-    const id = this.state.serverData.personalDataID;
-    const params = `?ID=${id}`;
-    const url = `api/Data/SetYnabAccountsJson${params}`;
-    fetch(url)
+  getLocalYnabData = controllerAction => {
+    const setYnabAccountsURL = this.createURL(controllerAction);
+    fetch(setYnabAccountsURL)
       .then(response => response.json())
       .then(data => {
         let { serverData } = this.state;
