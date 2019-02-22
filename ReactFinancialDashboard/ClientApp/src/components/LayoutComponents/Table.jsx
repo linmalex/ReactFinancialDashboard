@@ -4,11 +4,16 @@ import { MyButton } from "./MyButton";
 export class Table extends Component {
   handleFilter() {}
 
-  renderTable() {}
-
-  render() {
-    let { columnDisplayTitles, data, jsonTitleValues } = this.props.tableData;
+  renderTable() {
+    let { data, jsonTitleValues } = this.props.tableData;
     var datamap;
+
+    const formatter = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2
+    });
+
     if (data == null) {
       datamap = <tr />;
     } else {
@@ -16,13 +21,19 @@ export class Table extends Component {
         <tr key={data.indexOf(item)}>
           {jsonTitleValues.map(titleValue => (
             <td key={jsonTitleValues.indexOf(titleValue)}>
-              {item[titleValue]}
+              {typeof item[titleValue] === "number"
+                ? formatter.format(item[titleValue])
+                : item[titleValue]}
             </td>
           ))}
         </tr>
       ));
     }
+    return datamap;
+  }
 
+  render() {
+    let { columnDisplayTitles } = this.props.tableData;
     return (
       <div>
         <MyButton buttonType="filter" handleFilter={this.handleFilter} />
@@ -34,7 +45,7 @@ export class Table extends Component {
               ))}
             </tr>
           </thead>
-          <tbody>{datamap}</tbody>
+          <tbody>{this.renderTable()}</tbody>
         </table>
       </div>
     );
