@@ -18,6 +18,7 @@ export default class App extends Component {
     };
 
     this.getInitialState();
+    this.testsynchronousfunction().then(data => console.log(data));
   }
 
   //#region //* Controller Calls -----------------------------------------------------------------------
@@ -28,6 +29,12 @@ export default class App extends Component {
       .then(data => this.setState({ serverData: data, loading: false }))
       .then(this.getServerStatements())
       .then(this.getLocalYnabData());
+  };
+
+  testsynchronousfunction = () => {
+    return fetch("api/Data/TestSynchronousFunction")
+      .then(response => response.json())
+      .then(data => data);
   };
 
   //* Calls to server to set data for 0th item in serverData.componentList

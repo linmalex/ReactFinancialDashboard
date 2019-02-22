@@ -30,6 +30,14 @@ namespace ReactFinancialDashboard.Controllers
         }
 
         [HttpGet("[action]")]
+        public string TestSynchronousFunction()
+        {
+            DataVM data = new DataVM();
+            string data1 = JsonConvert.SerializeObject(data);
+            return data1;
+        }
+
+        [HttpGet("[action]")]
         public string SetServerStatements(int ID)
         {
             ApplicationDbContext context = _context;
