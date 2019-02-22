@@ -48,11 +48,35 @@ namespace ReactFinancialDashboard.Controllers
         }
 
         [HttpGet("[action]")]
-        public ActionResult UpdateLocalYnabData()
+        public string UpdateLocalYnabData(int ID)
         {
-            YnabAccount.UpdateAccountsDatabase(_context, 1);
-            JsonResult result = new JsonResult("Success");
-            return result;
+            try
+            {
+                using (_context)
+                {
+                    List<YnabAccount> accountsList = YnabAccount.GetAPIYnabAccountsList(_context, ID);
+                    foreach (YnabAccount item in accountsList)
+                    {
+                        if (_context.YnabAccounts.Contains(item))
+                        {
+                            _context.Update(item);
+                        }
+                        else
+                        {
+                            _context.Add(item);
+                        }
+                    }
+                    PersonalData personalData = _context.PersonalDatas.Where(x => x.ID == ID).FirstOrDefault();
+                    List<YnabAccount> serverAccounts = _context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
+                    _context.SaveChanges();
+                    string json = JsonConvert.SerializeObject(serverAccounts);
+                    return json;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         [HttpGet("[action]")]

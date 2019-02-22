@@ -66,9 +66,14 @@ export default class App extends Component {
   //* button called when button is clicked. Makes call to YNAB API, updates local server with new data.
   //! does not currently do anything with the data. This needs to be fixed
   getNewYnabData = () => {
-    fetch("api/Data/UpdateLocalYnabData");
-    // .then(response => response.json())
-    // .then(data => console.log(data));
+    const updateYnabAccountsURL = this.createURL("UpdateLocalYnabData");
+    fetch(updateYnabAccountsURL)
+      .then(response => response.json())
+      .then(data => {
+        let { serverData } = this.state;
+        serverData.componentsList[1].data = data;
+        this.setState({ serverData });
+      });
   };
   //#endregion
 
