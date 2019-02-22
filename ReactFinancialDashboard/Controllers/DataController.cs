@@ -24,8 +24,6 @@ namespace ReactFinancialDashboard.Controllers
         [HttpGet("[action]")]
         public string SetInitialState()
         {
-            //string ynabData = DbYNABAccountsJson();
-            string[] ynabData = new string[1];
             DataVM data = new DataVM();
             string data1 = JsonConvert.SerializeObject(data);
             return data1;
@@ -52,9 +50,8 @@ namespace ReactFinancialDashboard.Controllers
         [HttpGet("[action]")]
         public string SetYnabAccountsJson(int ID)
         {
-            ApplicationDbContext context = _context;
-            PersonalData personalData = context.PersonalDatas.Where(x => x.ID == ID).FirstOrDefault();
-            List<YnabAccount> serverAccounts = context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
+            PersonalData personalData = _context.PersonalDatas.Where(x => x.ID == ID).FirstOrDefault();
+            List<YnabAccount> serverAccounts = _context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
             string json = JsonConvert.SerializeObject(serverAccounts);
             return json;
         }

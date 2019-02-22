@@ -20,19 +20,20 @@ export default class App extends Component {
     this.getInitialState();
   }
 
-  //#region //* Server Calls -----------------------------------------------------------------------
+  //#region //* Controller Calls -----------------------------------------------------------------------
   //* Calls to server to get initial state values RenderState
   getInitialState = () => {
     fetch("api/Data/SetInitialState")
       .then(response => response.json())
       .then(data => this.setState({ serverData: data, loading: false }))
-     .then(this.getServerStatements(), this.getLocalYnabData());
+      .then(this.getServerStatements())
+      .then(this.getLocalYnabData());
   };
 
   //* Calls to server to set data for 0th item in serverData.componentList
   //! should be refactored to be less dependent on hard coded array position
   getServerStatements = () => {
-     const id = this.state.serverData.personalDataID;
+    const id = this.state.serverData.personalDataID;
     const params = `?ID=${id}`;
     const url = `api/Data/SetServerStatements${params}`;
     fetch(url)
@@ -46,9 +47,9 @@ export default class App extends Component {
   //* Calls to server to set data for 1st item in serverData.componentList
   //! should be refactored to be less dependent on hard coded array position
   getLocalYnabData = () => {
-     const id = this.state.serverData.personalDataID;
+    const id = this.state.serverData.personalDataID;
     const params = `?ID=${id}`;
-      const url = `api/Data/SetYnabAccountsJson${params}`;
+    const url = `api/Data/SetYnabAccountsJson${params}`;
     fetch(url)
       .then(response => response.json())
       .then(data => {
@@ -61,9 +62,9 @@ export default class App extends Component {
   //* button called when button is clicked. Makes call to YNAB API, updates local server with new data.
   //! does not currently do anything with the data. This needs to be fixed
   getNewYnabData = () => {
-    fetch("api/Data/UpdateLocalYnabData")
-      .then(response => response.json())
-      .then(data => {});
+    fetch("api/Data/UpdateLocalYnabData");
+    // .then(response => response.json())
+    // .then(data => console.log(data));
   };
   //#endregion
 
