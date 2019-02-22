@@ -13,28 +13,25 @@ export default class App extends Component {
     this.state = {
       loading: true,
       serverData: {
-        personalDataID: 1
+        personalDataID: 2
       }
     };
 
     this.getInitialState();
-    this.testsynchronousfunction().then(data => console.log(data));
   }
 
   //#region //* Controller Calls -----------------------------------------------------------------------
   //* Calls to server to get initial state values RenderState
   getInitialState = () => {
-    fetch("api/Data/SetInitialState")
+    return fetch("api/Data/SetInitialState")
       .then(response => response.json())
-      .then(data => this.setState({ serverData: data, loading: false }))
-      .then(this.getServerStatements())
-      .then(this.getLocalYnabData());
+      .then(data => this.setState({ serverData: data, loading: false }));
   };
 
   testsynchronousfunction = () => {
     return fetch("api/Data/TestSynchronousFunction")
       .then(response => response.json())
-      .then(data => data);
+      .then(data => );
   };
 
   //* Calls to server to set data for 0th item in serverData.componentList
