@@ -11,7 +11,10 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true
+      loading: true,
+      serverData: {
+        personalDataID: 1
+      }
     };
 
     this.getInitialState();
@@ -23,13 +26,16 @@ export default class App extends Component {
     fetch("api/Data/SetInitialState")
       .then(response => response.json())
       .then(data => this.setState({ serverData: data, loading: false }))
-      .then(this.getServerStatements(), this.getLocalYnabData());
+     .then(this.getServerStatements(), this.getLocalYnabData());
   };
 
   //* Calls to server to set data for 0th item in serverData.componentList
   //! should be refactored to be less dependent on hard coded array position
   getServerStatements = () => {
-    fetch("api/Data/SetServerStatements")
+     const id = this.state.serverData.personalDataID;
+    const params = `?ID=${id}`;
+    const url = `api/Data/SetServerStatements${params}`;
+    fetch(url)
       .then(response => response.json())
       .then(data => {
         let { serverData } = this.state;
@@ -40,9 +46,10 @@ export default class App extends Component {
   //* Calls to server to set data for 1st item in serverData.componentList
   //! should be refactored to be less dependent on hard coded array position
   getLocalYnabData = () => {
-    const data = new FormData({ ID: 1 });
-    console.log(data);
-    fetch("api/Data/SetYnabAccountsJson")
+     const id = this.state.serverData.personalDataID;
+    const params = `?ID=${id}`;
+      const url = `api/Data/SetYnabAccountsJson${params}`;
+    fetch(url)
       .then(response => response.json())
       .then(data => {
         let { serverData } = this.state;

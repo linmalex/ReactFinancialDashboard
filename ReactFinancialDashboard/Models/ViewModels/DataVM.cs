@@ -9,8 +9,8 @@ using ReactFinancialDashboard.Models;
 
 namespace ReactFinancialDashboard.ViewModels {
     public partial class DataVM {
-        [JsonProperty ("currentBudgetID")]
-        public string CurrentBudgetId { get; set; }
+        [JsonProperty ("personalDataID")]
+        public int PersonalDataID { get; set; }
 
         [JsonProperty ("navbarTitle")]
         public string NavbarTitle { get; set; }
@@ -22,7 +22,7 @@ namespace ReactFinancialDashboard.ViewModels {
         public List<LoadingComponent> ComponentsList { get; set; }
 
         public DataVM () {
-            CurrentBudgetId = "ee4a0a66-fa5a-4838-9ab4-3f8f3f2103ed";
+            PersonalDataID = 1;
             NavbarTitle = "Lindsay's Financial Dashboard";
             HomeRoutePath = "/";
             ComponentsList = new List<LoadingComponent> () {

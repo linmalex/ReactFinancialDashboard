@@ -32,10 +32,10 @@ namespace ReactFinancialDashboard.Controllers
         }
 
         [HttpGet("[action]")]
-        public string SetServerStatements()
+        public string SetServerStatements(int ID)
         {
             ApplicationDbContext context = _context;
-            PersonalData personalData = context.PersonalDatas.Where(x => x.ID == 2).FirstOrDefault();
+            PersonalData personalData = context.PersonalDatas.Where(x => x.ID == ID).FirstOrDefault();
             List<YnabAccount> serverAccounts = context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
             List<CreditCardStatement> statements = context.CreditCardStatements.Where(y => y.PersonalData == personalData).ToList();
             return JsonConvert.SerializeObject(statements);
@@ -50,10 +50,10 @@ namespace ReactFinancialDashboard.Controllers
         }
 
         [HttpGet("[action]")]
-        public string SetYnabAccountsJson()
+        public string SetYnabAccountsJson(int ID)
         {
             ApplicationDbContext context = _context;
-            PersonalData personalData = context.PersonalDatas.Where(x => x.ID == 2).FirstOrDefault();
+            PersonalData personalData = context.PersonalDatas.Where(x => x.ID == ID).FirstOrDefault();
             List<YnabAccount> serverAccounts = context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
             string json = JsonConvert.SerializeObject(serverAccounts);
             return json;
