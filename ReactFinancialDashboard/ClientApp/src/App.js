@@ -28,14 +28,13 @@ export default class App extends Component {
       getServerStatements
     } = this.state.serverData.controllerActions;
 
-    this.callController(setInitialState);
+    this.callMainController(setInitialState);
     this.callSecondaryController(getLocalYnabData, 1);
     this.callSecondaryController(getServerStatements, 0);
   }
 
-  //#region //* Controller Calls -----------------------------------------------------------------------
-  //* Calls to server to get initial state values RenderState
-
+  //#region //* UTILITIES -----------------------------------------------------------------------
+  // description: generates URL for controller call using current state personalDataID
   createURL = controllerAction => {
     const id = this.state.serverData.personalDataID;
     const params = `?ID=${id}`;
@@ -43,31 +42,7 @@ export default class App extends Component {
     return url;
   };
 
-  callController = async controllerAction => {
-    const fetchURL = this.createURL(controllerAction);
-    const response = await fetch(fetchURL);
-    const data = await response.json();
-    return this.setState({ serverData: data, loading: false });
-  };
-
-  callSecondaryController = async (controllerAction, n) => {
-    const fetchURL = this.createURL(controllerAction);
-    const response = await fetch(fetchURL);
-    const data = await response.json();
-    let { serverData } = this.state;
-    serverData.componentsList[n].data = data;
-    return this.setState({ serverData });
-  };
-
-  getNewYnabData = () => {
-    const controllerAction = "UpdateLocalYnabData";
-    const n = 1;
-    this.callSecondaryController(controllerAction, n);
-  };
-  //#endregion
-
-  //#region //* RENDER -----------------------------------------------------------------------
-  //* uses state serverData to generate render Route and LoadingComponents
+  // description: uses state serverData to generate render Route and LoadingComponents
   generateLoadingComponents() {
     const componentData = this.state.serverData.componentsList;
     let renderedComponents = []; //empty array to hold rendered LoadingComponents
@@ -101,9 +76,41 @@ export default class App extends Component {
     }
     return renderedComponents;
   }
+  //#endregion
 
+  //#region //* CONTROLLER Calls -----------------------------------------------------------------------
+  // description: main controller to set static state values.
+  callMainController = async controllerAction => {
+    const fetchURL = this.createURL(controllerAction);
+    const response = await fetch(fetchURL);
+    const data = await response.json();
+    return this.setState({ serverData: data, loading: false });
+  };
+
+  // description: secondary controller to update dynamic state values from local database
+  //! needs to be refactored so as not to need n parameter to know which component to update
+  callSecondaryController = async (controllerAction, n) => {
+    const fetchURL = this.createURL(controllerAction);
+    const response = await fetch(fetchURL);
+    const data = await response.json();
+    let { serverData } = this.state;
+    serverData.componentsList[n].data = data;
+    return this.setState({ serverData });
+  };
+
+  // description: temporary refactor of method called on button click. Will eventually remove altogether once I update MyButton to pass parameters directly to callSecondaryController
+  //! needs to be refactored per description above
+  getNewYnabData = () => {
+    const controllerAction = "UpdateLocalYnabData";
+    const n = 1;
+    this.callSecondaryController(controllerAction, n);
+  };
+  //#endregion
+
+  //#region //* RENDER -----------------------------------------------------------------------
   render() {
     var layout;
+
     this.state.loading
       ? (layout = <p>Loading</p>)
       : (layout = (
