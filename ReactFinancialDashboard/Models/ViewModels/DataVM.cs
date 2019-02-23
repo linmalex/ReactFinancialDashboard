@@ -7,39 +7,25 @@ using ReactFinancialDashboard.Controllers;
 using ReactFinancialDashboard.Data;
 using ReactFinancialDashboard.Models;
 
-namespace ReactFinancialDashboard.ViewModels
-{
-    public partial class DataVM
-    {
-        [JsonProperty("personalDataID")]
+namespace ReactFinancialDashboard.ViewModels {
+    public partial class DataVM {
+        [JsonProperty ("personalDataID")]
         public int PersonalDataID { get; set; }
 
-        [JsonProperty("navbarTitle")]
+        [JsonProperty ("navbarTitle")]
         public string NavbarTitle { get; set; }
 
-        [JsonProperty("homeRoutePath")]
+        [JsonProperty ("homeRoutePath")]
         public string HomeRoutePath { get; set; }
 
-        [JsonProperty("componentsList")]
+        [JsonProperty ("componentsList")]
         public List<LoadingComponent> ComponentsList { get; set; }
 
-        //public DataVM (int id) {
-        //    PersonalDataID = id;
-        //    NavbarTitle = "Lindsay's Financial Dashboard";
-        //    HomeRoutePath = "/";
-        //    ComponentsList = new List<LoadingComponent> () {
-        //        new LoadingComponent ("paymentsDue"),
-        //        new LoadingComponent ("ynabAccounts"),
-        //        new LoadingComponent ("creditCards")
-        //    };
-        //}
-
-        public DataVM(PersonalData personalData)
-        {
-            PersonalDataID = personalData.ID;
+        public DataVM (int id) {
+            PersonalDataID = id;
             NavbarTitle = "Lindsay's Financial Dashboard";
             HomeRoutePath = "/";
-            ComponentsList = new List<LoadingComponent>() {
+            ComponentsList = new List<LoadingComponent> () {
                 new LoadingComponent ("paymentsDue"),
                 new LoadingComponent ("ynabAccounts"),
                 new LoadingComponent ("creditCards")
@@ -47,37 +33,34 @@ namespace ReactFinancialDashboard.ViewModels
         }
     }
 
-    public partial class LoadingComponent
-    {
-        [JsonProperty("navDisplayValue")]
+    public partial class LoadingComponent {
+        [JsonProperty ("navDisplayValue")]
         public string NavDisplayValue { get; set; }
 
-        [JsonProperty("routePath")]
+        [JsonProperty ("routePath")]
         public string RoutePath { get; set; }
 
-        [JsonProperty("glyph")]
+        [JsonProperty ("glyph")]
         public string Glyph { get; set; }
 
-        [JsonProperty("columnDisplayTitles")]
+        [JsonProperty ("columnDisplayTitles")]
         public string[] ColumnDisplayTitles { get; set; }
 
-        [JsonProperty("jsonTitleValues")]
+        [JsonProperty ("jsonTitleValues")]
         public string[] JsonTitleValues { get; set; }
 
-        [JsonProperty("data")]
+        [JsonProperty ("data")]
         public string[] Data { get; set; }
 
-        [JsonProperty("pageTitle")]
+        [JsonProperty ("pageTitle")]
         public string PageTitle { get; set; }
 
-        [JsonProperty("dataLoading")]
+        [JsonProperty ("dataLoading")]
         public bool DataLoading { get; set; }
 
         //constructor
-        public LoadingComponent(string type)
-        {
-            if (type == "paymentsDue")
-            {
+        public LoadingComponent (string type) {
+            if (type == "paymentsDue") {
                 NavDisplayValue = "Payments Due";
                 RoutePath = "/paymentsdue";
                 Glyph = "inbox";
@@ -98,9 +81,7 @@ namespace ReactFinancialDashboard.ViewModels
                     "PaidStatus"
                 };
                 //Data = tableData;
-            }
-            else if (type == "ynabAccounts")
-            {
+            } else if (type == "ynabAccounts") {
                 NavDisplayValue = "Ynab Accounts";
                 RoutePath = "/ynabaccountbalances";
                 Glyph = "piggy-bank";
@@ -116,9 +97,7 @@ namespace ReactFinancialDashboard.ViewModels
                     "Balance",
                     "Type"
                 };
-            }
-            else if (type == "creditCards")
-            {
+            } else if (type == "creditCards") {
                 NavDisplayValue = "Credit Card";
                 RoutePath = "/creditcard";
                 Glyph = "credit-card";
