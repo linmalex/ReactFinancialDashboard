@@ -29,8 +29,10 @@ namespace ReactFinancialDashboard.Models
 
         public string YnabAccountID { get; set; }
 
+        public int PersonalDataID { get; set; }
+
         public virtual YnabAccount YnabAccount { get; set; }
 
-        public PersonalData PersonalData { get; set; }
+        public virtual PersonalData PersonalData { get; set; }
     }
 }

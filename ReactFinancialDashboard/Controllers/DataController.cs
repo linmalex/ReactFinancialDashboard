@@ -29,21 +29,16 @@ namespace ReactFinancialDashboard.Controllers
             return data1;
         }
 
-        [HttpGet("[action]")]
-        public string TestSynchronousFunction()
-        {
-            DataVM data = new DataVM(id: 1);
-            string data1 = JsonConvert.SerializeObject(data);
-            return data1;
-        }
 
+        /// <summary>
+        /// Get local statements with a given PersonalData ID
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
         [HttpGet("[action]")]
         public string SetServerStatements(int ID)
         {
-            ApplicationDbContext context = _context;
-            PersonalData personalData = context.PersonalDatas.Where(x => x.ID == ID).FirstOrDefault();
-            List<YnabAccount> serverAccounts = context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
-            List<CreditCardStatement> statements = context.CreditCardStatements.Where(y => y.PersonalData == personalData).ToList();
+            List<CreditCardStatement> statements = _context.CreditCardStatements.Where(y => y.PersonalDataID == ID).ToList();
             return JsonConvert.SerializeObject(statements);
         }
 
