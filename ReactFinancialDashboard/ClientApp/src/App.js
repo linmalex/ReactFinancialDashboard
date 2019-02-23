@@ -13,23 +13,28 @@ export default class App extends Component {
     this.state = {
       loading: true,
       serverData: {
-        personalDataID: 2
+        personalDataID: 2,
+        controllerActions: {
+          setInitialState: "SetInitialState",
+          getLocalYnabData: "SetYnabAccountsJson",
+          getServerStatements: "SetServerStatements"
+        }
       }
     };
-    this.callController("SetInitialState");
-    this.getLocalYnabData("SetYnabAccountsJson");
-    this.getServerStatements("SetServerStatements");
+
+    const {
+      setInitialState,
+      getLocalYnabData,
+      getServerStatements
+    } = this.state.serverData.controllerActions;
+
+    this.callController(setInitialState);
+    this.callSecondaryController(getLocalYnabData, 1);
+    this.callSecondaryController(getServerStatements, 0);
   }
 
   //#region //* Controller Calls -----------------------------------------------------------------------
   //* Calls to server to get initial state values RenderState
-
-  callController = async controllerAction => {
-    var initialStateURL = this.createURL(controllerAction);
-    const response = await fetch(initialStateURL);
-    const data = await response.json();
-    return this.setState({ serverData: data, loading: false });
-  };
 
   createURL = controllerAction => {
     const id = this.state.serverData.personalDataID;
@@ -38,42 +43,26 @@ export default class App extends Component {
     return url;
   };
 
-  //* Calls to server to set data for 0th item in serverData.componentList
-  //! should be refactored to be less dependent on hard coded array position
-  getServerStatements = controllerAction => {
-    const setServerStatementsURL = this.createURL(controllerAction);
-    fetch(setServerStatementsURL)
-      .then(response => response.json())
-      .then(data => {
-        let { serverData } = this.state;
-        serverData.componentsList[0].data = data;
-        this.setState({ serverData });
-      });
-  };
-  //* Calls to server to set data for 1st item in serverData.componentList
-  //! should be refactored to be less dependent on hard coded array position
-  getLocalYnabData = controllerAction => {
-    const setYnabAccountsURL = this.createURL(controllerAction);
-    fetch(setYnabAccountsURL)
-      .then(response => response.json())
-      .then(data => {
-        let { serverData } = this.state;
-        serverData.componentsList[1].data = data;
-        this.setState({ serverData });
-      });
+  callController = async controllerAction => {
+    const fetchURL = this.createURL(controllerAction);
+    const response = await fetch(fetchURL);
+    const data = await response.json();
+    return this.setState({ serverData: data, loading: false });
   };
 
-  //* button called when button is clicked. Makes call to YNAB API, updates local server with new data.
-  //! does not currently do anything with the data. This needs to be fixed
+  callSecondaryController = async (controllerAction, n) => {
+    const fetchURL = this.createURL(controllerAction);
+    const response = await fetch(fetchURL);
+    const data = await response.json();
+    let { serverData } = this.state;
+    serverData.componentsList[n].data = data;
+    return this.setState({ serverData });
+  };
+
   getNewYnabData = () => {
-    const updateYnabAccountsURL = this.createURL("UpdateLocalYnabData");
-    fetch(updateYnabAccountsURL)
-      .then(response => response.json())
-      .then(data => {
-        let { serverData } = this.state;
-        serverData.componentsList[1].data = data;
-        this.setState({ serverData });
-      });
+    const controllerAction = "UpdateLocalYnabData";
+    const n = 1;
+    this.callSecondaryController(controllerAction, n);
   };
   //#endregion
 
