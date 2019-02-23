@@ -24,7 +24,8 @@ namespace ReactFinancialDashboard.Controllers
         [HttpGet("[action]")]
         public string SetInitialState(int ID)
         {
-            DataVM data = new DataVM(id: ID);
+            PersonalData personalData = _context.PersonalDatas.Where(pd => pd.ID == ID).FirstOrDefault();
+            DataVM data = new DataVM(personalData);
             string data1 = JsonConvert.SerializeObject(data);
             return data1;
         }
