@@ -24,11 +24,12 @@ export class MyButton extends Component {
 
   render() {
     let { buttonType } = this.props;
+    let controllerInstructions = { action: "UpdateLocalYnabData", n: 1 };
     let button =
       buttonType === "getYnabData" ? (
         <button
           className={this.state.className}
-          onClick={this.props.getYnabData}
+          onClick={() => this.props.getYnabData(controllerInstructions)}
         >
           Get Ynab Data
         </button>

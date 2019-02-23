@@ -14,23 +14,23 @@ export default class App extends Component {
       loading: true,
       serverData: {
         personalDataID: 2,
-        controllerActions: {
-          setInitialState: "SetInitialState",
-          getLocalYnabData: "SetYnabAccountsJson",
-          getServerStatements: "SetServerStatements"
+        controllerInstructions: {
+          initialstate: { action: "SetInitialState", n: null },
+          setYnabAccounts: { action: "SetYnabAccountsJson", n: 1 },
+          setServerStatements: { action: "SetServerStatements", n: 0 }
         }
       }
     };
 
     const {
-      setInitialState,
-      getLocalYnabData,
-      getServerStatements
-    } = this.state.serverData.controllerActions;
+      initialstate,
+      setYnabAccounts,
+      setServerStatements
+    } = this.state.serverData.controllerInstructions;
 
-    this.callMainController(setInitialState);
-    this.callSecondaryController(getLocalYnabData, 1);
-    this.callSecondaryController(getServerStatements, 0);
+    this.callController(initialstate);
+    this.callController(setYnabAccounts);
+    this.callController(setServerStatements);
   }
 
   //#region //* UTILITIES -----------------------------------------------------------------------
@@ -78,32 +78,19 @@ export default class App extends Component {
   }
   //#endregion
 
-  //#region //* CONTROLLER Calls -----------------------------------------------------------------------
-  // description: main controller to set static state values.
-  callMainController = async controllerAction => {
-    const fetchURL = this.createURL(controllerAction);
-    const response = await fetch(fetchURL);
-    const data = await response.json();
-    return this.setState({ serverData: data, loading: false });
-  };
-
-  // description: secondary controller to update dynamic state values from local database
+  //#region //* CONTROLLER Call -----------------------------------------------------------------------
+  // description: call controller to update state using controllerInstructions object as parameter
   //! needs to be refactored so as not to need n parameter to know which component to update
-  callSecondaryController = async (controllerAction, n) => {
-    const fetchURL = this.createURL(controllerAction);
+  callController = async controllerInstructions => {
+    const fetchURL = this.createURL(controllerInstructions.action);
     const response = await fetch(fetchURL);
     const data = await response.json();
     let { serverData } = this.state;
-    serverData.componentsList[n].data = data;
-    return this.setState({ serverData });
-  };
-
-  // description: temporary refactor of method called on button click. Will eventually remove altogether once I update MyButton to pass parameters directly to callSecondaryController
-  //! needs to be refactored per description above
-  getNewYnabData = () => {
-    const controllerAction = "UpdateLocalYnabData";
-    const n = 1;
-    this.callSecondaryController(controllerAction, n);
+    // description: hard coded instructions for which segment of serverData needs to be updated
+    controllerInstructions.n == null
+      ? (serverData = data)
+      : (serverData.componentsList[controllerInstructions.n].data = data);
+    return this.setState({ serverData, loading: false });
   };
   //#endregion
 
@@ -114,7 +101,7 @@ export default class App extends Component {
     this.state.loading
       ? (layout = <p>Loading</p>)
       : (layout = (
-          <Layout appstate={this.state} getYnabData={this.getNewYnabData}>
+          <Layout appstate={this.state} getYnabData={this.callController}>
             {this.generateLoadingComponents()}
           </Layout>
         ));
