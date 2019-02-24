@@ -30,7 +30,6 @@ namespace ReactFinancialDashboard.Controllers
             return data1;
         }
 
-
         /// <summary>
         /// Get local statements with a given PersonalData ID
         /// </summary>
@@ -40,14 +39,13 @@ namespace ReactFinancialDashboard.Controllers
         public string SetServerStatements(int ID)
         {
             List<CreditCardStatement> statements = _context.CreditCardStatements.Where(y => y.PersonalDataID == ID).ToList();
-            List<string> creditCardNames = new List<string>()
-                {
-                    "DueDate",
-                    "IssueDate",
-                    "Balance",
-                    "MinPayment",
-                    "PaidStatus"
-                };
+            List<string> creditCardNames = new List<string>() {
+                "DueDate",
+                "IssueDate",
+                "Balance",
+                "MinPayment",
+                "PaidStatus"
+            };
             var settings = new JsonSerializerSettings()
             {
                 ContractResolver = new JsonPropRenderSettings(true, creditCardNames)
@@ -93,12 +91,11 @@ namespace ReactFinancialDashboard.Controllers
         {
             PersonalData personalData = _context.PersonalDatas.Where(x => x.ID == ID).FirstOrDefault();
             List<YnabAccount> serverAccounts = _context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
-            List<string> accountNames = new List<string>()
-                {
-                    "Name",
-                    "Type",
-                    "Balance",
-                };
+            List<string> accountNames = new List<string>() {
+                "Name",
+                "Type",
+                "Balance",
+            };
             var settings = new JsonSerializerSettings()
             {
                 ContractResolver = new JsonPropRenderSettings(true, accountNames)
@@ -109,7 +106,7 @@ namespace ReactFinancialDashboard.Controllers
         #endregion
 
         #region //* POST actions -----------------------------------------------------------------------
-        //* uses state serverData to generate render Route and LoadingComponents
+        //* uses state serverData to generate render Route and BodyComponents
         [HttpPost("[action]")]
         public IActionResult CreateStatement([FromForm] CreditCardStatement statement)
         {

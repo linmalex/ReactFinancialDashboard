@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Route } from "react-router";
 import { Layout } from "./components/LayoutComponents/Layout";
-import { LoadingComponent } from "./components/LayoutComponents/LoadingComponent";
+import { BodyComponent } from "./components/LayoutComponents/BodyComponent";
 //todo uncomment this
-// import { LoadingComponent } from "./components/LayoutComponents/LoadingComponent";
+// import { BodyComponent } from "./components/LayoutComponents/BodyComponent";
 
 export default class App extends Component {
   displayName = App.name;
@@ -44,10 +44,10 @@ export default class App extends Component {
     return url;
   };
 
-  // description: uses state serverData to generate render Route and LoadingComponents
-  generateLoadingComponents() {
+  // description: uses state serverData to generate render Route and BodyComponents
+  generateBodyComponents() {
     const componentData = this.state.serverData.componentsList;
-    let renderedComponents = []; //empty array to hold rendered LoadingComponents
+    let renderedComponents = []; //empty array to hold rendered BodyComponents
 
     for (let i in componentData) {
       const currentDataItem = componentData[i];
@@ -66,7 +66,7 @@ export default class App extends Component {
           exact
           path={currentDataItem.routePath}
           render={props => (
-            <LoadingComponent
+            <BodyComponent
               loadingData={loadingData}
               tableData={tableData}
               {...props}
@@ -104,7 +104,7 @@ export default class App extends Component {
       ? (layout = <p>Loading</p>)
       : (layout = (
           <Layout appstate={this.state} getYnabData={this.callController}>
-            {this.generateLoadingComponents()}
+            {this.generateBodyComponents()}
           </Layout>
         ));
 

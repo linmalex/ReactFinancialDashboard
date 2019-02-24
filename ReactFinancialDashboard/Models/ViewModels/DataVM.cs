@@ -19,21 +19,21 @@ namespace ReactFinancialDashboard.ViewModels {
         public string HomeRoutePath { get; set; }
 
         [JsonProperty ("componentsList")]
-        public List<LoadingComponent> ComponentsList { get; set; }
+        public List<BodyComponent> ComponentsList { get; set; }
 
         public DataVM (int id) {
             PersonalDataID = id;
             NavbarTitle = "Lindsay's Financial Dashboard";
             HomeRoutePath = "/";
-            ComponentsList = new List<LoadingComponent> () {
-                new LoadingComponent ("paymentsDue"),
-                new LoadingComponent ("ynabAccounts"),
-                new LoadingComponent ("creditCards")
+            ComponentsList = new List<BodyComponent> () {
+                new BodyComponent ("paymentsDue"),
+                new BodyComponent ("ynabAccounts"),
+                new BodyComponent ("creditCards")
             };
         }
     }
 
-    public partial class LoadingComponent {
+    public partial class BodyComponent {
         [JsonProperty ("navDisplayValue")]
         public string NavDisplayValue { get; set; }
 
@@ -59,7 +59,7 @@ namespace ReactFinancialDashboard.ViewModels {
         public bool DataLoading { get; set; }
 
         //constructor
-        public LoadingComponent (string type) {
+        public BodyComponent (string type) {
             if (type == "paymentsDue") {
                 NavDisplayValue = "Payments Due";
                 RoutePath = "/paymentsdue";
