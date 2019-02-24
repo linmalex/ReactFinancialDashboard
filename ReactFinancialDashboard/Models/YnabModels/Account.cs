@@ -10,7 +10,7 @@ using ReactFinancialDashboard.Data.Utilities;
 
 namespace ReactFinancialDashboard.Models
 {
-    public class YnabAccount
+    public class Account
     {
         #region Properties
         public string ID { get; set; }
@@ -66,9 +66,9 @@ namespace ReactFinancialDashboard.Models
         /// <param name="context"></param>
         /// <param name="personalBudgetID"></param>
         /// <returns></returns>
-        public static List<YnabAccount> GetAPIYnabAccountsList(ApplicationDbContext context, int personalBudgetID)
+        public static List<Account> GetAPIYnabAccountsList(ApplicationDbContext context, int personalBudgetID)
         {
-            List<YnabAccount> accounts = new List<YnabAccount>();
+            List<Account> accounts = new List<Account>();
 
             PersonalData personalData = context.PersonalDatas.Where(x => x.ID == personalBudgetID).FirstOrDefault();
 
@@ -77,7 +77,7 @@ namespace ReactFinancialDashboard.Models
             foreach (JToken jAccount in jsonAccountsData) //item is the account
             {
                 UpdateJAccountValues(jAccount);
-                YnabAccount account = jAccount.ToObject<YnabAccount>();
+                Account account = jAccount.ToObject<Account>();
                 account.PersonalData = personalData;
                 accounts.Add(account);
             }
@@ -110,8 +110,8 @@ namespace ReactFinancialDashboard.Models
             {
                 using (context)
                 {
-                    List<YnabAccount> accountsList = GetAPIYnabAccountsList(context, personalBudgetID);
-                    foreach (YnabAccount item in accountsList)
+                    List<Account> accountsList = GetAPIYnabAccountsList(context, personalBudgetID);
+                    foreach (Account item in accountsList)
                     {
                         if (context.YnabAccounts.Contains(item))
                         {

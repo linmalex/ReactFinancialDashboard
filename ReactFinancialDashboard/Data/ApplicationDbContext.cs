@@ -19,7 +19,7 @@ namespace ReactFinancialDashboard.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<YnabAccount>()
+            modelBuilder.Entity<Account>()
                 .HasAlternateKey(x => x.Transfer_payee_id);
         }
 
@@ -32,13 +32,15 @@ namespace ReactFinancialDashboard.Data
         #region tables
         public DbSet<CreditCardStatement> CreditCardStatements { get; set; }
 
-        public DbSet<CreditCard> CreditCards { get; set; }
-
-        public DbSet<YnabAccount> YnabAccounts { get; set; }
+        public DbSet<Account> YnabAccounts { get; set; }
 
         public DbSet<YnabDataObject> DataObjects { get; set; }
 
         public DbSet<PersonalData> PersonalDatas { get; set; }
+
+        public DbSet<Transaction> Transactions { get; set; }
+
+        public DbSet<Subtransaction> Subtransactions { get; set; }
 
         #endregion
     }

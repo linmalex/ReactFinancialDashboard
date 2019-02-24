@@ -13,7 +13,6 @@ namespace NunitTest.Tests
         [Test]
         public void CreditCardCreation()
         {
-            CreditCard x = new CreditCard();
             
         }
     }

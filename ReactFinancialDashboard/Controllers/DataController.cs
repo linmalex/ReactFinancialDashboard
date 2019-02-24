@@ -61,8 +61,8 @@ namespace ReactFinancialDashboard.Controllers
             {
                 using (_context)
                 {
-                    List<YnabAccount> accountsList = YnabAccount.GetAPIYnabAccountsList(_context, ID);
-                    foreach (YnabAccount item in accountsList)
+                    List<Account> accountsList = Account.GetAPIYnabAccountsList(_context, ID);
+                    foreach (Account item in accountsList)
                     {
                         if (_context.YnabAccounts.Contains(item))
                         {
@@ -74,7 +74,7 @@ namespace ReactFinancialDashboard.Controllers
                         }
                     }
                     PersonalData personalData = _context.PersonalDatas.Where(x => x.ID == ID).FirstOrDefault();
-                    List<YnabAccount> serverAccounts = _context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
+                    List<Account> serverAccounts = _context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
                     _context.SaveChanges();
                     string json = JsonConvert.SerializeObject(serverAccounts);
                     return json;
@@ -90,7 +90,7 @@ namespace ReactFinancialDashboard.Controllers
         public string SetYnabAccountsJson(int ID)
         {
             PersonalData personalData = _context.PersonalDatas.Where(x => x.ID == ID).FirstOrDefault();
-            List<YnabAccount> serverAccounts = _context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
+            List<Account> serverAccounts = _context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
             List<string> accountNames = new List<string>() {
                 "Name",
                 "Type",
