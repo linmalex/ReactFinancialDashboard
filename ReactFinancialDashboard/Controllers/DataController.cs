@@ -40,9 +40,17 @@ namespace ReactFinancialDashboard.Controllers
         public string SetServerStatements(int ID)
         {
             List<CreditCardStatement> statements = _context.CreditCardStatements.Where(y => y.PersonalDataID == ID).ToList();
+            List<string> creditCardNames = new List<string>()
+                {
+                    "DueDate",
+                    "IssueDate",
+                    "Balance",
+                    "MinPayment",
+                    "PaidStatus"
+                };
             var settings = new JsonSerializerSettings()
             {
-                ContractResolver = new IgnoreParentPropertiesResolver(true)
+                ContractResolver = new JsonPropRenderSettings(true, creditCardNames)
             };
             var json = JsonConvert.SerializeObject(statements, settings);
             return json;
@@ -85,9 +93,15 @@ namespace ReactFinancialDashboard.Controllers
         {
             PersonalData personalData = _context.PersonalDatas.Where(x => x.ID == ID).FirstOrDefault();
             List<YnabAccount> serverAccounts = _context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
+            List<string> accountNames = new List<string>()
+                {
+                    "Name",
+                    "Type",
+                    "Balance",
+                };
             var settings = new JsonSerializerSettings()
             {
-                ContractResolver = new IgnoreParentPropertiesResolver(true)
+                ContractResolver = new JsonPropRenderSettings(true, accountNames)
             };
             var json = JsonConvert.SerializeObject(serverAccounts, settings);
             return json;
