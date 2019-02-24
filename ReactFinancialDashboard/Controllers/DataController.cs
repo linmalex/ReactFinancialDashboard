@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ReactFinancialDashboard.Data;
+using ReactFinancialDashboard.Data.Utilities;
 using ReactFinancialDashboard.Models;
 using ReactFinancialDashboard.ViewModels;
 
@@ -39,7 +40,12 @@ namespace ReactFinancialDashboard.Controllers
         public string SetServerStatements(int ID)
         {
             List<CreditCardStatement> statements = _context.CreditCardStatements.Where(y => y.PersonalDataID == ID).ToList();
-            return JsonConvert.SerializeObject(statements);
+            var settings = new JsonSerializerSettings()
+            {
+                ContractResolver = new IgnoreParentPropertiesResolver(true)
+            };
+            var json = JsonConvert.SerializeObject(statements, settings);
+            return json;
         }
 
         [HttpGet("[action]")]

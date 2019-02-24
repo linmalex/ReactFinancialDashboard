@@ -28,9 +28,11 @@ export default class App extends Component {
       setServerStatements
     } = this.state.serverData.controllerInstructions;
 
-    this.callController(initialstate);
-    this.callController(setYnabAccounts);
-    this.callController(setServerStatements);
+    this.callController(initialstate).then(
+      this.callController(setYnabAccounts).then(
+        this.callController(setServerStatements)
+      )
+    );
   }
 
   //#region //* UTILITIES -----------------------------------------------------------------------
