@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using ReactFinancialDashboard.Data;
 using ReactFinancialDashboard.Data.Utilities;
+using ReactFinancialDashboard.Interfaces;
 
 namespace ReactFinancialDashboard.Models
 {
-    public class Account
+    public class Account:IViewModel
     {
         #region Properties
         public string ID { get; set; }
@@ -34,7 +36,51 @@ namespace ReactFinancialDashboard.Models
         //public IList<CreditCardStatement> CreditCardStatements { get; set; }
 
         public PersonalData PersonalData { get; set; }
+        #region IViewModel implementation
+        [NotMapped]
+        public string NavDisplayValue { get; set; }
+
+        [NotMapped]
+        public string RoutePath { get; set; }
+
+        [NotMapped]
+        public string Glyph { get; set; }
+
+        [NotMapped]
+        public string[] ColumnDisplayTitles { get; set; }
+
+        [NotMapped]
+        public string[] JsonTitleValues { get; set; }
+
+        [NotMapped]
+        public string[] Data { get; set; }
+
+        [NotMapped]
+        public string PageTitle { get; set; }
+
+        [NotMapped]
+        public bool DataLoading { get; set; }
         #endregion
+        #endregion
+
+        public Account()
+        {
+            NavDisplayValue = "Ynab Accounts";
+            RoutePath = "/ynabaccountbalances";
+            Glyph = "piggy-bank";
+            PageTitle = "Ynab Account Balances";
+            DataLoading = false;
+            ColumnDisplayTitles = new string[] {
+                    "Account Name",
+                    "Account Balance",
+                    "Account Type"
+                };
+            JsonTitleValues = new string[] {
+                    "Name",
+                    "Balance",
+                    "Type"
+                };
+        }
 
         /// <summary>
         /// Calls YNAB API for JSON data

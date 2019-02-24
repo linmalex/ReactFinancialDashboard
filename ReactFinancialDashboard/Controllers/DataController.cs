@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ReactFinancialDashboard.Data;
 using ReactFinancialDashboard.Data.Utilities;
+using ReactFinancialDashboard.Interfaces;
 using ReactFinancialDashboard.Models;
 using ReactFinancialDashboard.ViewModels;
 
@@ -25,7 +26,12 @@ namespace ReactFinancialDashboard.Controllers
         [HttpGet("[action]")]
         public string SetInitialState(int ID)
         {
-            DataVM data = new DataVM(id: ID);
+            List<IViewModel> componentsToRender = new List<IViewModel>()
+            {
+                new CreditCardStatement(),
+                new Account()
+            };
+            DataVM data = new DataVM(componentsToRender, ID);
             string data1 = JsonConvert.SerializeObject(data);
             return data1;
         }
