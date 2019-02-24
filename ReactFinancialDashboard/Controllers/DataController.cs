@@ -85,7 +85,11 @@ namespace ReactFinancialDashboard.Controllers
         {
             PersonalData personalData = _context.PersonalDatas.Where(x => x.ID == ID).FirstOrDefault();
             List<YnabAccount> serverAccounts = _context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
-            string json = JsonConvert.SerializeObject(serverAccounts);
+            var settings = new JsonSerializerSettings()
+            {
+                ContractResolver = new IgnoreParentPropertiesResolver(true)
+            };
+            var json = JsonConvert.SerializeObject(serverAccounts, settings);
             return json;
         }
         #endregion

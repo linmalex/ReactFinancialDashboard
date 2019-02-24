@@ -18,18 +18,40 @@ namespace ReactFinancialDashboard.Data.Utilities
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
             var allProps = base.CreateProperties(type, memberSerialization);
-            if (!IgnoreBase) return allProps;
-
-            //Choose the properties you want to serialize/deserialize
-            List<string> names = new List<string>() {
-                "DueDate",
-                "IssueDate",
-                "Balance",
-                "MinPayment",
-                "PaidStatus"
+            if (!IgnoreBase)
+            {
+                return allProps;
             };
-            List<JsonProperty> list = allProps.Where(p => names.Any(a => a == p.PropertyName)).ToList();
-            return list;
+
+            if (type.Name == "CreditCardStatement")
+            {
+                List<string> creditCardNames = new List<string>()
+                {
+                    "DueDate",
+                    "IssueDate",
+                    "Balance",
+                    "MinPayment",
+                    "PaidStatus"
+                };
+                List<JsonProperty> list = allProps.Where(p => creditCardNames.Any(a => a == p.PropertyName)).ToList();
+                return list;
+            }
+            if (type.Name == "YnabAccount")
+            {
+                List<string> accountNames = new List<string>()
+                {
+                    "Name",
+                    "Type",
+                    "Balance",
+                };
+                List<JsonProperty> list = allProps.Where(p => accountNames.Any(a => a == p.PropertyName)).ToList();
+                return list;
+            }
+            else
+            {
+                PropertyInfo[] props = type.GetProperties(~BindingFlags.FlattenHierarchy);
+                return allProps.Where(p => props.Any(a => a.Name == p.PropertyName)).ToList();
+            }
         }
     }
 }
