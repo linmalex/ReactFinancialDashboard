@@ -43,6 +43,10 @@ namespace ReactFinancialDashboard.Models
         public string NavDisplayValue { get; set; }
 
         [NotMapped]
+        [JsonProperty("data")]
+        public string[] Data { get; set; }
+
+        [NotMapped]
         public string RoutePath { get; set; }
 
         [NotMapped]
