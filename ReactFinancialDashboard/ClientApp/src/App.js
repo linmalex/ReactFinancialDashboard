@@ -13,7 +13,12 @@ export default class App extends Component {
     this.state = {
       loading: true,
       serverData: {
+        //description: determines which budget gets shown
         personalDataID: 2,
+        //description: this.controllerInstructions determines which components get rendered.
+        //... "action" determines which DataController method gets called
+        //... "n" determines which level of serverData gets populated (to be refactored)
+        //params
         controllerInstructions: {
           initialstate: { action: "SetInitialState", n: null },
           setYnabAccounts: { action: "SetYnabAccountsJson", n: 1 },
