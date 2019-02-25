@@ -14,18 +14,19 @@ namespace ReactFinancialDashboard.Models
     {
         public int ID { get; set; }
 
-        [Column(TypeName = "date"), JsonConverter(typeof(DateConverter))]
+        [Column(TypeName = "date"), JsonConverter(typeof(DateConverter)), JsonProperty("DueDate")]
         public DateTime DueDate { get; set; }
 
-        [Column(TypeName = "date"), JsonConverter(typeof(DateConverter))]
+        [Column(TypeName = "date"), JsonConverter(typeof(DateConverter)), JsonProperty("IssueDate")]
         public DateTime IssueDate { get; set; }
 
-        [DataType(DataType.Currency)]
+        [DataType(DataType.Currency), JsonProperty("Balance")]
         public double Balance { get; set; }
 
-        [DataType(DataType.Currency)]
+        [DataType(DataType.Currency), JsonProperty("MinPayment")]
         public double MinPayment { get; set; }
 
+        [JsonProperty("PaidStatus")]
         public string PaidStatus { get; set; }
 
         public string YnabAccountID { get; set; }
@@ -52,9 +53,6 @@ namespace ReactFinancialDashboard.Models
 
         [NotMapped]
         public string[] JsonTitleValues { get; set; }
-
-        [NotMapped]
-        public string[] Data { get; set; }
 
         [NotMapped]
         public string PageTitle { get; set; }

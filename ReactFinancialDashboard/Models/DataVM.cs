@@ -72,7 +72,6 @@ namespace ReactFinancialDashboard.ViewModels
             PageTitle = viewModel.PageTitle;
             DataLoading = viewModel.DataLoading;
             ColumnDisplayTitles = viewModel.ColumnDisplayTitles;
-            JsonTitleValues = viewModel.JsonTitleValues;
         }
     }
 }
