@@ -24,7 +24,11 @@ export class MyButton extends Component {
 
   render() {
     let { buttonType } = this.props;
-    let controllerInstructions = { action: "UpdateLocalYnabData", n: 1 };
+    let controllerInstructions = {
+      controller: "Accounts",
+      action: "UpdateLocalYnabData",
+      n: 1
+    };
     let button =
       buttonType === "getYnabData" ? (
         <button

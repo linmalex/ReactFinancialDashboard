@@ -95,7 +95,6 @@ export default class App extends Component {
   //! needs to be refactored so as not to need n parameter to know which component to update
   createURL = controllerAction => {
     const personalDataID = this.state.serverData.personalDataID;
-    console.log(personalDataID);
     const params = `?ID=${personalDataID}`;
     const url = `api/Data/${controllerAction}${params}`;
     return url;
@@ -105,7 +104,14 @@ export default class App extends Component {
     const personalDataID = this.state.serverData.personalDataID;
     const params = `${personalDataID}`;
     const url = `api/${controller}/${params}`;
-    console.log(url);
+    return url;
+  };
+
+  createURL3 = controllerInstructions => {
+    const { controller, action } = controllerInstructions;
+    const personalDataID = this.state.serverData.personalDataID;
+    const params = `${personalDataID}`;
+    const url = `api/${controller}/${params}`;
     return url;
   };
 
@@ -127,7 +133,19 @@ export default class App extends Component {
     const fetchURL = this.createURL2(controllerInstructions.controller);
     const response = await fetch(fetchURL);
     const data = await response.json();
-    console.log(data);
+    let { serverData } = this.state;
+    // description: hard coded instructions for which segment of serverData needs to be updated
+    controllerInstructions.n == null
+      ? (serverData = data)
+      : (serverData.componentsList[controllerInstructions.n].data = data);
+    return this.setState({ serverData, loading: false });
+  };
+
+  callController3 = async controllerInstructions => {
+    // description: generates URL for controller call using current state personalDataID
+    const fetchURL = this.createURL3(controllerInstructions);
+    const response = await fetch(fetchURL, { method: "put" });
+    const data = await response.json();
     let { serverData } = this.state;
     // description: hard coded instructions for which segment of serverData needs to be updated
     controllerInstructions.n == null
@@ -144,7 +162,7 @@ export default class App extends Component {
     this.state.loading
       ? (layout = <p>Loading</p>)
       : (layout = (
-          <Layout appstate={this.state} getYnabData={this.callController}>
+          <Layout appstate={this.state} getYnabData={this.callController3}>
             {this.generateBodyComponents()}
           </Layout>
         ));

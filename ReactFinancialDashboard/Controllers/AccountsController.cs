@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ReactFinancialDashboard.Data;
 using ReactFinancialDashboard.Data.Utilities;
 using ReactFinancialDashboard.Models;
@@ -22,7 +24,7 @@ namespace ReactFinancialDashboard.Controllers
         {
             _context = context;
         }
-
+        #region GET/PUT/POST---------------------------------------------------------
         // GET: api/Accounts
         [HttpGet]
         public IEnumerable<Account> GetYnabAccounts()
@@ -62,39 +64,69 @@ namespace ReactFinancialDashboard.Controllers
             return json;
         }
 
-        // PUT: api/Accounts/5
+        //// PUT: api/Accounts/5
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutAccount([FromRoute] string id, [FromBody] Account account)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    if (id != account.ID)
+        //    {
+        //        return BadRequest();
+        //    }
+
+        //    _context.Entry(account).State = EntityState.Modified;
+
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!AccountExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
+
+        //    return NoContent();
+        //}
+
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAccount([FromRoute] string id, [FromBody] Account account)
+        public IActionResult PutAccount([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != account.ID)
-            {
-                return BadRequest();
-            }
+            string ynabCallResults = CallYnab(id, "accounts").Result;
 
-            _context.Entry(account).State = EntityState.Modified;
+            List<Account> accountsList = JsonToList(ynabCallResults);
+
+            foreach (Account account in accountsList)
+            {
+                _context.Entry(account).State = EntityState.Modified;
+            }
+            string json = JsonConvert.SerializeObject(accountsList);
 
             try
             {
-                await _context.SaveChangesAsync();
+                _context.SaveChangesAsync();
+                return new JsonResult(json);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AccountExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
-            return NoContent();
         }
 
         // POST: api/Accounts
@@ -111,8 +143,6 @@ namespace ReactFinancialDashboard.Controllers
 
             return CreatedAtAction("GetAccount", new { id = account.ID }, account);
         }
-
-
 
         // DELETE: api/Accounts/5
         [HttpDelete("{id}")]
@@ -134,10 +164,90 @@ namespace ReactFinancialDashboard.Controllers
 
             return Ok(account);
         }
+        #endregion
 
         private bool AccountExists(string id)
         {
             return _context.YnabAccounts.Any(e => e.ID == id);
         }
+
+        #region YNAB Calls------------------------------------------------------------------------------------
+        public async Task<string> CallYnab(int personalBudgetID, string area)
+        {
+            PersonalData personalData = _context.PersonalDatas.Where(x => x.ID == personalBudgetID).FirstOrDefault();
+
+            try
+            {
+                HttpClient client = new HttpClient();
+                string uristring = "https://api.youneedabudget.com/v1/budgets/" + personalData.BudgetID + "/" + area;
+                var uri = new Uri(uristring);
+                client.BaseAddress = uri;
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", personalData.AuthToken);
+                return await client.GetStringAsync(uri);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        public List<Account> JsonToList(string jsonData)
+        {
+            JObject transactionData = JObject.Parse(jsonData);
+            JToken jsonAccountsData = transactionData["data"]["accounts"];
+
+            List<Account> accounts = new List<Account>();
+            foreach (JToken jAccount in jsonAccountsData)
+            {
+                UpdateJAccountValues(jAccount);
+                Account account = jAccount.ToObject<Account>();
+                accounts.Add(account);
+            }
+
+            return accounts;
+        }
+
+        public JToken UpdateJAccountValues(JToken jAccount)
+        {
+            jAccount["balance"] = ((double)jAccount["balance"]) / 1000;
+            jAccount["cleared_balance"] = ((double)jAccount["cleared_balance"]) / 1000;
+            jAccount["uncleared_balance"] = ((double)jAccount["uncleared_balance"]) / 1000;
+            jAccount["type"] = Utilities.SplitStrings.SplitString((string)jAccount["type"]);
+            return jAccount;
+        }
+
+        public async Task<string> UpdateLocalYnabData(int personalDataID)
+        {
+            try
+            {
+                using (_context)
+                {
+                    string ynabCallResults = CallYnab(personalDataID, "accounts").Result;
+
+                    List<Account> accountsList = JsonToList(ynabCallResults);
+
+                    foreach (Account account in accountsList)
+                    {
+                        _context.Entry(account).State = EntityState.Modified;
+                    }
+                    try
+                    {
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        throw;
+                    }
+                    List<Account> serverAccounts = _context.YnabAccounts.Where(y => y.PersonalDataID == personalDataID).ToList();
+                    string json = JsonConvert.SerializeObject(serverAccounts);
+                    return json;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        #endregion
     }
 }
