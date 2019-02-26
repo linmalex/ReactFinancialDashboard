@@ -36,35 +36,6 @@ namespace ReactFinancialDashboard.Controllers
             return data1;
         }
 
-        /// <summary>
-        /// Get local statements with a given PersonalData ID
-        /// </summary>
-        /// <param name="ID"></param>
-        /// <returns></returns>
-        [HttpGet("[action]")]
-        public string SetServerStatements(int ID)
-        {
-            //STOP!!!! you are moving this to CreditCardStatementController GetCreditCardStatements.
-            //It's already there, you just need to change the reference
-
-
-
-            List<CreditCardStatement> statements = _context.CreditCardStatements.Where(y => y.PersonalDataID == ID).ToList();
-            List<string> creditCardNames = new List<string>() {
-                "DueDate",
-                "IssueDate",
-                "Balance",
-                "MinPayment",
-                "PaidStatus"
-            };
-            var settings = new JsonSerializerSettings()
-            {
-                ContractResolver = new JsonPropRenderSettings(true, creditCardNames)
-            };
-            var json = JsonConvert.SerializeObject(statements, settings);
-            return json;
-        }
-
         [HttpGet("[action]")]
         public string UpdateLocalYnabData(int ID)
         {

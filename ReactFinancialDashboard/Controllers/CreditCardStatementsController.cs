@@ -5,13 +5,17 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ReactFinancialDashboard.Data;
+using ReactFinancialDashboard.Data.Utilities;
 using ReactFinancialDashboard.Models;
 
 namespace ReactFinancialDashboard.Controllers
 {
     [Route("api/[controller]")]
-    public class CreditCardStatementsController : Controller
+    [ApiController]
+    public class CreditCardStatementsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
@@ -21,31 +25,54 @@ namespace ReactFinancialDashboard.Controllers
         }
 
         // GET: api/CreditCardStatements
-        [HttpGet]
-        public IEnumerable<CreditCardStatement> GetCreditCardStatements()
+        [HttpGet("{personalDataID}")]
+        public string GetCreditCardStatements([FromRoute] int personalDataID)
         {
-            return _context.CreditCardStatements;
+            List<CreditCardStatement> statements = _context.CreditCardStatements.Where(y => y.PersonalDataID == personalDataID).ToList();
+            List<string> creditCardNames = new List<string>() {
+                "DueDate",
+                "IssueDate",
+                "Balance",
+                "MinPayment",
+                "PaidStatus"
+            };
+            var settings = new JsonSerializerSettings()
+            {
+                ContractResolver = new JsonPropRenderSettings(true, creditCardNames)
+            };
+            var json = JsonConvert.SerializeObject(statements, settings);
+            return json;
         }
 
         // GET: api/CreditCardStatements/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCreditCardStatement([FromRoute] int id)
+        public async Task<string> GetCreditCardStatement([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
+            //if (!ModelState.IsValid)
+            //{
+                //return BadRequest(ModelState);
+            //}
+            //var creditCardStatement = await _context.CreditCardStatements.FindAsync(id);
+            //if (creditCardStatement == null)
+            //{
+            //    return NotFound();
+            //}
+            //return Ok(creditCardStatement);
+
+            List<CreditCardStatement> statements = await _context.CreditCardStatements.Where(y => y.PersonalDataID == id).ToListAsync();
+            List<string> creditCardNames = new List<string>() {
+                "DueDate",
+                "IssueDate",
+                "Balance",
+                "MinPayment",
+                "PaidStatus"
+            };
+            var settings = new JsonSerializerSettings()
             {
-                return BadRequest(ModelState);
-            }
-
-            var creditCardStatement = await _context.CreditCardStatements.FindAsync(id);
-
-            if (creditCardStatement == null)
-            {
-                return NotFound();
-            }
-
-
-
-            return Ok(creditCardStatement);
+                ContractResolver = new JsonPropRenderSettings(true, creditCardNames)
+            };
+            var json = JsonConvert.SerializeObject(statements, settings);
+            return json;
         }
 
         // PUT: api/CreditCardStatements/5

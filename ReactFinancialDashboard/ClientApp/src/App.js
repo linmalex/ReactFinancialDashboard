@@ -20,9 +20,21 @@ export default class App extends Component {
         //... "n" determines which level of serverData gets populated (to be refactored)
         //params
         controllerInstructions: {
-          initialstate: { action: "SetInitialState", n: null },
-          setYnabAccounts: { action: "SetYnabAccountsJson", n: 1 },
-          setServerStatements: { action: "SetServerStatements", n: 0 }
+          initialstate: {
+            controller: "Data",
+            action: "SetInitialState",
+            n: null
+          },
+          setYnabAccounts: {
+            controller: "Data",
+            action: "SetYnabAccountsJson",
+            n: 1
+          },
+          setServerStatements: {
+            controller: "CreditCardStatements",
+            action: "SetServerStatements",
+            n: 0
+          }
         }
       }
     };
@@ -35,19 +47,12 @@ export default class App extends Component {
 
     this.callController(initialstate).then(
       this.callController(setYnabAccounts).then(
-        this.callController(setServerStatements)
+        this.callController2(setServerStatements)
       )
     );
   }
 
   //#region //* UTILITIES -----------------------------------------------------------------------
-  // description: generates URL for controller call using current state personalDataID
-  createURL = controllerAction => {
-    const id = this.state.serverData.personalDataID;
-    const params = `?ID=${id}`;
-    const url = `api/Data/${controllerAction}${params}`;
-    return url;
-  };
 
   // description: uses state serverData to generate render Route and BodyComponents
   generateBodyComponents() {
@@ -88,10 +93,41 @@ export default class App extends Component {
   //#region //* CONTROLLER Call -----------------------------------------------------------------------
   // description: call controller to update state using controllerInstructions object as parameter
   //! needs to be refactored so as not to need n parameter to know which component to update
+  createURL = controllerAction => {
+    const personalDataID = this.state.serverData.personalDataID;
+    console.log(personalDataID);
+    const params = `?ID=${personalDataID}`;
+    const url = `api/Data/${controllerAction}${params}`;
+    return url;
+  };
+
+  createURL2 = controller => {
+    const personalDataID = this.state.serverData.personalDataID;
+    const params = `${personalDataID}`;
+    const url = `api/${controller}/${params}`;
+    console.log(url);
+    return url;
+  };
+
   callController = async controllerInstructions => {
+    // description: generates URL for controller call using current state personalDataID
     const fetchURL = this.createURL(controllerInstructions.action);
     const response = await fetch(fetchURL);
     const data = await response.json();
+    let { serverData } = this.state;
+    // description: hard coded instructions for which segment of serverData needs to be updated
+    controllerInstructions.n == null
+      ? (serverData = data)
+      : (serverData.componentsList[controllerInstructions.n].data = data);
+    return this.setState({ serverData, loading: false });
+  };
+
+  callController2 = async controllerInstructions => {
+    // description: generates URL for controller call using current state personalDataID
+    const fetchURL = this.createURL2(controllerInstructions.controller);
+    const response = await fetch(fetchURL);
+    const data = await response.json();
+    console.log(data);
     let { serverData } = this.state;
     // description: hard coded instructions for which segment of serverData needs to be updated
     controllerInstructions.n == null
