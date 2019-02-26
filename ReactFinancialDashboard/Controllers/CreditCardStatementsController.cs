@@ -125,6 +125,17 @@ namespace ReactFinancialDashboard.Controllers
             return CreatedAtAction("GetCreditCardStatement", new { id = creditCardStatement.ID }, creditCardStatement);
         }
 
+        [HttpPost("[action]")]
+        public IActionResult CreateStatement([FromForm] CreditCardStatement statement)
+        {
+            ApplicationDbContext context = _context;
+            statement.PaidStatus = "Unpaid";
+            context.Add(statement);
+            context.SaveChanges();
+            JsonResult result = new JsonResult("Statement Added");
+            return result;
+        }
+
         // DELETE: api/CreditCardStatements/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCreditCardStatement([FromRoute] int id)

@@ -70,19 +70,6 @@ namespace ReactFinancialDashboard.Controllers
 
         #endregion
 
-        #region //* POST actions -----------------------------------------------------------------------
-        //* uses state serverData to generate render Route and BodyComponents
-        [HttpPost("[action]")]
-        public IActionResult CreateStatement([FromForm] CreditCardStatement statement)
-        {
-            ApplicationDbContext context = _context;
-            statement.PaidStatus = "Unpaid";
-            context.Add(statement);
-            context.SaveChanges();
-            JsonResult result = new JsonResult("Statement Added");
-            return result;
-        }
-        #endregion
 
     }
 }
