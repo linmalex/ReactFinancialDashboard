@@ -26,7 +26,7 @@ export default class App extends Component {
             n: null
           },
           setYnabAccounts: {
-            controller: "Data",
+            controller: "Accounts",
             action: "SetYnabAccountsJson",
             n: 1
           },
@@ -46,7 +46,7 @@ export default class App extends Component {
     } = this.state.serverData.controllerInstructions;
 
     this.callController(initialstate).then(
-      this.callController(setYnabAccounts).then(
+      this.callController2(setYnabAccounts).then(
         this.callController2(setServerStatements)
       )
     );

@@ -68,23 +68,6 @@ namespace ReactFinancialDashboard.Controllers
             }
         }
 
-        [HttpGet("[action]")]
-        public string SetYnabAccountsJson(int ID)
-        {
-            PersonalData personalData = _context.PersonalDatas.Where(x => x.ID == ID).FirstOrDefault();
-            List<Account> serverAccounts = _context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
-            List<string> accountNames = new List<string>() {
-                "Name",
-                "Type",
-                "Balance",
-            };
-            var settings = new JsonSerializerSettings()
-            {
-                ContractResolver = new JsonPropRenderSettings(true, accountNames)
-            };
-            var json = JsonConvert.SerializeObject(serverAccounts, settings);
-            return json;
-        }
         #endregion
 
         #region //* POST actions -----------------------------------------------------------------------
