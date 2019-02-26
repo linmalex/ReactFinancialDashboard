@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReactFinancialDashboard.Data;
 
 namespace ReactFinancialDashboard.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190226023612_BankAccount")]
+    partial class BankAccount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -187,8 +189,6 @@ namespace ReactFinancialDashboard.Migrations
 
                     b.Property<double>("Balance");
 
-                    b.Property<Guid?>("BankAccountID");
-
                     b.Property<double>("Cleared_balance");
 
                     b.Property<bool>("Closed");
@@ -214,8 +214,6 @@ namespace ReactFinancialDashboard.Migrations
 
                     b.HasAlternateKey("Transfer_payee_id");
 
-                    b.HasIndex("BankAccountID");
-
                     b.HasIndex("PersonalDataID");
 
                     b.ToTable("YnabAccounts");
@@ -226,13 +224,21 @@ namespace ReactFinancialDashboard.Migrations
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("CreditCardStatementID");
+
                     b.Property<string>("Name");
 
-                    b.Property<int?>("PersonalDataID");
+                    b.Property<Guid?>("OtherCreditCardInfoID");
+
+                    b.Property<string>("YnabAccountID");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("PersonalDataID");
+                    b.HasIndex("CreditCardStatementID");
+
+                    b.HasIndex("OtherCreditCardInfoID");
+
+                    b.HasIndex("YnabAccountID");
 
                     b.ToTable("BankAccounts");
                 });
@@ -249,8 +255,6 @@ namespace ReactFinancialDashboard.Migrations
                         .HasColumnType("date");
 
                     b.Property<double>("Balance");
-
-                    b.Property<Guid?>("BankAccountID");
 
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("date");
@@ -270,8 +274,6 @@ namespace ReactFinancialDashboard.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("BankAccountID");
-
                     b.HasIndex("PersonalDataID");
 
                     b.HasIndex("YnabAccountID");
@@ -284,9 +286,9 @@ namespace ReactFinancialDashboard.Migrations
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("BankAccountID");
-
                     b.Property<double>("BudgetedSpending");
+
+                    b.Property<int?>("CreditCardStatementID");
 
                     b.Property<double>("ExtraBudgeted");
 
@@ -301,9 +303,13 @@ namespace ReactFinancialDashboard.Migrations
 
                     b.Property<double>("UnbudgetedSpending");
 
+                    b.Property<string>("YnabAccountID");
+
                     b.HasKey("ID");
 
-                    b.HasIndex("BankAccountID");
+                    b.HasIndex("CreditCardStatementID");
+
+                    b.HasIndex("YnabAccountID");
 
                     b.ToTable("OtherCreditCardInfos");
                 });
@@ -318,11 +324,7 @@ namespace ReactFinancialDashboard.Migrations
 
                     b.Property<string>("BudgetID");
 
-                    b.Property<int?>("DataObjectID");
-
                     b.HasKey("ID");
-
-                    b.HasIndex("DataObjectID");
 
                     b.ToTable("PersonalDatas");
                 });
@@ -465,28 +467,28 @@ namespace ReactFinancialDashboard.Migrations
 
             modelBuilder.Entity("ReactFinancialDashboard.Models.Account", b =>
                 {
-                    b.HasOne("ReactFinancialDashboard.Models.BankAccount")
-                        .WithMany("YnabAccount")
-                        .HasForeignKey("BankAccountID");
-
                     b.HasOne("ReactFinancialDashboard.Models.PersonalData", "PersonalData")
-                        .WithMany("Accounts")
+                        .WithMany()
                         .HasForeignKey("PersonalDataID");
                 });
 
             modelBuilder.Entity("ReactFinancialDashboard.Models.BankAccount", b =>
                 {
-                    b.HasOne("ReactFinancialDashboard.Models.PersonalData")
-                        .WithMany("BankAccounts")
-                        .HasForeignKey("PersonalDataID");
+                    b.HasOne("ReactFinancialDashboard.Models.CreditCardStatement", "CreditCardStatement")
+                        .WithMany()
+                        .HasForeignKey("CreditCardStatementID");
+
+                    b.HasOne("ReactFinancialDashboard.Models.OtherCreditCardInfo", "OtherCreditCardInfo")
+                        .WithMany()
+                        .HasForeignKey("OtherCreditCardInfoID");
+
+                    b.HasOne("ReactFinancialDashboard.Models.Account", "YnabAccount")
+                        .WithMany()
+                        .HasForeignKey("YnabAccountID");
                 });
 
             modelBuilder.Entity("ReactFinancialDashboard.Models.CreditCardStatement", b =>
                 {
-                    b.HasOne("ReactFinancialDashboard.Models.BankAccount", "BankAccount")
-                        .WithMany("CreditCardStatement")
-                        .HasForeignKey("BankAccountID");
-
                     b.HasOne("ReactFinancialDashboard.Models.PersonalData", "PersonalData")
                         .WithMany()
                         .HasForeignKey("PersonalDataID")
@@ -499,16 +501,13 @@ namespace ReactFinancialDashboard.Migrations
 
             modelBuilder.Entity("ReactFinancialDashboard.Models.OtherCreditCardInfo", b =>
                 {
-                    b.HasOne("ReactFinancialDashboard.Models.BankAccount", "BankAccount")
-                        .WithMany("OtherCreditCardInfo")
-                        .HasForeignKey("BankAccountID");
-                });
-
-            modelBuilder.Entity("ReactFinancialDashboard.Models.PersonalData", b =>
-                {
-                    b.HasOne("ReactFinancialDashboard.Models.YnabDataObject", "DataObject")
+                    b.HasOne("ReactFinancialDashboard.Models.CreditCardStatement", "CreditCardStatement")
                         .WithMany()
-                        .HasForeignKey("DataObjectID");
+                        .HasForeignKey("CreditCardStatementID");
+
+                    b.HasOne("ReactFinancialDashboard.Models.Account", "YnabAccount")
+                        .WithMany()
+                        .HasForeignKey("YnabAccountID");
                 });
 
             modelBuilder.Entity("ReactFinancialDashboard.Models.Subtransaction", b =>

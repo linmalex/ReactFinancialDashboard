@@ -37,6 +37,16 @@ namespace ReactFinancialDashboard.Models
 
         public virtual PersonalData PersonalData { get; set; }
 
+        [JsonProperty("Autopay")]
+        public bool Autopay { get; set; }
+
+        [JsonProperty("AutopayDate"), Column(TypeName = "date")]
+        public DateTime AutopayScheduledDate { get; set; }
+
+        [DataType(DataType.Currency), JsonProperty("RemainingStatementBalance")]
+        public double RemainingStatementBalance { get; set; }
+
+        public BankAccount BankAccount { get; set; }
 
         #region IViewModel implementation
         [NotMapped]

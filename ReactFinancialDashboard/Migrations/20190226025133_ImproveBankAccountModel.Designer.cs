@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReactFinancialDashboard.Data;
 
 namespace ReactFinancialDashboard.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190226025133_ImproveBankAccountModel")]
+    partial class ImproveBankAccountModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,11 +230,7 @@ namespace ReactFinancialDashboard.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int?>("PersonalDataID");
-
                     b.HasKey("ID");
-
-                    b.HasIndex("PersonalDataID");
 
                     b.ToTable("BankAccounts");
                 });
@@ -318,11 +316,7 @@ namespace ReactFinancialDashboard.Migrations
 
                     b.Property<string>("BudgetID");
 
-                    b.Property<int?>("DataObjectID");
-
                     b.HasKey("ID");
-
-                    b.HasIndex("DataObjectID");
 
                     b.ToTable("PersonalDatas");
                 });
@@ -474,13 +468,6 @@ namespace ReactFinancialDashboard.Migrations
                         .HasForeignKey("PersonalDataID");
                 });
 
-            modelBuilder.Entity("ReactFinancialDashboard.Models.BankAccount", b =>
-                {
-                    b.HasOne("ReactFinancialDashboard.Models.PersonalData")
-                        .WithMany("BankAccounts")
-                        .HasForeignKey("PersonalDataID");
-                });
-
             modelBuilder.Entity("ReactFinancialDashboard.Models.CreditCardStatement", b =>
                 {
                     b.HasOne("ReactFinancialDashboard.Models.BankAccount", "BankAccount")
@@ -502,13 +489,6 @@ namespace ReactFinancialDashboard.Migrations
                     b.HasOne("ReactFinancialDashboard.Models.BankAccount", "BankAccount")
                         .WithMany("OtherCreditCardInfo")
                         .HasForeignKey("BankAccountID");
-                });
-
-            modelBuilder.Entity("ReactFinancialDashboard.Models.PersonalData", b =>
-                {
-                    b.HasOne("ReactFinancialDashboard.Models.YnabDataObject", "DataObject")
-                        .WithMany()
-                        .HasForeignKey("DataObjectID");
                 });
 
             modelBuilder.Entity("ReactFinancialDashboard.Models.Subtransaction", b =>

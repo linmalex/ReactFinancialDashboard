@@ -31,7 +31,6 @@ namespace ReactFinancialDashboard.Models {
         public bool On_budget { get; set; }
         public bool Closed { get; set; }
 
-        //public IList<CreditCardStatement> CreditCardStatements { get; set; }
 
         public PersonalData PersonalData { get; set; }
         #region IViewModel implementation
@@ -116,7 +115,6 @@ namespace ReactFinancialDashboard.Models {
             {
                 UpdateJAccountValues (jAccount);
                 Account account = jAccount.ToObject<Account> ();
-                account.PersonalData = personalData;
                 accounts.Add (account);
             }
 

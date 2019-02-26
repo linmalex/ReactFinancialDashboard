@@ -42,6 +42,9 @@ namespace ReactFinancialDashboard.Data
 
         public DbSet<Subtransaction> Subtransactions { get; set; }
 
+        public DbSet<OtherCreditCardInfo> OtherCreditCardInfos { get; set; }
+
+        public DbSet<BankAccount> BankAccounts { get; set; }
         #endregion
     }
 }

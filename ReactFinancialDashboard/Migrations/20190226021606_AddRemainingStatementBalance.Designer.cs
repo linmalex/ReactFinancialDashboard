@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReactFinancialDashboard.Data;
 
 namespace ReactFinancialDashboard.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190226021606_AddRemainingStatementBalance")]
+    partial class AddRemainingStatementBalance
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -187,8 +189,6 @@ namespace ReactFinancialDashboard.Migrations
 
                     b.Property<double>("Balance");
 
-                    b.Property<Guid?>("BankAccountID");
-
                     b.Property<double>("Cleared_balance");
 
                     b.Property<bool>("Closed");
@@ -214,27 +214,9 @@ namespace ReactFinancialDashboard.Migrations
 
                     b.HasAlternateKey("Transfer_payee_id");
 
-                    b.HasIndex("BankAccountID");
-
                     b.HasIndex("PersonalDataID");
 
                     b.ToTable("YnabAccounts");
-                });
-
-            modelBuilder.Entity("ReactFinancialDashboard.Models.BankAccount", b =>
-                {
-                    b.Property<Guid>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name");
-
-                    b.Property<int?>("PersonalDataID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("PersonalDataID");
-
-                    b.ToTable("BankAccounts");
                 });
 
             modelBuilder.Entity("ReactFinancialDashboard.Models.CreditCardStatement", b =>
@@ -249,8 +231,6 @@ namespace ReactFinancialDashboard.Migrations
                         .HasColumnType("date");
 
                     b.Property<double>("Balance");
-
-                    b.Property<Guid?>("BankAccountID");
 
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("date");
@@ -270,42 +250,11 @@ namespace ReactFinancialDashboard.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("BankAccountID");
-
                     b.HasIndex("PersonalDataID");
 
                     b.HasIndex("YnabAccountID");
 
                     b.ToTable("CreditCardStatements");
-                });
-
-            modelBuilder.Entity("ReactFinancialDashboard.Models.OtherCreditCardInfo", b =>
-                {
-                    b.Property<Guid>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid?>("BankAccountID");
-
-                    b.Property<double>("BudgetedSpending");
-
-                    b.Property<double>("ExtraBudgeted");
-
-                    b.Property<double>("LastPaymentAmount");
-
-                    b.Property<DateTime>("LastPaymentDate")
-                        .HasColumnType("date");
-
-                    b.Property<double>("RemainingStatementBalance");
-
-                    b.Property<double>("TotalAvailable");
-
-                    b.Property<double>("UnbudgetedSpending");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("BankAccountID");
-
-                    b.ToTable("OtherCreditCardInfos");
                 });
 
             modelBuilder.Entity("ReactFinancialDashboard.Models.PersonalData", b =>
@@ -318,11 +267,7 @@ namespace ReactFinancialDashboard.Migrations
 
                     b.Property<string>("BudgetID");
 
-                    b.Property<int?>("DataObjectID");
-
                     b.HasKey("ID");
-
-                    b.HasIndex("DataObjectID");
 
                     b.ToTable("PersonalDatas");
                 });
@@ -465,28 +410,13 @@ namespace ReactFinancialDashboard.Migrations
 
             modelBuilder.Entity("ReactFinancialDashboard.Models.Account", b =>
                 {
-                    b.HasOne("ReactFinancialDashboard.Models.BankAccount")
-                        .WithMany("YnabAccount")
-                        .HasForeignKey("BankAccountID");
-
                     b.HasOne("ReactFinancialDashboard.Models.PersonalData", "PersonalData")
-                        .WithMany("Accounts")
-                        .HasForeignKey("PersonalDataID");
-                });
-
-            modelBuilder.Entity("ReactFinancialDashboard.Models.BankAccount", b =>
-                {
-                    b.HasOne("ReactFinancialDashboard.Models.PersonalData")
-                        .WithMany("BankAccounts")
+                        .WithMany()
                         .HasForeignKey("PersonalDataID");
                 });
 
             modelBuilder.Entity("ReactFinancialDashboard.Models.CreditCardStatement", b =>
                 {
-                    b.HasOne("ReactFinancialDashboard.Models.BankAccount", "BankAccount")
-                        .WithMany("CreditCardStatement")
-                        .HasForeignKey("BankAccountID");
-
                     b.HasOne("ReactFinancialDashboard.Models.PersonalData", "PersonalData")
                         .WithMany()
                         .HasForeignKey("PersonalDataID")
@@ -495,20 +425,6 @@ namespace ReactFinancialDashboard.Migrations
                     b.HasOne("ReactFinancialDashboard.Models.Account", "YnabAccount")
                         .WithMany()
                         .HasForeignKey("YnabAccountID");
-                });
-
-            modelBuilder.Entity("ReactFinancialDashboard.Models.OtherCreditCardInfo", b =>
-                {
-                    b.HasOne("ReactFinancialDashboard.Models.BankAccount", "BankAccount")
-                        .WithMany("OtherCreditCardInfo")
-                        .HasForeignKey("BankAccountID");
-                });
-
-            modelBuilder.Entity("ReactFinancialDashboard.Models.PersonalData", b =>
-                {
-                    b.HasOne("ReactFinancialDashboard.Models.YnabDataObject", "DataObject")
-                        .WithMany()
-                        .HasForeignKey("DataObjectID");
                 });
 
             modelBuilder.Entity("ReactFinancialDashboard.Models.Subtransaction", b =>
