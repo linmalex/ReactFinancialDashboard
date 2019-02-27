@@ -112,28 +112,17 @@ namespace ReactFinancialDashboard.Controllers
 
         // POST: api/CreditCardStatements
         [HttpPost]
-        public async Task<IActionResult> PostCreditCardStatement([FromBody] CreditCardStatement creditCardStatement)
+        public async Task<IActionResult> PostCreditCardStatement([FromForm] CreditCardStatement creditCardStatement)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
+            creditCardStatement.PaidStatus = "Unpaid";
             _context.CreditCardStatements.Add(creditCardStatement);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCreditCardStatement", new { id = creditCardStatement.ID }, creditCardStatement);
-        }
-
-        [HttpPost("[action]")]
-        public IActionResult CreateStatement([FromForm] CreditCardStatement statement)
-        {
-            ApplicationDbContext context = _context;
-            statement.PaidStatus = "Unpaid";
-            context.Add(statement);
-            context.SaveChanges();
-            JsonResult result = new JsonResult("Statement Added");
-            return result;
         }
 
         // DELETE: api/CreditCardStatements/5
