@@ -26,7 +26,7 @@ export class MyButton extends Component {
     let { buttonType } = this.props;
     let controllerInstructions = {
       controller: "Accounts",
-      action: "UpdateLocalYnabData",
+      method: "put",
       n: 1
     };
     let button =

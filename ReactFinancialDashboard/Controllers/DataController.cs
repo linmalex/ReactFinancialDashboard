@@ -23,18 +23,11 @@ namespace ReactFinancialDashboard.Controllers
         }
 
         #region //* GET actions -----------------------------------------------------------------------
-        [HttpGet("[action]")]
-        public string SetInitialState(int ID)
-        {
-            List<IViewModel> componentsToRender = new List<IViewModel>()
-            {
-                new CreditCardStatement(),
-                new Account()
-            };
-            DataVM data = new DataVM(componentsToRender, ID);
-            string data1 = JsonConvert.SerializeObject(data);
-            return data1;
-        }
+        //[HttpGet("[action]")]
+        //public string SetInitialState(int ID)
+        //{
+
+        //}
         #endregion
 
 
