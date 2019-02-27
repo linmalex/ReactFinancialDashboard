@@ -33,7 +33,6 @@ namespace ReactFinancialDashboard.Models
         public bool On_budget { get; set; }
         public bool Closed { get; set; }
 
-        public int PersonalDataID { get; set; }
         public virtual PersonalData PersonalData { get; set; }
         #region IViewModel implementation
         [NotMapped]

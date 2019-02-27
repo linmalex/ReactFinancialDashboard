@@ -161,14 +161,13 @@ namespace ReactFinancialDashboard.Controllers
 
             try
             {
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return json;
             }
             catch (DbUpdateConcurrencyException)
             {
                 throw;
             }
-
         }
 
         // POST: api/Accounts
