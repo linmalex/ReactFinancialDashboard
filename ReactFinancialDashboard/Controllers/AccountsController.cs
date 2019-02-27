@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ReactFinancialDashboard.Data;
 using ReactFinancialDashboard.Data.Utilities;
+using ReactFinancialDashboard.Interfaces;
 using ReactFinancialDashboard.Models;
 
 namespace ReactFinancialDashboard.Controllers
@@ -63,74 +64,6 @@ namespace ReactFinancialDashboard.Controllers
             var json = JsonConvert.SerializeObject(serverAccounts, settings);
             return json;
         }
-
-        //// PUT: api/Accounts/5
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutAccount([FromRoute] string id, [FromBody] Account account)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    if (id != account.ID)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(account).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!AccountExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-        public string UpdateLocalYnabData(int ID)
-        {
-            try
-            {
-                using (_context)
-                {
-                    string ynabCallResults = CallYnab(ID, "accounts").Result;
-                    List<Account> accountsList = JsonToList(ynabCallResults);
-
-                    foreach (Account item in accountsList)
-                    {
-                        if (_context.YnabAccounts.Contains(item))
-                        {
-                            _context.Update(item);
-                        }
-                        else
-                        {
-                            _context.Add(item);
-                        }
-                    }
-                    PersonalData personalData = _context.PersonalDatas.Where(x => x.ID == ID).FirstOrDefault();
-                    List<Account> serverAccounts = _context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
-                    _context.SaveChanges();
-                    string json = JsonConvert.SerializeObject(serverAccounts);
-                    return json;
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
 
         [HttpPut("{id}")]
         public string PutAccount([FromRoute] int id)
@@ -240,7 +173,7 @@ namespace ReactFinancialDashboard.Controllers
             List<Account> accounts = new List<Account>();
             foreach (JToken jAccount in jsonAccountsData)
             {
-                UpdateJAccountValues(jAccount);
+                ModifyJTokenValues(jAccount);
                 Account account = jAccount.ToObject<Account>();
                 accounts.Add(account);
             }
@@ -248,7 +181,7 @@ namespace ReactFinancialDashboard.Controllers
             return accounts;
         }
 
-        public JToken UpdateJAccountValues(JToken jAccount)
+        public JToken ModifyJTokenValues(JToken jAccount)
         {
             jAccount["balance"] = ((double)jAccount["balance"]) / 1000;
             jAccount["cleared_balance"] = ((double)jAccount["cleared_balance"]) / 1000;
@@ -256,8 +189,6 @@ namespace ReactFinancialDashboard.Controllers
             jAccount["type"] = Utilities.SplitStrings.SplitString((string)jAccount["type"]);
             return jAccount;
         }
-
-
         #endregion
     }
 }
