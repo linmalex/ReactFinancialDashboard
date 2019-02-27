@@ -132,6 +132,7 @@ export default class App extends Component {
     // description: generates URL for controller call using current state personalDataID
     const fetchURL = this.createURL2(controllerInstructions.controller);
     const response = await fetch(fetchURL);
+    console.log(response);
     const data = await response.json();
     let { serverData } = this.state;
     // description: hard coded instructions for which segment of serverData needs to be updated

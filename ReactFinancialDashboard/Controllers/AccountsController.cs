@@ -98,14 +98,47 @@ namespace ReactFinancialDashboard.Controllers
 
         //    return NoContent();
         //}
+        public string UpdateLocalYnabData(int ID)
+        {
+            try
+            {
+                using (_context)
+                {
+                    string ynabCallResults = CallYnab(ID, "accounts").Result;
+                    List<Account> accountsList = JsonToList(ynabCallResults);
+
+                    foreach (Account item in accountsList)
+                    {
+                        if (_context.YnabAccounts.Contains(item))
+                        {
+                            _context.Update(item);
+                        }
+                        else
+                        {
+                            _context.Add(item);
+                        }
+                    }
+                    PersonalData personalData = _context.PersonalDatas.Where(x => x.ID == ID).FirstOrDefault();
+                    List<Account> serverAccounts = _context.YnabAccounts.Where(y => y.PersonalData == personalData).ToList();
+                    _context.SaveChanges();
+                    string json = JsonConvert.SerializeObject(serverAccounts);
+                    return json;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
 
         [HttpPut("{id}")]
-        public IActionResult PutAccount([FromRoute] int id)
+        public string PutAccount([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
 
             string ynabCallResults = CallYnab(id, "accounts").Result;
 
@@ -115,12 +148,21 @@ namespace ReactFinancialDashboard.Controllers
             {
                 _context.Entry(account).State = EntityState.Modified;
             }
-            string json = JsonConvert.SerializeObject(accountsList);
+            List<string> accountNames = new List<string>() {
+                "Name",
+                "Type",
+                "Balance",
+            };
+            var settings = new JsonSerializerSettings()
+            {
+                ContractResolver = new JsonPropRenderSettings(true, accountNames)
+            };
+            var json = JsonConvert.SerializeObject(accountsList, settings);
 
             try
             {
                 _context.SaveChangesAsync();
-                return new JsonResult(json);
+                return json;
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -216,38 +258,7 @@ namespace ReactFinancialDashboard.Controllers
             return jAccount;
         }
 
-        public async Task<string> UpdateLocalYnabData(int personalDataID)
-        {
-            try
-            {
-                using (_context)
-                {
-                    string ynabCallResults = CallYnab(personalDataID, "accounts").Result;
 
-                    List<Account> accountsList = JsonToList(ynabCallResults);
-
-                    foreach (Account account in accountsList)
-                    {
-                        _context.Entry(account).State = EntityState.Modified;
-                    }
-                    try
-                    {
-                        await _context.SaveChangesAsync();
-                    }
-                    catch (DbUpdateConcurrencyException)
-                    {
-                        throw;
-                    }
-                    List<Account> serverAccounts = _context.YnabAccounts.Where(y => y.PersonalDataID == personalDataID).ToList();
-                    string json = JsonConvert.SerializeObject(serverAccounts);
-                    return json;
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
         #endregion
     }
 }

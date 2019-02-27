@@ -14,22 +14,22 @@ export class Table extends Component {
     var { data } = this.props.tableData;
     var papers;
 
-    data == null ? (papers = <Paper>Loading</Paper>) : console.log(typeof data);
-    // : (papers = data.map(item => console.log(item)));
-    // : (papers = data.map(stmt => (
-    //     <Paper key={Math.random() * 10}>
-    //       {Object.keys(stmt).map(k => (
-    //         <p key={Math.random() * 10}>
-    //           {k}:
-    //           {typeof stmt[k] === "number"
-    //             ? " " + formatter.format(stmt[k])
-    //             : " " + stmt[k]}
-    //         </p>
-    //       ))}
-    //     </Paper>
-    // )));
+    data == null
+      ? (papers = <Paper>Loading</Paper>)
+      : (papers = data.map(stmt => (
+          <Paper key={Math.random() * 10}>
+            {Object.keys(stmt).map(k => (
+              <p key={Math.random() * 10}>
+                {k}:
+                {typeof stmt[k] === "number"
+                  ? " " + formatter.format(stmt[k])
+                  : " " + stmt[k]}
+              </p>
+            ))}
+          </Paper>
+        )));
 
-    // return papers;
+    return papers;
   }
 
   render() {
