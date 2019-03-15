@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { Route } from "react-router";
 import { Layout } from "./components/LayoutComponents/Layout";
 import { BodyComponent } from "./components/LayoutComponents/BodyComponent";
-//todo uncomment this
-// import { BodyComponent } from "./components/LayoutComponents/BodyComponent";
 
 export default class App extends Component {
   displayName = App.name;
